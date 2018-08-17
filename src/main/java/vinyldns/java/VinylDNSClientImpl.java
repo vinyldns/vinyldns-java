@@ -17,6 +17,11 @@ package vinyldns.java;
 
 import com.amazonaws.*;
 import com.amazonaws.http.AmazonHttpClient;
+import vinyldns.java.model.Methods;
+import vinyldns.java.model.batch.BatchResponse;
+import vinyldns.java.model.batch.CreateBatchRequest;
+import vinyldns.java.model.batch.ListBatchChangesRequest;
+import vinyldns.java.model.batch.ListBatchChangesResponse;
 import vinyldns.java.model.record.set.*;
 import vinyldns.java.model.zone.ListZonesRequest;
 import vinyldns.java.model.zone.ListZonesResponse;
@@ -46,7 +51,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
     //Zone
     @Override
     public VinylDNSResponse<ListZonesResponse> listZones(ListZonesRequest request) {
-        VinylDNSRequest<Void> vinylDNSRequest = new VinylDNSRequest<>("GET", getBaseUrl(), "zones", null);
+        VinylDNSRequest<Void> vinylDNSRequest = new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), "zones", null);
 
         if (request.getStartFrom() != null) {
             vinylDNSRequest.addParameter("startFrom", request.getStartFrom());
@@ -68,7 +73,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
     public VinylDNSResponse<ListRecordSetsResponse> listRecordSets(ListRecordSetsRequest request) {
         String path = "zones/" + request.getZoneId() + "/recordsets";
 
-        VinylDNSRequest<Void> vinylDNSRequest = new VinylDNSRequest<>("GET", getBaseUrl(), path, null);
+        VinylDNSRequest<Void> vinylDNSRequest = new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
 
         if (request.getStartFrom() != null) {
             vinylDNSRequest.addParameter("startFrom", request.getStartFrom());
@@ -88,13 +93,42 @@ public class VinylDNSClientImpl implements VinylDNSClient {
     @Override
     public VinylDNSResponse<RecordSetChange> createRecordSet(CreateRecordSetRequest request) {
         String path = "zones/" + request.getZoneId() + "/recordsets";
-        return executeRequest(new VinylDNSRequest<>("POST", getBaseUrl(), path, request), RecordSetChange.class);
+        return executeRequest(new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, request), RecordSetChange.class);
     }
 
     @Override
     public VinylDNSResponse<RecordSetChange> deleteRecordSet(DeleteRecordSetRequest request) {
         String path = "zones/" + request.getZoneId() + "/recordsets/" + request.getRecordSetId();
-        return executeRequest(new VinylDNSRequest<>("DELETE", getBaseUrl(), path, null), RecordSetChange.class);
+        return executeRequest(new VinylDNSRequest<>(Methods.DELETE.name(), getBaseUrl(), path, null), RecordSetChange.class);
+    }
+
+    @Override
+    public VinylDNSResponse<ListBatchChangesResponse> listBatchChanges(ListBatchChangesRequest request) {
+        String path = "zones/batchrecordchanges";
+
+        VinylDNSRequest<Void> vinylDNSRequest = new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+        if (request.getStartFrom() != null) {
+            vinylDNSRequest.addParameter("startFrom", request.getStartFrom());
+        }
+
+        if (request.getMaxItems() != null) {
+            vinylDNSRequest.addParameter("maxItems", request.getMaxItems().toString());
+        }
+
+        return executeRequest(vinylDNSRequest, ListBatchChangesResponse.class);
+    }
+
+    @Override
+    public VinylDNSResponse<BatchResponse> getBatchChanges(String id) {
+        String path = "zones/batchrecordchanges/" + id;
+        return executeRequest(new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null), BatchResponse.class);
+    }
+
+    @Override
+    public VinylDNSResponse<BatchResponse> createBatchChanges(CreateBatchRequest request) {
+        String path = "zones/batchrecordchanges";
+        return executeRequest(new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, request), BatchResponse.class);
     }
 
     private <S, R> VinylDNSResponse<R> executeRequest(VinylDNSRequest<S> req, Class<R> responseType) {

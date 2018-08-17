@@ -15,6 +15,7 @@
  */
 package vinyldns.java.serializers;
 
+import vinyldns.java.model.batch.SingleChange;
 import vinyldns.java.model.record.data.RecordData;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,8 +25,10 @@ public class SerializationFactory {
     public static Gson createGson() {
         GsonBuilder gsonBuilder = new GsonBuilder();
         gsonBuilder.registerTypeAdapterFactory(new RecordSetTypeAdapterFactory());
+        gsonBuilder.registerTypeAdapterFactory(new AddSingleChangeAdapterFactory());
         gsonBuilder.registerTypeAdapter(RecordData.class, new RecordDataDeserializer());
         gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeSerializer());
+        gsonBuilder.registerTypeAdapter(SingleChange.class, new ChangeInputDeserializer());
         return gsonBuilder.create();
     }
 }
