@@ -1,16 +1,14 @@
 /**
  * Copyright 2018 Comcast Cable Communications Management, LLC
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
+ * except in compliance with the License. You may obtain a copy of the License at
  *
- *     http://www.apache.org/licenses/LICENSE-2.0
+ * <p>http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * <p>Unless required by applicable law or agreed to in writing, software distributed under the
+ * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
+ * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package vinyldns.java.model.batch;
@@ -167,24 +165,34 @@ public class AddSingleChange implements SingleChange {
       return false;
     }
     AddSingleChange that = (AddSingleChange) o;
-    return Objects.equals(id, that.id) &&
-        Objects.equals(zoneId, that.zoneId) &&
-        Objects.equals(zoneName, that.zoneName) &&
-        Objects.equals(recordName, that.recordName) &&
-        Objects.equals(inputName, that.inputName) &&
-        Objects.equals(record, that.record) &&
-        status == that.status &&
-        Objects.equals(systemMessage, that.systemMessage) &&
-        Objects.equals(recordChangeId, that.recordChangeId) &&
-        Objects.equals(recordSetId, that.recordSetId) &&
-        type == that.type &&
-        Objects.equals(ttl, that.ttl);
+    return Objects.equals(id, that.id)
+        && Objects.equals(zoneId, that.zoneId)
+        && Objects.equals(zoneName, that.zoneName)
+        && Objects.equals(recordName, that.recordName)
+        && Objects.equals(inputName, that.inputName)
+        && Objects.equals(record, that.record)
+        && status == that.status
+        && Objects.equals(systemMessage, that.systemMessage)
+        && Objects.equals(recordChangeId, that.recordChangeId)
+        && Objects.equals(recordSetId, that.recordSetId)
+        && type == that.type
+        && Objects.equals(ttl, that.ttl);
   }
 
   @Override
   public int hashCode() {
-    return Objects
-        .hash(id, zoneId, zoneName, recordName, inputName, record, status, systemMessage,
-            recordChangeId, recordSetId, type, ttl);
+    return Objects.hash(
+        id,
+        zoneId,
+        zoneName,
+        recordName,
+        inputName,
+        record,
+        status,
+        systemMessage,
+        recordChangeId,
+        recordSetId,
+        type,
+        ttl);
   }
 }
