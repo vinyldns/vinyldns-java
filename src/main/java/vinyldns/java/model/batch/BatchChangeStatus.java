@@ -13,27 +13,9 @@
  */
 package vinyldns.java.model.batch;
 
-import vinyldns.java.model.record.RecordType;
-
-public interface SingleChange {
-
-  String getId();
-
-  ChangeInputType getChangeType();
-
-  SingleChangeStatus getStatus();
-
-  String getSystemMessage();
-
-  String getRecordChangeId();
-
-  String getZoneId();
-
-  String getRecordName();
-
-  RecordType getType();
-
-  String getInputName();
-
-  String getZoneName();
+public enum BatchChangeStatus {
+  Pending,
+  Complete,
+  Failed,
+  PartialFailure
 }

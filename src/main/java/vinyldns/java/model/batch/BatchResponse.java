@@ -16,7 +16,6 @@ package vinyldns.java.model.batch;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.StringJoiner;
 
 public class BatchResponse {
   private String id;
@@ -25,6 +24,7 @@ public class BatchResponse {
   private String comments;
   private Date createdTimestamp;
   private List<SingleChange> changes;
+  private BatchChangeStatus status;
 
   public String getId() {
     return id;
@@ -74,37 +74,55 @@ public class BatchResponse {
     this.changes = changes;
   }
 
+  public BatchChangeStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(BatchChangeStatus status) {
+    this.status = status;
+  }
+
   @Override
   public String toString() {
-    return new StringJoiner(", ", BatchResponse.class.getSimpleName() + "[", "]")
-        .add("id='" + id + "'")
-        .add("userId='" + userId + "'")
-        .add("userName='" + userName + "'")
-        .add("comments='" + comments + "'")
-        .add("createdTimestamp=" + createdTimestamp)
-        .add("changes=" + changes)
-        .toString();
+    return "BatchResponse{"
+        + "id='"
+        + id
+        + '\''
+        + ", userId='"
+        + userId
+        + '\''
+        + ", userName='"
+        + userName
+        + '\''
+        + ", comments='"
+        + comments
+        + '\''
+        + ", createdTimestamp="
+        + createdTimestamp
+        + ", changes="
+        + changes
+        + ", status="
+        + status
+        + '}';
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
     BatchResponse that = (BatchResponse) o;
     return Objects.equals(id, that.id)
         && Objects.equals(userId, that.userId)
         && Objects.equals(userName, that.userName)
         && Objects.equals(comments, that.comments)
         && Objects.equals(createdTimestamp, that.createdTimestamp)
-        && Objects.equals(changes, that.changes);
+        && Objects.equals(changes, that.changes)
+        && status == that.status;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id, userId, userName, comments, createdTimestamp, changes);
+
+    return Objects.hash(id, userId, userName, comments, createdTimestamp, changes, status);
   }
 }

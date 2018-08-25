@@ -14,11 +14,11 @@
 package vinyldns.java.model.batch;
 
 import java.util.Objects;
-import java.util.StringJoiner;
 import vinyldns.java.model.record.RecordType;
 
 public class DeleteRecordSetSingleChange implements SingleChange {
   private String id;
+  private ChangeInputType changeType;
   private String zoneId;
   private String zoneName;
   private String recordName;
@@ -36,6 +36,15 @@ public class DeleteRecordSetSingleChange implements SingleChange {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  @Override
+  public ChangeInputType getChangeType() {
+    return changeType;
+  }
+
+  public void setChangeType(ChangeInputType changeType) {
+    this.changeType = changeType;
   }
 
   @Override
@@ -120,30 +129,47 @@ public class DeleteRecordSetSingleChange implements SingleChange {
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", DeleteRecordSetSingleChange.class.getSimpleName() + "[", "]")
-        .add("id='" + id + "'")
-        .add("zoneId='" + zoneId + "'")
-        .add("zoneName='" + zoneName + "'")
-        .add("recordName='" + recordName + "'")
-        .add("inputName='" + inputName + "'")
-        .add("typ=" + typ)
-        .add("status=" + status)
-        .add("systemMessage='" + systemMessage + "'")
-        .add("recordChangeId='" + recordChangeId + "'")
-        .add("recordSetId='" + recordSetId + "'")
-        .toString();
+    return "DeleteRecordSetSingleChange{"
+        + "id='"
+        + id
+        + '\''
+        + ", changeType="
+        + changeType
+        + ", zoneId='"
+        + zoneId
+        + '\''
+        + ", zoneName='"
+        + zoneName
+        + '\''
+        + ", recordName='"
+        + recordName
+        + '\''
+        + ", inputName='"
+        + inputName
+        + '\''
+        + ", typ="
+        + typ
+        + ", status="
+        + status
+        + ", systemMessage='"
+        + systemMessage
+        + '\''
+        + ", recordChangeId='"
+        + recordChangeId
+        + '\''
+        + ", recordSetId='"
+        + recordSetId
+        + '\''
+        + '}';
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
     DeleteRecordSetSingleChange that = (DeleteRecordSetSingleChange) o;
     return Objects.equals(id, that.id)
+        && changeType == that.changeType
         && Objects.equals(zoneId, that.zoneId)
         && Objects.equals(zoneName, that.zoneName)
         && Objects.equals(recordName, that.recordName)
@@ -157,8 +183,10 @@ public class DeleteRecordSetSingleChange implements SingleChange {
 
   @Override
   public int hashCode() {
+
     return Objects.hash(
         id,
+        changeType,
         zoneId,
         zoneName,
         recordName,

@@ -14,12 +14,12 @@
 package vinyldns.java.model.batch;
 
 import java.util.Objects;
-import java.util.StringJoiner;
 import vinyldns.java.model.record.RecordType;
 import vinyldns.java.model.record.data.RecordData;
 
 public class AddSingleChange implements SingleChange {
   private String id;
+  private ChangeInputType changeType;
   private String zoneId;
   private String zoneName;
   private RecordType type;
@@ -40,6 +40,15 @@ public class AddSingleChange implements SingleChange {
 
   public void setId(String id) {
     this.id = id;
+  }
+
+  @Override
+  public ChangeInputType getChangeType() {
+    return changeType;
+  }
+
+  public void setChangeType(ChangeInputType changeType) {
+    this.changeType = changeType;
   }
 
   @Override
@@ -140,59 +149,80 @@ public class AddSingleChange implements SingleChange {
 
   @Override
   public String toString() {
-    return new StringJoiner(", ", AddSingleChange.class.getSimpleName() + "[", "]")
-        .add("id='" + id + "'")
-        .add("zoneId='" + zoneId + "'")
-        .add("zoneName='" + zoneName + "'")
-        .add("recordName='" + recordName + "'")
-        .add("inputName='" + inputName + "'")
-        .add("record=" + record)
-        .add("status=" + status)
-        .add("systemMessage='" + systemMessage + "'")
-        .add("recordChangeId='" + recordChangeId + "'")
-        .add("recordSetId='" + recordSetId + "'")
-        .add("type=" + type)
-        .add("ttl=" + ttl)
-        .toString();
+    return "AddSingleChange{"
+        + "id='"
+        + id
+        + '\''
+        + ", changeType="
+        + changeType
+        + ", zoneId='"
+        + zoneId
+        + '\''
+        + ", zoneName='"
+        + zoneName
+        + '\''
+        + ", type="
+        + type
+        + ", recordName='"
+        + recordName
+        + '\''
+        + ", inputName='"
+        + inputName
+        + '\''
+        + ", status="
+        + status
+        + ", systemMessage='"
+        + systemMessage
+        + '\''
+        + ", recordChangeId='"
+        + recordChangeId
+        + '\''
+        + ", recordSetId='"
+        + recordSetId
+        + '\''
+        + ", record="
+        + record
+        + ", ttl="
+        + ttl
+        + '}';
   }
 
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
     AddSingleChange that = (AddSingleChange) o;
     return Objects.equals(id, that.id)
+        && changeType == that.changeType
         && Objects.equals(zoneId, that.zoneId)
         && Objects.equals(zoneName, that.zoneName)
+        && type == that.type
         && Objects.equals(recordName, that.recordName)
         && Objects.equals(inputName, that.inputName)
-        && Objects.equals(record, that.record)
         && status == that.status
         && Objects.equals(systemMessage, that.systemMessage)
         && Objects.equals(recordChangeId, that.recordChangeId)
         && Objects.equals(recordSetId, that.recordSetId)
-        && type == that.type
+        && Objects.equals(record, that.record)
         && Objects.equals(ttl, that.ttl);
   }
 
   @Override
   public int hashCode() {
+
     return Objects.hash(
         id,
+        changeType,
         zoneId,
         zoneName,
+        type,
         recordName,
         inputName,
-        record,
         status,
         systemMessage,
         recordChangeId,
         recordSetId,
-        type,
+        record,
         ttl);
   }
 }
