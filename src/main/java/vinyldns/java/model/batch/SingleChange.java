@@ -11,16 +11,29 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vinyldns.java.responses;
+package vinyldns.java.model.batch;
 
-public class VinylDNSFailureResponse<T> extends VinylDNSResponse<T>
-    implements ResponseMarker.Failure {
-  public VinylDNSFailureResponse(String messageBody, int statusCode) {
-    super(null, messageBody, statusCode);
-  }
+import vinyldns.java.model.record.RecordType;
 
-  @Override
-  public String toString() {
-    return "VinylDNSFailureResponse{" + super.toString() + "}";
-  }
+public interface SingleChange {
+
+  String getId();
+
+  ChangeInputType getChangeType();
+
+  SingleChangeStatus getStatus();
+
+  String getSystemMessage();
+
+  String getRecordChangeId();
+
+  String getZoneId();
+
+  String getRecordName();
+
+  RecordType getType();
+
+  String getInputName();
+
+  String getZoneName();
 }

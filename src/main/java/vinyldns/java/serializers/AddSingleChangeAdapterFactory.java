@@ -13,19 +13,21 @@
  */
 package vinyldns.java.serializers;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.TypeAdapter;
+import com.google.gson.TypeAdapterFactory;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import java.io.IOException;
-import vinyldns.java.model.record.set.CreateRecordSetRequest;
-import vinyldns.java.model.record.set.RecordSet;
+import vinyldns.java.model.batch.AddSingleChange;
 
-public class RecordSetTypeAdapterFactory implements TypeAdapterFactory {
+public class AddSingleChangeAdapterFactory implements TypeAdapterFactory {
 
   public <T> TypeAdapter<T> create(final Gson gson, TypeToken<T> type) {
-    if (!type.getType().equals(CreateRecordSetRequest.class)
-        && !type.getType().equals(RecordSet.class)) {
+    if (!type.getType().equals(AddSingleChange.class)) {
       return null;
     }
 
@@ -39,17 +41,15 @@ public class RecordSetTypeAdapterFactory implements TypeAdapterFactory {
         JsonElement tree = gson.fromJson(in, JsonElement.class);
         JsonObject jsonObject = tree.getAsJsonObject();
 
-        JsonElement records = jsonObject.get("records");
+        JsonElement record = jsonObject.get("record");
 
-        if (records.isJsonNull()) {
+        if (record.isJsonNull()) {
           return delegate.fromJsonTree(jsonObject);
         }
 
         JsonElement type = jsonObject.get("type");
 
-        for (JsonElement element : records.getAsJsonArray()) {
-          element.getAsJsonObject().add("type", type);
-        }
+        record.getAsJsonObject().add("type", type);
 
         return delegate.fromJsonTree(jsonObject);
       }

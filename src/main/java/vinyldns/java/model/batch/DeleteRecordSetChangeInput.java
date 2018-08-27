@@ -11,55 +11,43 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package vinyldns.java.model.record.data;
+package vinyldns.java.model.batch;
 
-public class MXData implements RecordData {
-  private int preference;
-  private String exchange;
+import java.util.Objects;
 
-  public MXData() {}
+public class DeleteRecordSetChangeInput implements ChangeInput {
+  private String inputName;
 
-  public MXData(int preference, String exchange) {
-    this.preference = preference;
-    this.exchange = exchange;
+  public DeleteRecordSetChangeInput(String inputName) {
+    this.inputName = inputName;
   }
 
-  public int getPreference() {
-    return preference;
+  @Override
+  public ChangeInputType getChangeType() {
+    return ChangeInputType.DeleteRecordSet;
   }
 
-  public void setPreference(int preference) {
-    this.preference = preference;
-  }
-
-  public String getExchange() {
-    return exchange;
-  }
-
-  public void setExchange(String exchange) {
-    this.exchange = exchange;
+  @Override
+  public String getInputName() {
+    return inputName;
   }
 
   @Override
   public String toString() {
-    return "MXData{" + "preference=" + preference + ", exchange='" + exchange + '\'' + '}';
+    return "DeleteRecordSetChangeInput{" + "inputName='" + inputName + '\'' + '}';
   }
 
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
-
-    MXData mxData = (MXData) o;
-
-    if (preference != mxData.preference) return false;
-    return exchange.equals(mxData.exchange);
+    DeleteRecordSetChangeInput that = (DeleteRecordSetChangeInput) o;
+    return Objects.equals(inputName, that.inputName);
   }
 
   @Override
   public int hashCode() {
-    int result = preference;
-    result = 31 * result + exchange.hashCode();
-    return result;
+
+    return Objects.hash(inputName);
   }
 }
