@@ -13,10 +13,13 @@
  */
 package io.vinyldns.java.model.batch;
 
+import lombok.Builder;
+import lombok.Data;
 import io.vinyldns.java.model.record.RecordType;
 import io.vinyldns.java.model.record.data.RecordData;
-import java.util.Objects;
 
+@Data
+@Builder
 public class AddChangeInput implements ChangeInput {
   private String inputName;
 
@@ -26,65 +29,8 @@ public class AddChangeInput implements ChangeInput {
 
   private RecordData record;
 
-  private ChangeInputType changeType = ChangeInputType.Add;
-
-  public AddChangeInput(String inputName, RecordType type, Long ttl, RecordData record) {
-    this.inputName = inputName;
-    this.type = type;
-    this.ttl = ttl;
-    this.record = record;
-  }
-
   @Override
   public ChangeInputType getChangeType() {
-    return changeType;
-  }
-
-  @Override
-  public String getInputName() {
-    return inputName;
-  }
-
-  public RecordType getType() {
-    return type;
-  }
-
-  public Long getTtl() {
-    return ttl;
-  }
-
-  public RecordData getRecord() {
-    return record;
-  }
-
-  @Override
-  public String toString() {
-    return "AddChangeInput{"
-        + "inputName='"
-        + inputName
-        + '\''
-        + ", type="
-        + type
-        + ", ttl="
-        + ttl
-        + ", record="
-        + record
-        + '}';
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-    AddChangeInput that = (AddChangeInput) o;
-    return Objects.equals(inputName, that.inputName)
-        && type == that.type
-        && Objects.equals(ttl, that.ttl)
-        && Objects.equals(record, that.record);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(inputName, type, ttl, record);
+    return ChangeInputType.Add;
   }
 }

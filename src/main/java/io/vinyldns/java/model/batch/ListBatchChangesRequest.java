@@ -13,9 +13,11 @@
  */
 package io.vinyldns.java.model.batch;
 
-import java.util.Objects;
-import java.util.StringJoiner;
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@Builder
 public class ListBatchChangesRequest {
   /**
    * In order to advance through pages of results, the startFrom is set to the nextId that is
@@ -30,52 +32,4 @@ public class ListBatchChangesRequest {
    * provided.
    */
   private Integer maxItems;
-
-  public ListBatchChangesRequest() {}
-
-  public ListBatchChangesRequest(String startFrom, Integer maxItems) {
-    this.startFrom = startFrom;
-    this.maxItems = maxItems;
-  }
-
-  public String getStartFrom() {
-    return startFrom;
-  }
-
-  public void setStartFrom(String startFrom) {
-    this.startFrom = startFrom;
-  }
-
-  public Integer getMaxItems() {
-    return maxItems;
-  }
-
-  public void setMaxItems(Integer maxItems) {
-    this.maxItems = maxItems;
-  }
-
-  @Override
-  public String toString() {
-    return new StringJoiner(", ", ListBatchChangesRequest.class.getSimpleName() + "[", "]")
-        .add("startFrom='" + startFrom + "'")
-        .add("maxItems=" + maxItems)
-        .toString();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
-    ListBatchChangesRequest that = (ListBatchChangesRequest) o;
-    return Objects.equals(startFrom, that.startFrom) && Objects.equals(maxItems, that.maxItems);
-  }
-
-  @Override
-  public int hashCode() {
-    return Objects.hash(startFrom, maxItems);
-  }
 }

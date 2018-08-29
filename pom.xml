@@ -37,6 +37,7 @@
         <maven.plugin.plugin.version>3.5</maven.plugin.plugin.version>
         <maven.failsafe.surefire.plugin.version>2.20</maven.failsafe.surefire.plugin.version>
         <fmt-maven-plugin.version>2.5.1</fmt-maven-plugin.version>
+        <lombok.version>1.18.2</lombok.version>
     </properties>
 
     <dependencies>
@@ -80,6 +81,12 @@
             <groupId>joda-time</groupId>
             <artifactId>joda-time</artifactId>
             <version>${joda-time.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.mockito</groupId>

@@ -21,13 +21,30 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import io.vinyldns.java.model.acl.ACLRule;
 import io.vinyldns.java.model.acl.AccessLevel;
+import io.vinyldns.java.model.batch.BatchResponse;
+import io.vinyldns.java.model.batch.ListBatchChangesRequest;
+import io.vinyldns.java.model.batch.ListBatchChangesResponse;
 import io.vinyldns.java.model.record.RecordType;
 import io.vinyldns.java.model.record.data.AData;
 import io.vinyldns.java.model.record.data.RecordData;
-import io.vinyldns.java.model.record.set.*;
-import io.vinyldns.java.model.zone.*;
+import io.vinyldns.java.model.record.set.CreateRecordSetRequest;
+import io.vinyldns.java.model.record.set.DeleteRecordSetRequest;
+import io.vinyldns.java.model.record.set.ListRecordSetsRequest;
+import io.vinyldns.java.model.record.set.ListRecordSetsResponse;
+import io.vinyldns.java.model.record.set.RecordSet;
+import io.vinyldns.java.model.record.set.RecordSetChange;
+import io.vinyldns.java.model.record.set.RecordSetChangeStatus;
+import io.vinyldns.java.model.record.set.RecordSetChangeType;
+import io.vinyldns.java.model.record.set.RecordSetStatus;
+import io.vinyldns.java.model.zone.ListZonesRequest;
+import io.vinyldns.java.model.zone.ListZonesResponse;
+import io.vinyldns.java.model.zone.Zone;
+import io.vinyldns.java.model.zone.ZoneACL;
+import io.vinyldns.java.model.zone.ZoneConnection;
+import io.vinyldns.java.model.zone.ZoneStatus;
 import io.vinyldns.java.responses.ResponseMarker;
 import io.vinyldns.java.responses.VinylDNSResponse;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import org.joda.time.DateTime;
@@ -146,7 +163,7 @@ public class VinylDNSClientTest {
     assertEquals(vinylDNSResponse.getValue(), listRecordSetsResponse);
   }
 
-  @Test
+  @Test//
   public void listRecordSetsSuccess() {
     String response = client.gson.toJson(listRecordSetsResponse);
 
@@ -287,6 +304,49 @@ public class VinylDNSClientTest {
     assertNull(vinylDNSResponse.getValue());
   }
 
+  @Test
+  public void listBatchChangesSuccessWithParams() {
+    String response = client.gson.toJson(listBatchChangesResponse);
+
+    String startFrom = "someStart";
+    int maxItems = 55;
+
+    wireMockServer.stubFor(
+        get(urlMatching("/zones/batchrecordchanges?(.*)"))
+            .withQueryParam("startFrom", equalTo(startFrom))
+            .withQueryParam("maxItems", equalTo(String.valueOf(maxItems)))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+
+    VinylDNSResponse<ListBatchChangesResponse> vinylDNSResponse =
+        client.listBatchChanges(ListBatchChangesRequest.builder()
+            .maxItems(maxItems)
+            .startFrom(startFrom)
+            .build());
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
+    assertEquals(vinylDNSResponse.getStatusCode(), 200);
+    assertEquals(vinylDNSResponse.getValue(), listBatchChangesResponse);
+  }
+
+  @Test
+  public void listBatchChangesFailure() {
+    wireMockServer.stubFor(
+        get(urlEqualTo("/zones/batchrecordchanges"))
+            .willReturn(aResponse().withStatus(500).withBody("server error")));
+
+    VinylDNSResponse<ListBatchChangesResponse> vinylDNSResponse =
+        client.listBatchChanges(ListBatchChangesRequest.builder().build());
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 500);
+    assertEquals(vinylDNSResponse.getMessageBody(), "server error");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
   private String zoneId = "zoneId";
   private ZoneConnection testZoneConnection1 =
       new ZoneConnection("name", "keyName", "key", "server");
@@ -362,4 +422,15 @@ public class VinylDNSClientTest {
           null);
   private CreateRecordSetRequest createRecordSetRequest =
       new CreateRecordSetRequest(zoneId, recordSetName, RecordType.A, 100, recordDataList);
+
+  private  List<BatchResponse> batchChanges = Arrays.asList(
+      BatchResponse.builder()
+      .comments("comment")
+      .id("id")
+      .build()
+  );
+
+  private ListBatchChangesResponse listBatchChangesResponse = ListBatchChangesResponse.builder()
+      .batchChanges(batchChanges)
+      .build();
 }

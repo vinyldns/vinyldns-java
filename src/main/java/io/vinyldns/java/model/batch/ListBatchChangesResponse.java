@@ -14,17 +14,11 @@
 package io.vinyldns.java.model.batch;
 
 import java.util.List;
+import lombok.Builder;
+import lombok.Data;
 
+@Data
+@Builder
 public class ListBatchChangesResponse {
   private List<BatchResponse> batchChanges;
-
-  public ListBatchChangesResponse() {}
-
-  public ListBatchChangesResponse(List<BatchResponse> batchChanges) {
-    this.batchChanges = batchChanges;
-  }
-
-  public List<BatchResponse> getBatchChanges() {
-    return batchChanges;
-  }
 }
