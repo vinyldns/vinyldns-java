@@ -32,7 +32,7 @@ public class ListZonesRequest {
    * The number of items to return in the page. Valid values are 1 - 100. Defaults to 100 if not
    * provided.
    */
-  private Integer maxItems;
+  private Integer maxItems = 100;
 
   public ListZonesRequest() {}
 
