@@ -15,12 +15,16 @@ package io.vinyldns.java;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static com.github.tomakehurst.wiremock.core.WireMockConfiguration.wireMockConfig;
+import static io.vinyldns.java.model.membership.GroupStatus.Active;
 import static org.testng.Assert.*;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import io.vinyldns.java.model.acl.ACLRule;
 import io.vinyldns.java.model.acl.AccessLevel;
+import io.vinyldns.java.model.membership.Group;
+import io.vinyldns.java.model.membership.ListGroupsRequest;
+import io.vinyldns.java.model.membership.ListGroupsResponse;
 import io.vinyldns.java.model.record.RecordType;
 import io.vinyldns.java.model.record.data.AData;
 import io.vinyldns.java.model.record.data.RecordData;
@@ -28,8 +32,9 @@ import io.vinyldns.java.model.record.set.*;
 import io.vinyldns.java.model.zone.*;
 import io.vinyldns.java.responses.ResponseMarker;
 import io.vinyldns.java.responses.VinylDNSResponse;
-import java.util.Collections;
-import java.util.List;
+
+import java.util.*;
+
 import org.joda.time.DateTime;
 import org.testng.annotations.*;
 
@@ -320,6 +325,68 @@ public class VinylDNSClientTest {
     assertNull(vinylDNSResponse.getValue());
   }
 
+  @Test
+  public void listGroupsSuccessWithParams() {
+      String response = client.gson.toJson(listGroupsResponse);
+
+      String groupNameFilter = listGroupsResponse.getGroupNameFilter();
+      String startFrom = listGroupsResponse.getStartFrom();
+      int maxItems = listGroupsResponse.getMaxItems();
+
+      wireMockServer.stubFor(
+          get(urlMatching("/groups?(.*)"))
+              .withQueryParam("groupNameFilter", equalTo(groupNameFilter))
+              .withQueryParam("startFrom", equalTo(startFrom))
+              .withQueryParam("maxItems", equalTo(String.valueOf(maxItems)))
+              .willReturn(
+                  aResponse()
+                      .withStatus(200)
+                      .withHeader("Content-Type", "application/json")
+                      .withBody(response)));
+
+      VinylDNSResponse<ListGroupsResponse> vinylDNSResponse =
+          client.listGroups(new ListGroupsRequest(groupNameFilter, startFrom, maxItems));
+
+      assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
+      assertEquals(vinylDNSResponse.getStatusCode(), 200);
+      assertEquals(vinylDNSResponse.getValue(), listGroupsResponse);
+  }
+
+  @Test
+  public void listGroupsSuccess() {
+      String response = client.gson.toJson(listGroupsResponse);
+
+      wireMockServer.stubFor(
+          get(urlEqualTo("/groups"))
+              .willReturn(
+                  aResponse()
+                      .withStatus(200)
+                      .withHeader("Content-Type", "application/json")
+                      .withBody(response)));
+
+      VinylDNSResponse<ListGroupsResponse> vinylDNSResponse =
+          client.listGroups(new ListGroupsRequest());
+
+      assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
+      assertEquals(vinylDNSResponse.getStatusCode(), 200);
+      assertEquals(vinylDNSResponse.getValue(), listGroupsResponse);
+  }
+
+  @Test
+  public void listGroupsFailure() {
+      wireMockServer.stubFor(
+          get(urlEqualTo("/groups"))
+              .willReturn(aResponse().withStatus(500).withBody("server error")));
+
+      VinylDNSResponse<ListGroupsResponse> vinylDNSResponse =
+          client.listGroups(new ListGroupsRequest());
+
+      assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+      assertEquals(vinylDNSResponse.getStatusCode(), 500);
+      assertEquals(vinylDNSResponse.getMessageBody(), "server error");
+      assertNull(vinylDNSResponse.getValue());
+  }
+
   private String zoneId = "zoneId";
   private ZoneConnection testZoneConnection1 =
       new ZoneConnection("name", "keyName", "key", "server");
@@ -395,4 +462,21 @@ public class VinylDNSClientTest {
           null);
   private CreateRecordSetRequest createRecordSetRequest =
       new CreateRecordSetRequest(zoneId, recordSetName, RecordType.A, 100, recordDataList);
+
+  private String adminId = "adminId";
+  private Set<String> adminUserIds = Collections.singleton(adminId);
+  private Group group =
+      new Group("groupName",
+          "email",
+          "description",
+          "groupId",
+          new DateTime(),
+          Active,
+          adminUserIds,
+          adminUserIds);
+
+  private List<Group> groupList = Collections.singletonList(group);
+
+  private ListGroupsResponse listGroupsResponse =
+      new ListGroupsResponse(groupList, "groupNameFilter", "startFrom", "nextId", 100);
 }

@@ -64,7 +64,7 @@ public class ListGroupsResponse {
         if (startFrom != null ? !startFrom.equals(that.startFrom) : that.startFrom != null)
             return false;
         if (nextId != null ? !nextId.equals(that.nextId) : that.nextId != null) return false;
-        return (maxItems != null ? !maxItems.equals(that.maxItems) : that.maxItems != null);
+        return maxItems != null ? maxItems.equals(that.maxItems) : that.maxItems == null;
     }
 
     @Override

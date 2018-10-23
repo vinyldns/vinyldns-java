@@ -2,15 +2,15 @@ package io.vinyldns.java.model.membership;
 
 public class ListGroupsRequest {
     private String groupNameFilter, startFrom;
-    private Integer maxItems = 100;
+    private Integer maxItems;
 
-    ListGroupsRequest() {}
+    public ListGroupsRequest() {}
 
-    ListGroupsRequest(String groupNameFilter) {
+    public ListGroupsRequest(String groupNameFilter) {
         this.groupNameFilter = groupNameFilter;
     }
 
-    ListGroupsRequest(String groupNameFilter, String startFrom, int maxItems) {
+    public ListGroupsRequest(String groupNameFilter, String startFrom, int maxItems) {
         this.groupNameFilter = groupNameFilter;
         this.startFrom = startFrom;
         this.maxItems = maxItems;
@@ -24,7 +24,7 @@ public class ListGroupsRequest {
 
     public void setStartFrom(String startFrom) { this.startFrom = startFrom; }
 
-    public int getMaxItems() { return maxItems; }
+    public Integer getMaxItems() { return maxItems; }
 
     public void setMaxItems(int maxItems) { this.maxItems = maxItems; }
 

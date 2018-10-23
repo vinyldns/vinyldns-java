@@ -29,4 +29,56 @@ public class Group {
         this.memberIds = memberIds;
         this.adminUserIds = adminUserIds;
     }
+
+    @Override
+    public String toString() {
+      return "Group{"
+          + "name='"
+          + name
+          + '\''
+          + ", email='"
+          + email
+          + '\''
+          + ", description='"
+          + description
+          + '\''
+          + ", id='"
+          + id
+          + '\''
+          + ", status="
+          + status
+          + ", memberIds="
+          + memberIds
+          + ", adminUserIds="
+          + adminUserIds
+          + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Group group = (Group) o;
+
+        if (!name.equals(group.name)) return false;
+        if (!email.equals(group.email)) return false;
+        if (description != null ? !description.equals(group.description) : group.description != null) return false;
+        if (!id.equals(group.id)) return false;
+        if (status != group.status) return false;
+        if (!memberIds.equals(group.memberIds)) return false;
+        return adminUserIds.equals(group.adminUserIds);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = name.hashCode();
+        result = 31 * result + email.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
+        result = 31 * result + id.hashCode();
+        result = 31 * result + status.hashCode();
+        result = 31 * result + memberIds.hashCode();
+        result = 31 * result + adminUserIds.hashCode();
+        return result;
+    }
 }
