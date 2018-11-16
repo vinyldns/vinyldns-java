@@ -4,10 +4,11 @@ import java.util.Set;
 import org.joda.time.DateTime;
 
 public class Group {
-    private String name, email, description, id;
-    private DateTime created;
-    private GroupStatus status;
-    private Set<String> memberIds, adminUserIds;
+    private final String name, email, id;
+    private String description;
+    private final DateTime created;
+    private final GroupStatus status;
+    private final Set<String> memberIds, adminUserIds;
 
     public Group(String name, String email, String description, String id, DateTime created, GroupStatus status,
                  Set<String> memberIds, Set<String> adminUserIds) {
@@ -15,6 +16,7 @@ public class Group {
         this.email = email;
         this.description = description;
         this.id = id;
+        this.created = created;
         this.status = status;
         this.memberIds = memberIds;
         this.adminUserIds = adminUserIds;
@@ -24,6 +26,7 @@ public class Group {
                  Set<String> memberIds, Set<String> adminUserIds) {
         this.name = name;
         this.email = email;
+        this.created = created;
         this.id = id;
         this.status = status;
         this.memberIds = memberIds;
