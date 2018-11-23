@@ -5,7 +5,7 @@ import org.joda.time.DateTime;
 
 public class Group {
     private final String name, email, id;
-    private String description;
+    private final String description;
     private final DateTime created;
     private final GroupStatus status;
     private final Set<String> memberIds, adminUserIds;
@@ -26,8 +26,9 @@ public class Group {
                  Set<String> memberIds, Set<String> adminUserIds) {
         this.name = name;
         this.email = email;
-        this.created = created;
         this.id = id;
+        this.description = null;
+        this.created = created;
         this.status = status;
         this.memberIds = memberIds;
         this.adminUserIds = adminUserIds;
@@ -48,6 +49,9 @@ public class Group {
           + ", id='"
           + id
           + '\''
+          + ", created='"
+          + created
+          + '\''
           + ", status="
           + status
           + ", memberIds="
@@ -66,8 +70,9 @@ public class Group {
 
         if (!name.equals(group.name)) return false;
         if (!email.equals(group.email)) return false;
-        if (description != null ? !description.equals(group.description) : group.description != null) return false;
         if (!id.equals(group.id)) return false;
+        if (!created.equals(group.created)) return false;
+        if (description != null ? !description.equals(group.description) : group.description != null) return false;
         if (status != group.status) return false;
         if (!memberIds.equals(group.memberIds)) return false;
         return adminUserIds.equals(group.adminUserIds);
@@ -77,8 +82,9 @@ public class Group {
     public int hashCode() {
         int result = name.hashCode();
         result = 31 * result + email.hashCode();
-        result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + id.hashCode();
+        result = 31 * result + created.hashCode();
+        result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + status.hashCode();
         result = 31 * result + memberIds.hashCode();
         result = 31 * result + adminUserIds.hashCode();
