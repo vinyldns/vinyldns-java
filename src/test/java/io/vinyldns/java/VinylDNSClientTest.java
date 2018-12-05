@@ -124,11 +124,11 @@ public class VinylDNSClientTest {
 
     wireMockServer.stubFor(
         get(urlEqualTo("/zones/" + testZone1.getId()))
-        .willReturn(
-            aResponse()
-            .withStatus(200)
-            .withHeader("Content-Type", "application/json")
-            .withBody(response)));
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
 
     VinylDNSResponse<Zone> vinylDNSResponse = client.getZone(new GetZoneRequest(testZone1.getId()));
 
