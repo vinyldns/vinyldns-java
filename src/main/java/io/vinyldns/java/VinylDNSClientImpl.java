@@ -80,8 +80,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   public VinylDNSResponse<Zone> getZone(GetZoneRequest request) {
     String path = "zones/" + request.getZoneId();
     return executeRequest(
-        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, request),
-        Zone.class);
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, request), Zone.class);
   }
 
   // RecordSet
