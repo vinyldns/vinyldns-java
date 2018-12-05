@@ -37,9 +37,9 @@ done
 
 if [[ "$SNAPSHOT" == 1 ]]; then
     printf "\nperforming a SNAPSHOT release\n"
-    mvn clean deploy -P sign,ossrh
+    mvn clean deploy -P release,ossrh
 else
     printf "\nperforming a full release\n"
-    mvn release:clean release:prepare -P sign,ossrh
-    mvn release:perform -P sign,ossrh
+    mvn release:clean release:prepare -P release,ossrh
+    mvn release:perform -P release,ossrh
 fi
