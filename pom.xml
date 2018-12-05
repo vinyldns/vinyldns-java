@@ -1,15 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xmlns="http://maven.apache.org/POM/4.0.0"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>io.vinyldns</groupId>
     <artifactId>vinyldns-java</artifactId>
     <version>0.7.0-SNAPSHOT</version>
+
     <scm>
-        <connection>scm:git:ssh://github.com/vinyldns/vinyldns-java</connection>
+        <connection>scm:git:ssh://github.com/${vinyldns-fork}/vinyldns-java</connection>
+        <developerConnection>scm:git:ssh://github.com/${vinyldns-fork}/vinyldns-java</developerConnection>
         <url>http://github.com/vinyldns/vinyldns-java</url>
     </scm>
+
+    <name>vinyldns-java</name>
+    <description>java client for https://vinyldns.io</description>
+    <url>https://vinyldns.io</url>
+    <developers>
+        <developer>
+            <id>pauljamescleary</id>
+            <name>Paul Cleary</name>
+            <email>pauljamescleary@gmail.com</email>
+        </developer>
+        <developer>
+            <id>rebstar6</id>
+            <name>Rebecca Star</name>
+            <email>rebstar6@gmail.com</email>
+        </developer>
+        <developer>
+            <id>nimaeskandary</id>
+            <name>Nima Eskandary</name>
+            <email>nimaesk1@gmail.com</email>
+        </developer>
+        <developer>
+            <id>mitruly</id>
+            <name>Michael Ly</name>
+            <email>michaeltrulyng@gmail.com</email>
+        </developer>
+        <developer>
+            <id>britneywright</id>
+            <name>Britney Wright</name>
+            <email>blw06g@gmail.com</email>
+        </developer>
+    </developers>
 
     <licenses>
         <license>
@@ -287,6 +318,27 @@
             <properties>
                 <javadoc.opts>-Xdoclint:none</javadoc.opts>
             </properties>
+        </profile>
+        <profile>
+            <id>sign</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
         </profile>
     </profiles>
 
