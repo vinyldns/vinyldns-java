@@ -29,6 +29,7 @@ like so:
                 <activeByDefault>true</activeByDefault>
             </activation>
             <properties>
+                <vinyldns-fork>your-github-username</vinyldns-fork>
                 <gpg.executable>gpg</gpg.executable>
                 <gpg.keyname>F6D171DC24C6EB30FCAC1E85AEF7D1D58E3C1B9A</gpg.keyname>
             </properties>
