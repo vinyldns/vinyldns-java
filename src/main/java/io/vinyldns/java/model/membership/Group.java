@@ -1,38 +1,51 @@
 package io.vinyldns.java.model.membership;
 
+import java.util.Collections;
 import java.util.Set;
 import org.joda.time.DateTime;
 
 public class Group {
-    private final String name, email, id;
-    private final String description;
-    private final DateTime created;
-    private final GroupStatus status;
+    private final String name, email;
+    private String id, description; // optional
+    private DateTime created; // optional
+    private GroupStatus status;
     private final Set<String> memberIds, adminUserIds;
 
-    public Group(String name, String email, String description, String id, DateTime created, GroupStatus status,
-                 Set<String> memberIds, Set<String> adminUserIds) {
+    public Group(String name, String email, Set<String> memberIds, Set<String> adminUserIds) {
         this.name = name;
         this.email = email;
-        this.description = description;
-        this.id = id;
-        this.created = created;
-        this.status = status;
         this.memberIds = memberIds;
         this.adminUserIds = adminUserIds;
     }
 
-    public Group(String name, String email, String id, DateTime created, GroupStatus status,
-                 Set<String> memberIds, Set<String> adminUserIds) {
-        this.name = name;
-        this.email = email;
+    public Group(String name, String email) {
+        this(name, email, Collections.emptySet(), Collections.emptySet());
+    }
+
+    public Group(String name, String email, Set<String> memberIds, Set<String> adminUserIds, String id,
+                 String description, DateTime created, GroupStatus status) {
+        this(name, email, memberIds, adminUserIds);
         this.id = id;
-        this.description = null;
+        this.description = description;
         this.created = created;
         this.status = status;
-        this.memberIds = memberIds;
-        this.adminUserIds = adminUserIds;
     }
+
+    public void setId(String id) { this.id = id; }
+
+    public String getId() { return id; }
+
+    public void setDescription(String description) { this.description = description; }
+
+    public String getDescription() { return description; }
+
+    public void setCreated(DateTime created) { this.created = created; }
+
+    public DateTime getCreated() { return created; }
+
+    public void setStatus(GroupStatus status) { this.status = status; }
+
+    public GroupStatus getStatus() { return status; }
 
     @Override
     public String toString() {

@@ -468,12 +468,12 @@ public class VinylDNSClientTest {
   private Group group =
       new Group("groupName",
           "email",
-          "description",
-          "groupId",
-          new DateTime(),
-          Active,
           adminUserIds,
-          adminUserIds);
+          adminUserIds,
+          "groupId",
+          "description",
+          new DateTime(),
+          Active);
 
   private List<Group> groupList = Collections.singletonList(group);
 
