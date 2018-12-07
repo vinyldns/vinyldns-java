@@ -32,10 +32,7 @@ import io.vinyldns.java.model.record.set.DeleteRecordSetRequest;
 import io.vinyldns.java.model.record.set.ListRecordSetsRequest;
 import io.vinyldns.java.model.record.set.ListRecordSetsResponse;
 import io.vinyldns.java.model.record.set.RecordSetChange;
-import io.vinyldns.java.model.zone.GetZoneRequest;
-import io.vinyldns.java.model.zone.ListZonesRequest;
-import io.vinyldns.java.model.zone.ListZonesResponse;
-import io.vinyldns.java.model.zone.Zone;
+import io.vinyldns.java.model.zone.*;
 import io.vinyldns.java.responses.VinylDNSFailureResponse;
 import io.vinyldns.java.responses.VinylDNSResponse;
 import io.vinyldns.java.responses.VinylDNSSuccessResponse;
@@ -77,10 +74,10 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
-  public VinylDNSResponse<Zone> getZone(GetZoneRequest request) {
+  public VinylDNSResponse<GetZoneResponse> getZone(GetZoneRequest request) {
     String path = "zones/" + request.getZoneId();
     return executeRequest(
-        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, request), Zone.class);
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null), GetZoneResponse.class);
   }
 
   // RecordSet

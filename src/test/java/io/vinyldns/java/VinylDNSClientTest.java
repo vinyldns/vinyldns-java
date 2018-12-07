@@ -120,7 +120,7 @@ public class VinylDNSClientTest {
 
   @Test
   public void getZoneSuccess() {
-    String response = client.gson.toJson(testZone1);
+    String response = client.gson.toJson(new GetZoneResponse(testZone1));
 
     wireMockServer.stubFor(
         get(urlEqualTo("/zones/" + testZone1.getId()))
@@ -130,11 +130,11 @@ public class VinylDNSClientTest {
                     .withHeader("Content-Type", "application/json")
                     .withBody(response)));
 
-    VinylDNSResponse<Zone> vinylDNSResponse = client.getZone(new GetZoneRequest(testZone1.getId()));
+    VinylDNSResponse<GetZoneResponse> vinylDNSResponse = client.getZone(new GetZoneRequest(testZone1.getId()));
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 200);
-    assertEquals(vinylDNSResponse.getValue(), testZone1);
+    assertEquals(vinylDNSResponse.getValue().getZone(), testZone1);
   }
 
   @Test
@@ -143,7 +143,7 @@ public class VinylDNSClientTest {
         get(urlEqualTo("/zones/" + zoneId))
             .willReturn(aResponse().withStatus(404).withBody("not found")));
 
-    VinylDNSResponse<Zone> vinylDNSResponse = client.getZone(new GetZoneRequest(zoneId));
+    VinylDNSResponse<GetZoneResponse> vinylDNSResponse = client.getZone(new GetZoneRequest(zoneId));
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
     assertEquals(vinylDNSResponse.getStatusCode(), 404);
