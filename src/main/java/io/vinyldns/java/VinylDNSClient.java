@@ -24,10 +24,7 @@ import io.vinyldns.java.model.record.set.DeleteRecordSetRequest;
 import io.vinyldns.java.model.record.set.ListRecordSetsRequest;
 import io.vinyldns.java.model.record.set.ListRecordSetsResponse;
 import io.vinyldns.java.model.record.set.RecordSetChange;
-import io.vinyldns.java.model.zone.GetZoneRequest;
-import io.vinyldns.java.model.zone.ListZonesRequest;
-import io.vinyldns.java.model.zone.ListZonesResponse;
-import io.vinyldns.java.model.zone.Zone;
+import io.vinyldns.java.model.zone.*;
 import io.vinyldns.java.responses.VinylDNSFailureResponse;
 import io.vinyldns.java.responses.VinylDNSResponse;
 import io.vinyldns.java.responses.VinylDNSSuccessResponse;
@@ -58,7 +55,7 @@ public interface VinylDNSClient {
    *     case of success and {@link VinylDNSFailureResponse
    *     VinylDNSFailureResponse&lt;ListZonesResponse&gt;} in case of failure
    */
-  VinylDNSResponse<Zone> getZone(GetZoneRequest request);
+  VinylDNSResponse<GetZoneResponse> getZone(GetZoneRequest request);
 
   // RecordSet
   /**
