@@ -31,7 +31,7 @@ public class ListZonesResponse {
    */
   private String nextId;
 
-  /** he maxItems parameter that was sent in on the HTTP request. This will be 100 if not sent. */
+  /** The maxItems parameter that was sent in on the HTTP request. This will be 100 if not sent. */
   private Integer maxItems;
 
   /** name filter sent in request */
