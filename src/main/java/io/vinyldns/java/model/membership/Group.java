@@ -31,6 +31,10 @@ public class Group {
         this.status = status;
     }
 
+    public String getName() { return name; }
+
+    public String getEmail() { return email; }
+
     public void setId(String id) { this.id = id; }
 
     public String getId() { return id; }
@@ -46,6 +50,10 @@ public class Group {
     public void setStatus(GroupStatus status) { this.status = status; }
 
     public GroupStatus getStatus() { return status; }
+
+    public Set<String> getMemberIds() { return memberIds; }
+
+    public Set<String> getAdminUserIds() { return adminUserIds; }
 
     @Override
     public String toString() {
