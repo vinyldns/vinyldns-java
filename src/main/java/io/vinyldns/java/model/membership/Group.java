@@ -9,22 +9,22 @@ public class Group {
     private String id, description; // optional
     private DateTime created; // optional
     private GroupStatus status;
-    private final Set<String> memberIds, adminUserIds;
+    private final Set<UserInfo> members, admins;
 
-    public Group(String name, String email, Set<String> memberIds, Set<String> adminUserIds) {
+    public Group(String name, String email, Set<UserInfo> members, Set<UserInfo> admins) {
         this.name = name;
         this.email = email;
-        this.memberIds = memberIds;
-        this.adminUserIds = adminUserIds;
+        this.members = members;
+        this.admins = admins;
     }
 
     public Group(String name, String email) {
         this(name, email, Collections.emptySet(), Collections.emptySet());
     }
 
-    public Group(String name, String email, Set<String> memberIds, Set<String> adminUserIds, String id,
+    public Group(String name, String email, Set<UserInfo> members, Set<UserInfo> admins, String id,
                  String description, DateTime created, GroupStatus status) {
-        this(name, email, memberIds, adminUserIds);
+        this(name, email, members, admins);
         this.id = id;
         this.description = description;
         this.created = created;
@@ -51,9 +51,9 @@ public class Group {
 
     public GroupStatus getStatus() { return status; }
 
-    public Set<String> getMemberIds() { return memberIds; }
+    public Set<UserInfo> getMembers() { return members; }
 
-    public Set<String> getAdminUserIds() { return adminUserIds; }
+    public Set<UserInfo> getAdmins() { return admins; }
 
     @Override
     public String toString() {
@@ -75,10 +75,10 @@ public class Group {
           + '\''
           + ", status="
           + status
-          + ", memberIds="
-          + memberIds
-          + ", adminUserIds="
-          + adminUserIds
+          + ", members="
+          + members
+          + ", admins="
+          + admins
           + '}';
     }
 
@@ -95,8 +95,8 @@ public class Group {
         if (!created.equals(group.created)) return false;
         if (description != null ? !description.equals(group.description) : group.description != null) return false;
         if (status != group.status) return false;
-        if (!memberIds.equals(group.memberIds)) return false;
-        return adminUserIds.equals(group.adminUserIds);
+        if (!members.equals(group.members)) return false;
+        return admins.equals(group.admins);
     }
 
     @Override
@@ -107,8 +107,8 @@ public class Group {
         result = 31 * result + created.hashCode();
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + status.hashCode();
-        result = 31 * result + memberIds.hashCode();
-        result = 31 * result + adminUserIds.hashCode();
+        result = 31 * result + members.hashCode();
+        result = 31 * result + admins.hashCode();
         return result;
     }
 }
