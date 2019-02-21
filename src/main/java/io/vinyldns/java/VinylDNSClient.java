@@ -17,6 +17,8 @@ import io.vinyldns.java.model.batch.BatchResponse;
 import io.vinyldns.java.model.batch.CreateBatchRequest;
 import io.vinyldns.java.model.batch.ListBatchChangesRequest;
 import io.vinyldns.java.model.batch.ListBatchChangesResponse;
+import io.vinyldns.java.model.membership.CreateGroupRequest;
+import io.vinyldns.java.model.membership.Group;
 import io.vinyldns.java.model.membership.ListGroupsRequest;
 import io.vinyldns.java.model.membership.ListGroupsResponse;
 import io.vinyldns.java.model.record.set.CreateRecordSetRequest;
@@ -93,6 +95,15 @@ public interface VinylDNSClient {
   // ToDo: Get RecordSet Change
 
   // Groups
+  /**
+   * Create a group.
+   *
+   * @param request See {@link CreateGroupRequest CreateGroupRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;Group&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;Group&gt;} in case
+   *     of failure.
+   */
+  VinylDNSResponse<Group> createGroup(CreateGroupRequest request);
 
   /**
    * Retrieves the list of groups a user has access to.

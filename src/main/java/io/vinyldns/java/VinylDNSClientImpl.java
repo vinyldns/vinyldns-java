@@ -27,8 +27,7 @@ import io.vinyldns.java.model.batch.BatchResponse;
 import io.vinyldns.java.model.batch.CreateBatchRequest;
 import io.vinyldns.java.model.batch.ListBatchChangesRequest;
 import io.vinyldns.java.model.batch.ListBatchChangesResponse;
-import io.vinyldns.java.model.membership.ListGroupsRequest;
-import io.vinyldns.java.model.membership.ListGroupsResponse;
+import io.vinyldns.java.model.membership.*;
 import io.vinyldns.java.model.record.set.CreateRecordSetRequest;
 import io.vinyldns.java.model.record.set.DeleteRecordSetRequest;
 import io.vinyldns.java.model.record.set.ListRecordSetsRequest;
@@ -103,6 +102,13 @@ public class VinylDNSClientImpl implements VinylDNSClient {
     }
 
     return executeRequest(vinylDNSRequest, ListRecordSetsResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<Group> createGroup(CreateGroupRequest request) {
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), "groups", request),
+        Group.class);
   }
 
   @Override
