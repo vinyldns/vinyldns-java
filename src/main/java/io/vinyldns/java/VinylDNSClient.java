@@ -81,6 +81,16 @@ public interface VinylDNSClient {
   VinylDNSResponse<RecordSetChange> createRecordSet(CreateRecordSetRequest request);
 
   /**
+   * Update a RecordSet in a specified zone
+   *
+   * @param request See {@link UpdateRecordSetRequest UpdateRecordSetRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;RecordSetChange&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;RecordSetChange&gt;} in case of failure
+   */
+  VinylDNSResponse<RecordSetChange> updateRecordSet(UpdateRecordSetRequest request);
+
+  /**
    * Delete a RecordSet in a specified zone
    *
    * @param request See {@link DeleteRecordSetRequest DeleteRecordSetRequest Model}
@@ -90,7 +100,6 @@ public interface VinylDNSClient {
    */
   VinylDNSResponse<RecordSetChange> deleteRecordSet(DeleteRecordSetRequest request);
   // ToDo: List RecordSet Changes
-  // ToDo: Update RecordSet
 
   /**
    * Retrieves a RecordSetChange in a specified zone
