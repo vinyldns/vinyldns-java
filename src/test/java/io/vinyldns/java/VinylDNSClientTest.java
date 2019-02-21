@@ -22,9 +22,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import io.vinyldns.java.model.acl.ACLRule;
 import io.vinyldns.java.model.acl.AccessLevel;
-import io.vinyldns.java.model.membership.Group;
-import io.vinyldns.java.model.membership.ListGroupsRequest;
-import io.vinyldns.java.model.membership.ListGroupsResponse;
+import io.vinyldns.java.model.membership.*;
 import io.vinyldns.java.model.record.RecordType;
 import io.vinyldns.java.model.record.data.AData;
 import io.vinyldns.java.model.record.data.RecordData;
@@ -326,6 +324,59 @@ public class VinylDNSClientTest {
   }
 
   @Test
+  public void createGroupSuccess() {
+    String request = client.gson.toJson(createGroupRequest);
+    String response = client.gson.toJson(group);
+
+    wireMockServer.stubFor(
+        post(urlEqualTo("/groups"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withBody(request)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.createGroup(createGroupRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
+    assertEquals(vinylDNSResponse.getStatusCode(), 200);
+    assertEquals(vinylDNSResponse.getValue(), group);
+  }
+
+  @Test
+  public void createGroupFailure() {
+    String request = client.gson.toJson(createGroupRequest);
+
+    wireMockServer.stubFor(
+        post(urlEqualTo("/groups"))
+            .willReturn(aResponse().withBody(request).withStatus(500).withBody("server error")));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.createGroup(createGroupRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 500);
+    assertEquals(vinylDNSResponse.getMessageBody(), "server error");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
+  public void createGroupFailure409() {
+    String request = client.gson.toJson(createGroupRequest);
+
+    wireMockServer.stubFor(
+        post(urlEqualTo("/groups"))
+            .willReturn(aResponse().withBody(request).withStatus(409).withBody("conflict")));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.createGroup(createGroupRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 409);
+    assertEquals(vinylDNSResponse.getMessageBody(), "conflict");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
   public void listGroupsSuccessWithParams() {
       String response = client.gson.toJson(listGroupsResponse);
 
@@ -464,16 +515,20 @@ public class VinylDNSClientTest {
       new CreateRecordSetRequest(zoneId, recordSetName, RecordType.A, 100, recordDataList);
 
   private String adminId = "adminId";
-  private Set<String> adminUserIds = Collections.singleton(adminId);
+  private Set<UserInfo> adminUserInfo = Collections.singleton(new UserInfo(adminId));
+  private Set<MemberId> adminMemberId = Collections.singleton(new MemberId(adminId));
   private Group group =
       new Group("groupName",
           "email",
-          adminUserIds,
-          adminUserIds,
+          adminUserInfo,
+          adminUserInfo,
           "groupId",
           "description",
           new DateTime(),
           Active);
+
+  private CreateGroupRequest createGroupRequest =
+    new CreateGroupRequest("createGroup", "create@group.com", adminMemberId, adminMemberId);
 
   private List<Group> groupList = Collections.singletonList(group);
 
