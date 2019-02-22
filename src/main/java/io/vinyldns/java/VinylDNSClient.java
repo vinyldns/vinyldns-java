@@ -63,10 +63,10 @@ public interface VinylDNSClient {
   /**
    * Retrieves a RecordSet in a specified zone
    *
-   * @param request See {@link GetRecordSetRequest CreateRecordSetRequest Model}
+   * @param request See {@link GetRecordSetRequest GetRecordSetRequest Model}
    * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetRecordSetResponse&gt;} in case
    *     of success and {@link VinylDNSFailureResponse
-   *     VinylDNSFailureResponse&lt;RecordSetChange&gt;} in case of failure
+   *     VinylDNSFailureResponse&lt;GetRecordSetResponse&gt;} in case of failure
    */
   VinylDNSResponse<GetRecordSetResponse> getRecordSet(GetRecordSetRequest request);
 
