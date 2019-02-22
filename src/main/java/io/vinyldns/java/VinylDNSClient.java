@@ -160,5 +160,4 @@ public interface VinylDNSClient {
   // ToDo:   Get Group
   // ToDo:   Delete Group
   // ToDo:   Update Group
-  // ToDo:   Create Group
 }
