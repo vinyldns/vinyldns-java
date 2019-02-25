@@ -112,6 +112,13 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
+  public VinylDNSResponse<Group> getGroup(GetGroupRequest request) {
+    String path = "groups/" + request.getId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null), Group.class);
+  }
+
+  @Override
   public VinylDNSResponse<ListGroupsResponse> listGroups(ListGroupsRequest request) {
     VinylDNSRequest<Void> vinylDNSRequest =
         new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), "groups", null);
