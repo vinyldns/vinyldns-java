@@ -18,6 +18,7 @@ import io.vinyldns.java.model.batch.CreateBatchRequest;
 import io.vinyldns.java.model.batch.ListBatchChangesRequest;
 import io.vinyldns.java.model.batch.ListBatchChangesResponse;
 import io.vinyldns.java.model.membership.CreateGroupRequest;
+import io.vinyldns.java.model.membership.DeleteGroupRequest;
 import io.vinyldns.java.model.membership.Group;
 import io.vinyldns.java.model.membership.ListGroupsRequest;
 import io.vinyldns.java.model.membership.ListGroupsResponse;
@@ -96,6 +97,16 @@ public interface VinylDNSClient {
 
   // Groups
   /**
+   * Retrieves a group by ID
+   *
+   * @param request See {@link GetGroupRequest GetGroupRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;Group&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;Group&gt;} in case
+   *     of failure.
+   */
+  VinylDNSResponse<Group> getGroup(GetGroupRequest request);
+
+  /**
    * Create a group.
    *
    * @param request See {@link CreateGroupRequest CreateGroupRequest Model}
@@ -106,14 +117,14 @@ public interface VinylDNSClient {
   VinylDNSResponse<Group> createGroup(CreateGroupRequest request);
 
   /**
-   * Retrieves a group by ID
+   * Delete a group with a specific ID
    *
-   * @param request See {@link GetGroupRequest GetGroupRequest Model}
+   * @param request See {@link DeleteGroupRequest DeleteGroupRequest Model}
    * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;Group&gt;} in case
    *     of success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;Group&gt;} in case
    *     of failure.
    */
-  VinylDNSResponse<Group> getGroup(GetGroupRequest request);
+  VinylDNSResponse<Group> deleteGroup(DeleteGroupRequest request);
 
   /**
    * Retrieves the list of groups a user has access to.
@@ -167,6 +178,5 @@ public interface VinylDNSClient {
   // ToDo:   List Group Members
   // ToDo:   List Group Admins
   // ToDo:   List Groups
-  // ToDo:   Delete Group
   // ToDo:   Update Group
 }
