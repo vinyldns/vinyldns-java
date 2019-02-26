@@ -324,6 +324,53 @@ public class VinylDNSClientTest {
   }
 
   @Test
+  public void getGroupSuccess() {
+    String response = client.gson.toJson(group);
+
+    wireMockServer.stubFor(
+        get(urlEqualTo("/groups/" + groupId))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
+    assertEquals(vinylDNSResponse.getStatusCode(), 200);
+    assertEquals(vinylDNSResponse.getValue(), group);
+  }
+
+  @Test
+  public void getGroupFailure() {
+    wireMockServer.stubFor(
+        get(urlEqualTo("/groups/" + groupId))
+            .willReturn(aResponse().withStatus(500).withBody("server error")));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 500);
+    assertEquals(vinylDNSResponse.getMessageBody(), "server error");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
+  public void getGroupFailure404() {
+    wireMockServer.stubFor(
+        get(urlEqualTo("/groups/" + groupId))
+            .willReturn(aResponse().withStatus(404).withBody("not found")));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 404);
+    assertEquals(vinylDNSResponse.getMessageBody(), "not found");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
   public void createGroupSuccess() {
     String request = client.gson.toJson(createGroupRequest);
     String response = client.gson.toJson(group);
@@ -377,18 +424,18 @@ public class VinylDNSClientTest {
   }
 
   @Test
-  public void getGroupSuccess() {
+  public void deleteGroupSuccess() {
     String response = client.gson.toJson(group);
 
     wireMockServer.stubFor(
-        get(urlEqualTo("/groups/" + groupId))
+        delete(urlEqualTo("/groups/" + groupId))
             .willReturn(
                 aResponse()
                     .withStatus(200)
                     .withHeader("Content-Type", "application/json")
                     .withBody(response)));
 
-    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupRequest);
+    VinylDNSResponse<Group> vinylDNSResponse = client.deleteGroup(deleteGroupRequest);
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 200);
@@ -396,12 +443,12 @@ public class VinylDNSClientTest {
   }
 
   @Test
-  public void getGroupFailure() {
+  public void deleteGroupFailure() {
     wireMockServer.stubFor(
-        get(urlEqualTo("/groups/" + groupId))
+        delete(urlEqualTo("/groups/" + groupId))
             .willReturn(aResponse().withStatus(500).withBody("server error")));
 
-    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupRequest);
+    VinylDNSResponse<Group> vinylDNSResponse = client.deleteGroup(deleteGroupRequest);
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
     assertEquals(vinylDNSResponse.getStatusCode(), 500);
@@ -410,12 +457,12 @@ public class VinylDNSClientTest {
   }
 
   @Test
-  public void getGroupFailure404() {
+  public void deleteGroupFailure404() {
     wireMockServer.stubFor(
-        get(urlEqualTo("/groups/" + groupId))
+        delete(urlEqualTo("/groups/" + groupId))
             .willReturn(aResponse().withStatus(404).withBody("not found")));
 
-    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupRequest);
+    VinylDNSResponse<Group> vinylDNSResponse = client.deleteGroup(deleteGroupRequest);
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
     assertEquals(vinylDNSResponse.getStatusCode(), 404);
@@ -575,10 +622,13 @@ public class VinylDNSClientTest {
           new DateTime(),
           Active);
 
+
   private CreateGroupRequest createGroupRequest =
     new CreateGroupRequest("createGroup", "create@group.com", adminMemberId, adminMemberId);
   private GetGroupRequest getGroupRequest =
       new GetGroupRequest(groupId);
+  private DeleteGroupRequest deleteGroupRequest =
+      new DeleteGroupRequest(groupId);
 
   private List<Group> groupList = Collections.singletonList(group);
 
