@@ -30,3 +30,10 @@ VinylDNSResponse<ListZonesResponse> listZonesResponse = client.listZones(new Lis
 ```
 
 See [VinylDNSClient interface](src/main/java/vinyldns/java/VinylDNSClient.java) to get more methods
+
+## Testing
+
+`vinyldns-java` has a suite of unit tests to run to test expected behavior. To run the suite of tests, run the following command from the project root folder:
+```bash
+mvn test
+```
