@@ -106,6 +106,16 @@ public interface VinylDNSClient {
   VinylDNSResponse<Group> createGroup(CreateGroupRequest request);
 
   /**
+   * Retrieves a group by ID
+   *
+   * @param request See {@link GetGroupRequest GetGroupRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;Group&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;Group&gt;} in case
+   *     of failure.
+   */
+  VinylDNSResponse<Group> getGroup(GetGroupRequest request);
+
+  /**
    * Retrieves the list of groups a user has access to.
    *
    * @param request See {@link ListGroupsRequest ListGroupsRequest Model}
@@ -157,7 +167,6 @@ public interface VinylDNSClient {
   // ToDo:   List Group Members
   // ToDo:   List Group Admins
   // ToDo:   List Groups
-  // ToDo:   Get Group
   // ToDo:   Delete Group
   // ToDo:   Update Group
 }

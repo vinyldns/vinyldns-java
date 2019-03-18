@@ -377,6 +377,53 @@ public class VinylDNSClientTest {
   }
 
   @Test
+  public void getGroupSuccess() {
+    String response = client.gson.toJson(group);
+
+    wireMockServer.stubFor(
+        get(urlEqualTo("/groups/" + groupId))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
+    assertEquals(vinylDNSResponse.getStatusCode(), 200);
+    assertEquals(vinylDNSResponse.getValue(), group);
+  }
+
+  @Test
+  public void getGroupFailure() {
+    wireMockServer.stubFor(
+        get(urlEqualTo("/groups/" + groupId))
+            .willReturn(aResponse().withStatus(500).withBody("server error")));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 500);
+    assertEquals(vinylDNSResponse.getMessageBody(), "server error");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
+  public void getGroupFailure404() {
+    wireMockServer.stubFor(
+        get(urlEqualTo("/groups/" + groupId))
+            .willReturn(aResponse().withStatus(404).withBody("not found")));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 404);
+    assertEquals(vinylDNSResponse.getMessageBody(), "not found");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
   public void listGroupsSuccessWithParams() {
       String response = client.gson.toJson(listGroupsResponse);
 
@@ -514,6 +561,7 @@ public class VinylDNSClientTest {
   private CreateRecordSetRequest createRecordSetRequest =
       new CreateRecordSetRequest(zoneId, recordSetName, RecordType.A, 100, recordDataList);
 
+  private String groupId = "groupId";
   private String adminId = "adminId";
   private Set<UserInfo> adminUserInfo = Collections.singleton(new UserInfo(adminId));
   private Set<MemberId> adminMemberId = Collections.singleton(new MemberId(adminId));
@@ -529,6 +577,8 @@ public class VinylDNSClientTest {
 
   private CreateGroupRequest createGroupRequest =
     new CreateGroupRequest("createGroup", "create@group.com", adminMemberId, adminMemberId);
+  private GetGroupRequest getGroupRequest =
+      new GetGroupRequest(groupId);
 
   private List<Group> groupList = Collections.singletonList(group);
 
