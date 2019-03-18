@@ -23,10 +23,7 @@ import com.google.gson.Gson;
 import io.vinyldns.java.handlers.ErrorResponseHandler;
 import io.vinyldns.java.handlers.StringResponseHandler;
 import io.vinyldns.java.model.Methods;
-import io.vinyldns.java.model.batch.BatchResponse;
-import io.vinyldns.java.model.batch.CreateBatchRequest;
-import io.vinyldns.java.model.batch.ListBatchChangesRequest;
-import io.vinyldns.java.model.batch.ListBatchChangesResponse;
+import io.vinyldns.java.model.batch.*;
 import io.vinyldns.java.model.membership.*;
 import io.vinyldns.java.model.record.set.*;
 import io.vinyldns.java.model.zone.*;
@@ -148,6 +145,14 @@ public class VinylDNSClientImpl implements VinylDNSClient {
     return executeRequest(
         new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, request),
         RecordSetChange.class);
+  }
+
+  @Override
+  public VinylDNSResponse<GetRecordSetResponse> getRecordSet(GetRecordSetRequest request) {
+    String path = "zones/" + request.getZoneId() + "/recordsets/" + request.getRecordSetId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null),
+        GetRecordSetResponse.class);
   }
 
   @Override

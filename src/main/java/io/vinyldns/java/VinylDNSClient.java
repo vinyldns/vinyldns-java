@@ -13,15 +13,8 @@
  */
 package io.vinyldns.java;
 
-import io.vinyldns.java.model.batch.BatchResponse;
-import io.vinyldns.java.model.batch.CreateBatchRequest;
-import io.vinyldns.java.model.batch.ListBatchChangesRequest;
-import io.vinyldns.java.model.batch.ListBatchChangesResponse;
-import io.vinyldns.java.model.membership.CreateGroupRequest;
-import io.vinyldns.java.model.membership.DeleteGroupRequest;
-import io.vinyldns.java.model.membership.Group;
-import io.vinyldns.java.model.membership.ListGroupsRequest;
-import io.vinyldns.java.model.membership.ListGroupsResponse;
+import io.vinyldns.java.model.batch.*;
+import io.vinyldns.java.model.membership.*;
 import io.vinyldns.java.model.record.set.*;
 import io.vinyldns.java.model.zone.*;
 import io.vinyldns.java.responses.VinylDNSFailureResponse;
@@ -68,6 +61,16 @@ public interface VinylDNSClient {
   VinylDNSResponse<ListRecordSetsResponse> listRecordSets(ListRecordSetsRequest request);
 
   /**
+   * Retrieves a RecordSet in a specified zone
+   *
+   * @param request See {@link GetRecordSetRequest GetRecordSetRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetRecordSetResponse&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;GetRecordSetResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<GetRecordSetResponse> getRecordSet(GetRecordSetRequest request);
+
+  /**
    * Creates a RecordSet in a specified zone
    *
    * @param request See {@link CreateRecordSetRequest CreateRecordSetRequest Model}
@@ -87,7 +90,6 @@ public interface VinylDNSClient {
    */
   VinylDNSResponse<RecordSetChange> deleteRecordSet(DeleteRecordSetRequest request);
   // ToDo: List RecordSet Changes
-  // ToDo: Get RecordSet
   // ToDo: Update RecordSet
 
   /**
