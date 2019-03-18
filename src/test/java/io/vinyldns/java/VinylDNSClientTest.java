@@ -231,7 +231,6 @@ public class VinylDNSClientTest {
                     .withHeader("Content-Type", "application/json")
                     .withBody(response)));
 
-
     VinylDNSResponse<GetRecordSetResponse> vinylDNSResponse = client.getRecordSet(getRecordSetRequest);
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
