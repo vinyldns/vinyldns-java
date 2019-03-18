@@ -156,6 +156,14 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
+  public VinylDNSResponse<RecordSetChange> updateRecordSet(UpdateRecordSetRequest request) {
+    String path = "zones/" + request.getZoneId() + "/recordsets/" + request.getId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.PUT.name(), getBaseUrl(), path, request),
+        RecordSetChange.class);
+  }
+
+  @Override
   public VinylDNSResponse<RecordSetChange> deleteRecordSet(DeleteRecordSetRequest request) {
     String path = "zones/" + request.getZoneId() + "/recordsets/" + request.getRecordSetId();
     return executeRequest(

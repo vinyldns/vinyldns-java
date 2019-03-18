@@ -373,6 +373,69 @@ public class VinylDNSClientTest {
   }
 
   @Test
+  public void updateRecordSetsSuccess() {
+    String request = client.gson.toJson(updateRecordSetRequest);
+    String response = client.gson.toJson(recordSetChangeUpdate);
+
+    wireMockServer.stubFor(
+        put(urlEqualTo("/zones/" + zoneId + "/recordsets/" + recordSet.getId()))
+            .willReturn(
+                aResponse()
+                    .withStatus(202)
+                    .withBody(request)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+
+    VinylDNSResponse<RecordSetChange> vinylDNSResponse = client.updateRecordSet(updateRecordSetRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
+    assertEquals(vinylDNSResponse.getStatusCode(), 202);
+    assertEquals(vinylDNSResponse.getValue(), recordSetChangeUpdate);
+  }
+
+  @Test
+  public void updateRecordSetsFailure() {
+    String request = client.gson.toJson(updateRecordSetRequest);
+
+    wireMockServer.stubFor(
+        put(urlEqualTo("/zones/" + zoneId + "/recordsets/" + recordSet.getId()))
+            .willReturn(
+                aResponse()
+                    .withStatus(500)
+                    .withBody(request)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody("server error")));
+
+    VinylDNSResponse<RecordSetChange> vinylDNSResponse = client.updateRecordSet(updateRecordSetRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 500);
+    assertEquals(vinylDNSResponse.getMessageBody(), "server error");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
+  public void updateRecordSetsFailure404() {
+    String request = client.gson.toJson(updateRecordSetRequest);
+
+    wireMockServer.stubFor(
+        put(urlEqualTo("/zones/" + zoneId + "/recordsets/" + recordSet.getId()))
+            .willReturn(
+                aResponse()
+                    .withStatus(404)
+                    .withBody(request)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody("not found")));
+
+    VinylDNSResponse<RecordSetChange> vinylDNSResponse = client.updateRecordSet(updateRecordSetRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 404);
+    assertEquals(vinylDNSResponse.getMessageBody(), "not found");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
   public void getRecordSetChangeSuccess() {
     String response = client.gson.toJson(recordSetChangeCreate);
 
@@ -628,6 +691,7 @@ public class VinylDNSClientTest {
       assertNull(vinylDNSResponse.getValue());
   }
 
+  private String rsId = "recordSetId";
   private String zoneId = "zoneId";
   private ZoneConnection testZoneConnection1 =
       new ZoneConnection("name", "keyName", "key", "server");
@@ -673,6 +737,17 @@ public class VinylDNSClientTest {
           RecordSetStatus.Active,
           new DateTime(),
           new DateTime());
+  private RecordSet recordSetUpdate =
+      new RecordSet(
+          zoneId,
+          "recordSetNameUpdated",
+          RecordType.A,
+          38400,
+          recordDataList,
+          recordSetId,
+          RecordSetStatus.Active,
+          new DateTime(),
+          new DateTime());
   private List<RecordSet> recordSetList = Collections.singletonList(recordSet);
 
   private ListRecordSetsResponse listRecordSetsResponse =
@@ -701,6 +776,17 @@ public class VinylDNSClientTest {
           new DateTime(),
           null,
           null);
+  private RecordSetChange recordSetChangeUpdate =
+      new RecordSetChange(
+          recordSetChangeId,
+          testZone1,
+          recordSet,
+          "userId",
+          RecordSetChangeType.Update,
+          RecordSetChangeStatus.Pending,
+          new DateTime(),
+          null,
+          recordSet);
   private CreateRecordSetRequest createRecordSetRequest =
       new CreateRecordSetRequest(zoneId, recordSetName, RecordType.A, 100, recordDataList);
   private GetRecordSetRequest getRecordSetRequest =
@@ -709,6 +795,8 @@ public class VinylDNSClientTest {
   private String groupId = "groupId";
   private GetRecordSetChangeRequest getRecordSetChangeRequest =
       new GetRecordSetChangeRequest(zoneId, recordSetId, recordSetChangeId);
+  private UpdateRecordSetRequest updateRecordSetRequest =
+      new UpdateRecordSetRequest(rsId, zoneId, recordSetName, RecordType.A, 100, recordDataList);
 
   private String adminId = "adminId";
   private Set<UserInfo> adminUserInfo = Collections.singleton(new UserInfo(adminId));
