@@ -22,11 +22,7 @@ import io.vinyldns.java.model.membership.DeleteGroupRequest;
 import io.vinyldns.java.model.membership.Group;
 import io.vinyldns.java.model.membership.ListGroupsRequest;
 import io.vinyldns.java.model.membership.ListGroupsResponse;
-import io.vinyldns.java.model.record.set.CreateRecordSetRequest;
-import io.vinyldns.java.model.record.set.DeleteRecordSetRequest;
-import io.vinyldns.java.model.record.set.ListRecordSetsRequest;
-import io.vinyldns.java.model.record.set.ListRecordSetsResponse;
-import io.vinyldns.java.model.record.set.RecordSetChange;
+import io.vinyldns.java.model.record.set.*;
 import io.vinyldns.java.model.zone.*;
 import io.vinyldns.java.responses.VinylDNSFailureResponse;
 import io.vinyldns.java.responses.VinylDNSResponse;
@@ -93,7 +89,16 @@ public interface VinylDNSClient {
   // ToDo: List RecordSet Changes
   // ToDo: Get RecordSet
   // ToDo: Update RecordSet
-  // ToDo: Get RecordSet Change
+
+  /**
+   * Retrieves a RecordSetChange in a specified zone
+   *
+   * @param request See {@link GetRecordSetChangeRequest GetRecordSetChangeRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;RecordSetChange&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;RecordSetChange&gt;} in case of failure
+   */
+  VinylDNSResponse<RecordSetChange> getRecordSetChange(GetRecordSetChangeRequest request);
 
   // Groups
   /**

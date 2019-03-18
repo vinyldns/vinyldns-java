@@ -324,6 +324,53 @@ public class VinylDNSClientTest {
   }
 
   @Test
+  public void getRecordSetChangeSuccess() {
+    String response = client.gson.toJson(recordSetChangeCreate);
+
+    wireMockServer.stubFor(
+        get(urlEqualTo("/zones/" + zoneId + "/recordsets/" + recordSetId + "/changes/" + recordSetChangeId))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
+    assertEquals(vinylDNSResponse.getStatusCode(), 200);
+    assertEquals(vinylDNSResponse.getValue(), group);
+  }
+
+  @Test
+  public void getRecordSetChangeFailure() {
+    wireMockServer.stubFor(
+        get(urlEqualTo("/zones/" + zoneId + "/recordsets/" + recordSetId + "/changes/" + recordSetChangeId))
+            .willReturn(aResponse().withStatus(500).withBody("server error")));
+
+    VinylDNSResponse<RecordSetChange> vinylDNSResponse = client.getRecordSetChange(getRecordSetChangeRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 500);
+    assertEquals(vinylDNSResponse.getMessageBody(), "server error");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
+  public void getRecordSetChangeFailure404() {
+    wireMockServer.stubFor(
+        get(urlEqualTo("/zones/" + zoneId + "/recordsets/" + recordSetId + "/changes/" + recordSetChangeId))
+            .willReturn(aResponse().withStatus(404).withBody("not found")));
+
+    VinylDNSResponse<RecordSetChange> vinylDNSResponse = client.getRecordSetChange(getRecordSetChangeRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 404);
+    assertEquals(vinylDNSResponse.getMessageBody(), "not found");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
   public void getGroupSuccess() {
     String response = client.gson.toJson(group);
 
@@ -609,6 +656,9 @@ public class VinylDNSClientTest {
       new CreateRecordSetRequest(zoneId, recordSetName, RecordType.A, 100, recordDataList);
 
   private String groupId = "groupId";
+  private GetRecordSetChangeRequest getRecordSetChangeRequest =
+      new GetRecordSetChangeRequest(zoneId, recordSetId, recordSetChangeId);
+
   private String adminId = "adminId";
   private Set<UserInfo> adminUserInfo = Collections.singleton(new UserInfo(adminId));
   private Set<MemberId> adminMemberId = Collections.singleton(new MemberId(adminId));

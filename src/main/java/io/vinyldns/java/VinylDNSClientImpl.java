@@ -28,11 +28,7 @@ import io.vinyldns.java.model.batch.CreateBatchRequest;
 import io.vinyldns.java.model.batch.ListBatchChangesRequest;
 import io.vinyldns.java.model.batch.ListBatchChangesResponse;
 import io.vinyldns.java.model.membership.*;
-import io.vinyldns.java.model.record.set.CreateRecordSetRequest;
-import io.vinyldns.java.model.record.set.DeleteRecordSetRequest;
-import io.vinyldns.java.model.record.set.ListRecordSetsRequest;
-import io.vinyldns.java.model.record.set.ListRecordSetsResponse;
-import io.vinyldns.java.model.record.set.RecordSetChange;
+import io.vinyldns.java.model.record.set.*;
 import io.vinyldns.java.model.zone.*;
 import io.vinyldns.java.responses.VinylDNSFailureResponse;
 import io.vinyldns.java.responses.VinylDNSResponse;
@@ -159,6 +155,15 @@ public class VinylDNSClientImpl implements VinylDNSClient {
     String path = "zones/" + request.getZoneId() + "/recordsets/" + request.getRecordSetId();
     return executeRequest(
         new VinylDNSRequest<>(Methods.DELETE.name(), getBaseUrl(), path, null),
+        RecordSetChange.class);
+  }
+
+  @Override
+  public VinylDNSResponse<RecordSetChange> getRecordSetChange(GetRecordSetChangeRequest request) {
+    String path = "zones/" + request.getZoneId() + "/recordsets/" + request.getRecordSetId() + "/changes/"
+        + request.getRecordSetChangeId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null),
         RecordSetChange.class);
   }
 
