@@ -105,6 +105,13 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
+  public VinylDNSResponse<Group> getGroup(GetGroupRequest request) {
+    String path = "groups/" + request.getId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null), Group.class);
+  }
+
+  @Override
   public VinylDNSResponse<Group> createGroup(CreateGroupRequest request) {
     return executeRequest(
         new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), "groups", request),
@@ -112,10 +119,11 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
-  public VinylDNSResponse<Group> getGroup(GetGroupRequest request) {
-    String path = "groups/" + request.getId();
+  public VinylDNSResponse<Group> deleteGroup(DeleteGroupRequest request) {
+    String path = "/groups/" + request.getId();
     return executeRequest(
-        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null), Group.class);
+        new VinylDNSRequest<>(Methods.DELETE.name(), getBaseUrl(), path, null),
+        Group.class);
   }
 
   @Override
