@@ -14,33 +14,33 @@
 package io.vinyldns.java.model.membership;
 
 public class MemberId {
-    private final String id;
-    public MemberId(String id) {
-        this.id = id;
-    }
+  private final String id;
 
-    public String getId() { return id; }
+  public MemberId(String id) {
+    this.id = id;
+  }
 
-    @Override
-    public String toString() {
-        return "MemberId{"
-            + "id='"
-            + id
-            + "'}";
-    }
+  public String getId() {
+    return id;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public String toString() {
+    return "MemberId{" + "id='" + id + "'}";
+  }
 
-        MemberId memberId = (MemberId) o;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-        return id.equals(memberId.id);
-    }
+    MemberId memberId = (MemberId) o;
 
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
+    return id.equals(memberId.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
 }

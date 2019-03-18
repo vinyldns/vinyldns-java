@@ -64,8 +64,8 @@ public interface VinylDNSClient {
    * Retrieves a RecordSet in a specified zone
    *
    * @param request See {@link GetRecordSetRequest GetRecordSetRequest Model}
-   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetRecordSetResponse&gt;} in case
-   *     of success and {@link VinylDNSFailureResponse
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetRecordSetResponse&gt;} in
+   *     case of success and {@link VinylDNSFailureResponse
    *     VinylDNSFailureResponse&lt;GetRecordSetResponse&gt;} in case of failure
    */
   VinylDNSResponse<GetRecordSetResponse> getRecordSet(GetRecordSetRequest request);
@@ -116,9 +116,9 @@ public interface VinylDNSClient {
    * Retrieves a group by ID
    *
    * @param request See {@link GetGroupRequest GetGroupRequest Model}
-   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;Group&gt;} in case
-   *     of success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;Group&gt;} in case
-   *     of failure.
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;Group&gt;} in case of success
+   *     and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;Group&gt;} in case of
+   *     failure.
    */
   VinylDNSResponse<Group> getGroup(GetGroupRequest request);
 
@@ -126,9 +126,9 @@ public interface VinylDNSClient {
    * Create a group.
    *
    * @param request See {@link CreateGroupRequest CreateGroupRequest Model}
-   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;Group&gt;} in case
-   *     of success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;Group&gt;} in case
-   *     of failure.
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;Group&gt;} in case of success
+   *     and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;Group&gt;} in case of
+   *     failure.
    */
   VinylDNSResponse<Group> createGroup(CreateGroupRequest request);
 
@@ -136,9 +136,9 @@ public interface VinylDNSClient {
    * Delete a group with a specific ID
    *
    * @param request See {@link DeleteGroupRequest DeleteGroupRequest Model}
-   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;Group&gt;} in case
-   *     of success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;Group&gt;} in case
-   *     of failure.
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;Group&gt;} in case of success
+   *     and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;Group&gt;} in case of
+   *     failure.
    */
   VinylDNSResponse<Group> deleteGroup(DeleteGroupRequest request);
 
@@ -146,9 +146,9 @@ public interface VinylDNSClient {
    * Retrieves the list of groups a user has access to.
    *
    * @param request See {@link ListGroupsRequest ListGroupsRequest Model}
-   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ListGroupsResponse&gt;} in case
-   *     of success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;ListGroupsResponse&gt;} in case
-   *     of failure.
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ListGroupsResponse&gt;} in
+   *     case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;ListGroupsResponse&gt;} in case of failure.
    */
   VinylDNSResponse<ListGroupsResponse> listGroups(ListGroupsRequest request);
 

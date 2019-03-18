@@ -14,51 +14,57 @@
 package io.vinyldns.java.model.record.set;
 
 public class GetRecordSetChangeRequest {
-    private final String zoneId, recordSetId, recordSetChangeId;
+  private final String zoneId, recordSetId, recordSetChangeId;
 
-    public GetRecordSetChangeRequest(String zoneId, String recordSetId, String recordSetChangeId) {
-        this.zoneId = zoneId;
-        this.recordSetId = recordSetId;
-        this.recordSetChangeId = recordSetChangeId;
-    }
+  public GetRecordSetChangeRequest(String zoneId, String recordSetId, String recordSetChangeId) {
+    this.zoneId = zoneId;
+    this.recordSetId = recordSetId;
+    this.recordSetChangeId = recordSetChangeId;
+  }
 
-    public String getZoneId() { return zoneId; }
+  public String getZoneId() {
+    return zoneId;
+  }
 
-    public String getRecordSetId() { return recordSetId; }
+  public String getRecordSetId() {
+    return recordSetId;
+  }
 
-    public String getRecordSetChangeId() { return recordSetChangeId; }
+  public String getRecordSetChangeId() {
+    return recordSetChangeId;
+  }
 
-    @Override
-    public String toString() {
-        return "GetRecordSetChangeRequest{"
-            + "zoneId='"
-            + zoneId
-            + "\'"
-            + ", recordSetId='"
-            + recordSetId
-            + "\'"
-            + ", recordSetChangeId='"
-            + recordSetChangeId
-            + "\'"
-            + "}";
-    }
+  @Override
+  public String toString() {
+    return "GetRecordSetChangeRequest{"
+        + "zoneId='"
+        + zoneId
+        + "\'"
+        + ", recordSetId='"
+        + recordSetId
+        + "\'"
+        + ", recordSetChangeId='"
+        + recordSetChangeId
+        + "\'"
+        + "}";
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-        GetRecordSetChangeRequest that = (GetRecordSetChangeRequest) o;
-        if (!zoneId.equals(that.zoneId)) return false;
-        if (!recordSetId.equals(that.recordSetId)) return false;
-        return recordSetChangeId.equals(that.getRecordSetChangeId());
-    }
+    GetRecordSetChangeRequest that = (GetRecordSetChangeRequest) o;
+    if (!zoneId.equals(that.zoneId)) return false;
+    if (!recordSetId.equals(that.recordSetId)) return false;
+    return recordSetChangeId.equals(that.getRecordSetChangeId());
+  }
 
-    @Override
-    public int hashCode() {
-        int result = zoneId.hashCode();
-        result = 31 * result + recordSetId.hashCode();
-        result = 31 * result + recordSetChangeId.hashCode();
-        return result;
-    }
+  @Override
+  public int hashCode() {
+    int result = zoneId.hashCode();
+    result = 31 * result + recordSetId.hashCode();
+    result = 31 * result + recordSetChangeId.hashCode();
+    return result;
+  }
 }

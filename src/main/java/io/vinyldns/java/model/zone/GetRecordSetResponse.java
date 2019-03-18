@@ -16,30 +16,32 @@ package io.vinyldns.java.model.zone;
 import io.vinyldns.java.model.record.set.RecordSet;
 
 public class GetRecordSetResponse {
-    private final RecordSet recordSet;
+  private final RecordSet recordSet;
 
-    public GetRecordSetResponse(RecordSet recordSet) {
-        this.recordSet = recordSet;
-    }
+  public GetRecordSetResponse(RecordSet recordSet) {
+    this.recordSet = recordSet;
+  }
 
-    public RecordSet getRecordSet() { return recordSet; }
+  public RecordSet getRecordSet() {
+    return recordSet;
+  }
 
-    @Override
-    public String toString() {
-        return "GetRecordSetResponse{recordSet=" + recordSet.toString() + "}";
-    }
+  @Override
+  public String toString() {
+    return "GetRecordSetResponse{recordSet=" + recordSet.toString() + "}";
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-        GetRecordSetResponse that = (GetRecordSetResponse) o;
-        return recordSet.equals(that.recordSet);
-    }
+    GetRecordSetResponse that = (GetRecordSetResponse) o;
+    return recordSet.equals(that.recordSet);
+  }
 
-    @Override
-    public int hashCode() {
-        return recordSet.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    return recordSet.hashCode();
+  }
 }
