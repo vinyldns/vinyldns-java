@@ -14,42 +14,46 @@
 package io.vinyldns.java.model.batch;
 
 public class GetRecordSetRequest {
-    private final String recordSetId, zoneId;
+  private final String recordSetId, zoneId;
 
-    public GetRecordSetRequest(String zoneId, String recordSetId) {
-        this.zoneId = zoneId;
-        this.recordSetId = recordSetId;
-    }
+  public GetRecordSetRequest(String zoneId, String recordSetId) {
+    this.zoneId = zoneId;
+    this.recordSetId = recordSetId;
+  }
 
-    public String getRecordSetId() { return recordSetId; }
+  public String getRecordSetId() {
+    return recordSetId;
+  }
 
-    public String getZoneId() { return zoneId; }
+  public String getZoneId() {
+    return zoneId;
+  }
 
-    @Override
-    public String toString() {
-        return "GetRecordSetRequest{"
-            + "recordSetId='"
-            + recordSetId
-            + "\'"
-            + ", zoneId='"
-            + zoneId
-            + "'}";
-    }
+  @Override
+  public String toString() {
+    return "GetRecordSetRequest{"
+        + "recordSetId='"
+        + recordSetId
+        + "\'"
+        + ", zoneId='"
+        + zoneId
+        + "'}";
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-        GetRecordSetRequest that = (GetRecordSetRequest) o;
-        if (!zoneId.equals(that.zoneId)) return false;
-        return recordSetId.equals(that.recordSetId);
-    }
+    GetRecordSetRequest that = (GetRecordSetRequest) o;
+    if (!zoneId.equals(that.zoneId)) return false;
+    return recordSetId.equals(that.recordSetId);
+  }
 
-    @Override
-    public int hashCode() {
-        int result = zoneId.hashCode();
-        result = 31 * result + recordSetId.hashCode();
-        return result;
-    }
+  @Override
+  public int hashCode() {
+    int result = zoneId.hashCode();
+    result = 31 * result + recordSetId.hashCode();
+    return result;
+  }
 }

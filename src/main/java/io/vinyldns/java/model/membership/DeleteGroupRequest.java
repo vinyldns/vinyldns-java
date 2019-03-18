@@ -14,30 +14,32 @@
 package io.vinyldns.java.model.membership;
 
 public class DeleteGroupRequest {
-    private final String id;
+  private final String id;
 
-    public DeleteGroupRequest(String id) {
-        this.id = id;
-    }
+  public DeleteGroupRequest(String id) {
+    this.id = id;
+  }
 
-    public String getId() { return id; }
+  public String getId() {
+    return id;
+  }
 
-    @Override
-    public String toString() {
-        return "DeleteGroupRequest{id='" + id + "'}";
-    }
+  @Override
+  public String toString() {
+    return "DeleteGroupRequest{id='" + id + "'}";
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
 
-        DeleteGroupRequest that = (DeleteGroupRequest) o;
-        return id.equals(that.getId());
-    }
+    DeleteGroupRequest that = (DeleteGroupRequest) o;
+    return id.equals(that.getId());
+  }
 
-    @Override
-    public int hashCode() {
-        return id.hashCode();
-    }
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
 }

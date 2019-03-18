@@ -107,16 +107,14 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   @Override
   public VinylDNSResponse<Group> createGroup(CreateGroupRequest request) {
     return executeRequest(
-        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), "groups", request),
-        Group.class);
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), "groups", request), Group.class);
   }
 
   @Override
   public VinylDNSResponse<Group> deleteGroup(DeleteGroupRequest request) {
     String path = "/groups/" + request.getId();
     return executeRequest(
-        new VinylDNSRequest<>(Methods.DELETE.name(), getBaseUrl(), path, null),
-        Group.class);
+        new VinylDNSRequest<>(Methods.DELETE.name(), getBaseUrl(), path, null), Group.class);
   }
 
   @Override
@@ -173,11 +171,15 @@ public class VinylDNSClientImpl implements VinylDNSClient {
 
   @Override
   public VinylDNSResponse<RecordSetChange> getRecordSetChange(GetRecordSetChangeRequest request) {
-    String path = "zones/" + request.getZoneId() + "/recordsets/" + request.getRecordSetId() + "/changes/"
-        + request.getRecordSetChangeId();
+    String path =
+        "zones/"
+            + request.getZoneId()
+            + "/recordsets/"
+            + request.getRecordSetId()
+            + "/changes/"
+            + request.getRecordSetChangeId();
     return executeRequest(
-        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null),
-        RecordSetChange.class);
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null), RecordSetChange.class);
   }
 
   @Override
