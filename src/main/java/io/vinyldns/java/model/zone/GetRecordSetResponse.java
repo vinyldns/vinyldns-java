@@ -13,20 +13,22 @@
  */
 package io.vinyldns.java.model.zone;
 
-public class GetZoneResponse {
-  private final Zone zone;
+import io.vinyldns.java.model.record.set.RecordSet;
 
-  public GetZoneResponse(Zone zone) {
-    this.zone = zone;
+public class GetRecordSetResponse {
+  private final RecordSet recordSet;
+
+  public GetRecordSetResponse(RecordSet recordSet) {
+    this.recordSet = recordSet;
   }
 
-  public Zone getZone() {
-    return zone;
+  public RecordSet getRecordSet() {
+    return recordSet;
   }
 
   @Override
   public String toString() {
-    return zone.toString();
+    return "GetRecordSetResponse{recordSet=" + recordSet.toString() + "}";
   }
 
   @Override
@@ -34,12 +36,12 @@ public class GetZoneResponse {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    GetZoneResponse that = (GetZoneResponse) o;
-    return zone.equals(that.zone);
+    GetRecordSetResponse that = (GetRecordSetResponse) o;
+    return recordSet.equals(that.recordSet);
   }
 
   @Override
   public int hashCode() {
-    return zone.hashCode();
+    return recordSet.hashCode();
   }
 }

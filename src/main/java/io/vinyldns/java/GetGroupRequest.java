@@ -11,9 +11,35 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.vinyldns.java.model.membership;
+package io.vinyldns.java;
 
-public enum GroupStatus {
-  Active,
-  Deleted
+public class GetGroupRequest {
+  private final String id;
+
+  public GetGroupRequest(String id) {
+    this.id = id;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  @Override
+  public String toString() {
+    return "GetZoneRequest{id='" + id + "'}";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    GetGroupRequest that = (GetGroupRequest) o;
+    return id.equals(that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
 }

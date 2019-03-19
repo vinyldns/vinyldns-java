@@ -11,35 +11,33 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.vinyldns.java.model.zone;
+package io.vinyldns.java.model.record.set;
 
-public class GetZoneResponse {
-  private final Zone zone;
+import io.vinyldns.java.model.record.RecordType;
+import io.vinyldns.java.model.record.data.RecordData;
+import java.util.Collection;
 
-  public GetZoneResponse(Zone zone) {
-    this.zone = zone;
-  }
+public class UpdateRecordSetRequest extends RecordSet {
+  public UpdateRecordSetRequest() {}
 
-  public Zone getZone() {
-    return zone;
+  public UpdateRecordSetRequest(
+      String id,
+      String zoneId,
+      String name,
+      RecordType type,
+      long ttl,
+      Collection<RecordData> records) {
+    super();
+    this.setId(id);
+    this.setZoneId(zoneId);
+    this.setName(name);
+    this.setType(type);
+    this.setTtl(ttl);
+    this.setRecords(records);
   }
 
   @Override
   public String toString() {
-    return zone.toString();
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
-    GetZoneResponse that = (GetZoneResponse) o;
-    return zone.equals(that.zone);
-  }
-
-  @Override
-  public int hashCode() {
-    return zone.hashCode();
+    return "UpdateRecordSetRequest{" + super.toString() + "}";
   }
 }

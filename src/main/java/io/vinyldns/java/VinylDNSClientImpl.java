@@ -23,17 +23,9 @@ import com.google.gson.Gson;
 import io.vinyldns.java.handlers.ErrorResponseHandler;
 import io.vinyldns.java.handlers.StringResponseHandler;
 import io.vinyldns.java.model.Methods;
-import io.vinyldns.java.model.batch.BatchResponse;
-import io.vinyldns.java.model.batch.CreateBatchRequest;
-import io.vinyldns.java.model.batch.ListBatchChangesRequest;
-import io.vinyldns.java.model.batch.ListBatchChangesResponse;
-import io.vinyldns.java.model.membership.ListGroupsRequest;
-import io.vinyldns.java.model.membership.ListGroupsResponse;
-import io.vinyldns.java.model.record.set.CreateRecordSetRequest;
-import io.vinyldns.java.model.record.set.DeleteRecordSetRequest;
-import io.vinyldns.java.model.record.set.ListRecordSetsRequest;
-import io.vinyldns.java.model.record.set.ListRecordSetsResponse;
-import io.vinyldns.java.model.record.set.RecordSetChange;
+import io.vinyldns.java.model.batch.*;
+import io.vinyldns.java.model.membership.*;
+import io.vinyldns.java.model.record.set.*;
 import io.vinyldns.java.model.zone.*;
 import io.vinyldns.java.responses.VinylDNSFailureResponse;
 import io.vinyldns.java.responses.VinylDNSResponse;
@@ -106,6 +98,26 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
+  public VinylDNSResponse<Group> getGroup(GetGroupRequest request) {
+    String path = "groups/" + request.getId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null), Group.class);
+  }
+
+  @Override
+  public VinylDNSResponse<Group> createGroup(CreateGroupRequest request) {
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), "groups", request), Group.class);
+  }
+
+  @Override
+  public VinylDNSResponse<Group> deleteGroup(DeleteGroupRequest request) {
+    String path = "/groups/" + request.getId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.DELETE.name(), getBaseUrl(), path, null), Group.class);
+  }
+
+  @Override
   public VinylDNSResponse<ListGroupsResponse> listGroups(ListGroupsRequest request) {
     VinylDNSRequest<Void> vinylDNSRequest =
         new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), "groups", null);
@@ -134,11 +146,40 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
+  public VinylDNSResponse<GetRecordSetResponse> getRecordSet(GetRecordSetRequest request) {
+    String path = "zones/" + request.getZoneId() + "/recordsets/" + request.getRecordSetId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null),
+        GetRecordSetResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<RecordSetChange> updateRecordSet(UpdateRecordSetRequest request) {
+    String path = "zones/" + request.getZoneId() + "/recordsets/" + request.getId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.PUT.name(), getBaseUrl(), path, request),
+        RecordSetChange.class);
+  }
+
+  @Override
   public VinylDNSResponse<RecordSetChange> deleteRecordSet(DeleteRecordSetRequest request) {
     String path = "zones/" + request.getZoneId() + "/recordsets/" + request.getRecordSetId();
     return executeRequest(
         new VinylDNSRequest<>(Methods.DELETE.name(), getBaseUrl(), path, null),
         RecordSetChange.class);
+  }
+
+  @Override
+  public VinylDNSResponse<RecordSetChange> getRecordSetChange(GetRecordSetChangeRequest request) {
+    String path =
+        "zones/"
+            + request.getZoneId()
+            + "/recordsets/"
+            + request.getRecordSetId()
+            + "/changes/"
+            + request.getRecordSetChangeId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null), RecordSetChange.class);
   }
 
   @Override

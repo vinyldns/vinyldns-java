@@ -11,22 +11,33 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.vinyldns.java.model.zone;
+package io.vinyldns.java.model.batch;
 
-public class GetZoneResponse {
-  private final Zone zone;
+public class GetRecordSetRequest {
+  private final String recordSetId, zoneId;
 
-  public GetZoneResponse(Zone zone) {
-    this.zone = zone;
+  public GetRecordSetRequest(String zoneId, String recordSetId) {
+    this.zoneId = zoneId;
+    this.recordSetId = recordSetId;
   }
 
-  public Zone getZone() {
-    return zone;
+  public String getRecordSetId() {
+    return recordSetId;
+  }
+
+  public String getZoneId() {
+    return zoneId;
   }
 
   @Override
   public String toString() {
-    return zone.toString();
+    return "GetRecordSetRequest{"
+        + "recordSetId='"
+        + recordSetId
+        + "\'"
+        + ", zoneId='"
+        + zoneId
+        + "'}";
   }
 
   @Override
@@ -34,12 +45,15 @@ public class GetZoneResponse {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    GetZoneResponse that = (GetZoneResponse) o;
-    return zone.equals(that.zone);
+    GetRecordSetRequest that = (GetRecordSetRequest) o;
+    if (!zoneId.equals(that.zoneId)) return false;
+    return recordSetId.equals(that.recordSetId);
   }
 
   @Override
   public int hashCode() {
-    return zone.hashCode();
+    int result = zoneId.hashCode();
+    result = 31 * result + recordSetId.hashCode();
+    return result;
   }
 }
