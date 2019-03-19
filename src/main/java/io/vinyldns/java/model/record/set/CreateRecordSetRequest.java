@@ -21,8 +21,8 @@ public class CreateRecordSetRequest extends RecordSetBase {
   public CreateRecordSetRequest() {}
 
   public CreateRecordSetRequest(
-      String zoneId, String name, RecordType type, long ttl, Collection<RecordData> records) {
-    super(zoneId, name, type, ttl, records);
+      String zoneId, String name, RecordType type, long ttl, Collection<RecordData> records, String ownerGroupId) {
+    super(zoneId, name, type, ttl, records, ownerGroupId);
   }
 
   @Override
