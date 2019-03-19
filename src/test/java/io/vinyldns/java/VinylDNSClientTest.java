@@ -338,6 +338,7 @@ public class VinylDNSClientTest {
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 202);
     assertEquals(vinylDNSResponse.getValue(), recordSetChangeCreate);
+    assertTrue(vinylDNSResponse.getMessageBody().contains(ownerGroupId));
   }
 
   @Test
