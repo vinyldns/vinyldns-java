@@ -48,19 +48,27 @@ public class CreateBatchRequest {
   public void setChanges(List<ChangeInput> changes) {
     this.changes = changes;
   }
-  
 
   public String getOwnerGroupId() {
-	return ownerGroupId;
+    return ownerGroupId;
   }
 
   public void setOwnerGroupId(String ownerGroupId) {
-	this.ownerGroupId = ownerGroupId;
+    this.ownerGroupId = ownerGroupId;
   }
 
   @Override
   public String toString() {
-    return "CreateBatchRequest{" + "comments='" + comments + '\'' + ", changes=" + changes + '\'' + ", ownerGroupId=" + ownerGroupId + '}';
+    return "CreateBatchRequest{"
+        + "comments='"
+        + comments
+        + '\''
+        + ", changes="
+        + changes
+        + '\''
+        + ", 'ownerGroupId='"
+        + ownerGroupId
+        + '}';
   }
 
   @Override
@@ -68,7 +76,9 @@ public class CreateBatchRequest {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     CreateBatchRequest that = (CreateBatchRequest) o;
-    return Objects.equals(comments, that.comments) && Objects.equals(changes, that.changes) && Objects.equals(ownerGroupId, that.ownerGroupId);
+    return Objects.equals(comments, that.comments)
+        && Objects.equals(changes, that.changes)
+        && Objects.equals(ownerGroupId, that.ownerGroupId);
   }
 
   @Override
@@ -76,5 +86,4 @@ public class CreateBatchRequest {
 
     return Objects.hash(comments, changes, ownerGroupId);
   }
-  
 }

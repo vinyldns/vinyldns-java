@@ -337,6 +337,7 @@ public class VinylDNSClientTest {
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 202);
+    assertTrue(vinylDNSResponse.getMessageBody().contains(ownerGroupId));
     assertEquals(vinylDNSResponse.getValue(), recordSetChangeCreate);
   }
 
@@ -751,6 +752,7 @@ public class VinylDNSClientTest {
 
   private String recordSetId = "recordSetId";
   private String recordSetName = "recordSetName";
+  private String ownerGroupId = "ownerGroupId";
   private List<RecordData> recordDataList = Collections.singletonList(new AData("192.168.1.1"));
   private RecordSet recordSet =
       new RecordSet(
@@ -760,6 +762,7 @@ public class VinylDNSClientTest {
           100,
           recordDataList,
           recordSetId,
+          ownerGroupId,
           RecordSetStatus.Active,
           new DateTime(),
           new DateTime());
@@ -771,6 +774,7 @@ public class VinylDNSClientTest {
           38400,
           recordDataList,
           recordSetId,
+          ownerGroupId,
           RecordSetStatus.Active,
           new DateTime(),
           new DateTime());
@@ -814,7 +818,8 @@ public class VinylDNSClientTest {
           null,
           recordSet);
   private CreateRecordSetRequest createRecordSetRequest =
-      new CreateRecordSetRequest(zoneId, recordSetName, RecordType.A, 100, recordDataList);
+      new CreateRecordSetRequest(
+          zoneId, recordSetName, RecordType.A, 100, recordDataList, ownerGroupId);
   private GetRecordSetRequest getRecordSetRequest = new GetRecordSetRequest(zoneId, recordSetId);
 
   private String groupId = "groupId";
