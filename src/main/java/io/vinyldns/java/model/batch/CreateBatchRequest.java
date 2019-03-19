@@ -21,13 +21,16 @@ public class CreateBatchRequest {
 
   private List<ChangeInput> changes;
 
-  public CreateBatchRequest(String comments, List<ChangeInput> changes) {
+  private String ownerGroupId;
+
+  public CreateBatchRequest(String comments, List<ChangeInput> changes, String ownerGroupId) {
     this.comments = comments;
     this.changes = changes;
+    this.setOwnerGroupId(ownerGroupId);
   }
 
   public CreateBatchRequest(List<ChangeInput> changes) {
-    this(null, changes);
+    this(null, changes, null);
   }
 
   public String getComments() {
@@ -45,10 +48,19 @@ public class CreateBatchRequest {
   public void setChanges(List<ChangeInput> changes) {
     this.changes = changes;
   }
+  
+
+  public String getOwnerGroupId() {
+	return ownerGroupId;
+  }
+
+  public void setOwnerGroupId(String ownerGroupId) {
+	this.ownerGroupId = ownerGroupId;
+  }
 
   @Override
   public String toString() {
-    return "CreateBatchRequest{" + "comments='" + comments + '\'' + ", changes=" + changes + '}';
+    return "CreateBatchRequest{" + "comments='" + comments + '\'' + ", changes=" + changes + '\'' + ", ownerGroupId=" + ownerGroupId + '}';
   }
 
   @Override
@@ -56,12 +68,13 @@ public class CreateBatchRequest {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     CreateBatchRequest that = (CreateBatchRequest) o;
-    return Objects.equals(comments, that.comments) && Objects.equals(changes, that.changes);
+    return Objects.equals(comments, that.comments) && Objects.equals(changes, that.changes) && Objects.equals(ownerGroupId, that.ownerGroupId);
   }
 
   @Override
   public int hashCode() {
 
-    return Objects.hash(comments, changes);
+    return Objects.hash(comments, changes, ownerGroupId);
   }
+  
 }
