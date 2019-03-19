@@ -21,6 +21,8 @@ public class CreateBatchRequest {
 
   private List<ChangeInput> changes;
 
+private String ownerGroupId;
+
   public CreateBatchRequest(String comments, List<ChangeInput> changes) {
     this.comments = comments;
     this.changes = changes;
@@ -63,5 +65,15 @@ public class CreateBatchRequest {
   public int hashCode() {
 
     return Objects.hash(comments, changes);
+  }
+  
+  public String getOwnerGroupId() {
+      return ownerGroupId;
+  }
+
+  public void setOwnerGroupId(String ownerGroupId) {
+      if (ownerGroupId != null) {
+          this.ownerGroupId = ownerGroupId;
+      }
   }
 }
