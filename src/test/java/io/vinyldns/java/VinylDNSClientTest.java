@@ -730,7 +730,7 @@ public class VinylDNSClientTest {
 
     AddSingleChange singleChange = new AddSingleChange();
     singleChange.setChangeType(ChangeInputType.Add);
-    singleChange.setId("12345");
+    singleChange.setId("1234");
     singleChange.setInputName("testString");
     singleChange.setRecord(adata);
     singleChange.setRecordChangeId("1111");
@@ -746,7 +746,7 @@ public class VinylDNSClientTest {
     singleChangeList.add(singleChange);
 
     BatchResponse batchResponse = new BatchResponse();
-    batchResponse.setId("12345");
+    batchResponse.setId("1234");
     batchResponse.setUserId("testUserId");
     batchResponse.setUserName("testUserName");
     batchResponse.setComments("testComments");
