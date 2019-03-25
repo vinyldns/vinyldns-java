@@ -20,9 +20,10 @@ import static org.testng.Assert.*;
 
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.github.tomakehurst.wiremock.WireMockServer;
+import com.github.tomakehurst.wiremock.matching.EqualToJsonPattern;
 import io.vinyldns.java.model.acl.ACLRule;
 import io.vinyldns.java.model.acl.AccessLevel;
-import io.vinyldns.java.model.batch.GetRecordSetRequest;
+import io.vinyldns.java.model.batch.*;
 import io.vinyldns.java.model.membership.*;
 import io.vinyldns.java.model.record.RecordType;
 import io.vinyldns.java.model.record.data.AData;
@@ -715,6 +716,59 @@ public class VinylDNSClientTest {
     assertEquals(vinylDNSResponse.getStatusCode(), 500);
     assertEquals(vinylDNSResponse.getMessageBody(), "server error");
     assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
+  public void createBatchChangeSuccess() {
+
+    List<ChangeInput> changes = new ArrayList<>();
+    AData adata = new AData("1.2.3.4");
+    AddChangeInput input = new AddChangeInput("www.example.com", RecordType.A, 300L, adata);
+    changes.add(input);
+
+    CreateBatchRequest batchRequest = new CreateBatchRequest(changes);
+
+    AddSingleChange singleChange = new AddSingleChange();
+    singleChange.setChangeType(ChangeInputType.Add);
+    singleChange.setId("1234");
+    singleChange.setInputName("testString");
+    singleChange.setRecord(adata);
+    singleChange.setRecordChangeId("1111");
+    singleChange.setRecordName("testName");
+    singleChange.setRecordSetId("testId");
+    singleChange.setZoneId("testZone");
+    singleChange.setZoneName("testZoneName");
+    singleChange.setType(RecordType.A);
+    singleChange.setSystemMessage("testMessage");
+    singleChange.setStatus(SingleChangeStatus.Complete);
+
+    List<SingleChange> singleChangeList = new ArrayList<>();
+    singleChangeList.add(singleChange);
+
+    BatchResponse batchResponse = new BatchResponse();
+    batchResponse.setId("1234");
+    batchResponse.setUserId("testUserId");
+    batchResponse.setUserName("testUserName");
+    batchResponse.setComments("testComments");
+    batchResponse.setCreatedTimestamp(new Date());
+    batchResponse.setChanges(singleChangeList);
+    batchResponse.setStatus(BatchChangeStatus.Complete);
+
+    String request = client.gson.toJson(batchRequest);
+    String response = client.gson.toJson(batchResponse);
+
+    wireMockServer.stubFor(
+        post(urlEqualTo("/zones/batchrecordchanges"))
+            .withRequestBody(new EqualToJsonPattern(request, true, true))
+            .willReturn(
+                aResponse()
+                    .withStatus(202)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+
+    VinylDNSResponse<BatchResponse> vinylDNSBatchResponse = client.createBatchChanges(batchRequest);
+
+    assertEquals(vinylDNSBatchResponse.getStatusCode(), 202);
   }
 
   private String rsId = "recordSetId";
