@@ -46,10 +46,11 @@ public class RecordSet extends RecordSetBase {
       long ttl,
       Collection<RecordData> records,
       String id,
+      String ownerGroupId,
       RecordSetStatus status,
       DateTime created,
       DateTime updated) {
-    super(zoneId, name, type, ttl, records);
+    super(zoneId, name, type, ttl, records, ownerGroupId);
     this.id = id;
     this.status = status;
     this.created = created;

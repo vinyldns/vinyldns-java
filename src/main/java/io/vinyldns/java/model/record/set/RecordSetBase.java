@@ -33,15 +33,23 @@ public abstract class RecordSetBase {
   /** record data for recordset, see {@link RecordSet RecordSet Model} */
   private Collection<RecordData> records;
 
+  private String ownerGroupId;
+
   public RecordSetBase() {}
 
   public RecordSetBase(
-      String zoneId, String name, RecordType type, long ttl, Collection<RecordData> records) {
+      String zoneId,
+      String name,
+      RecordType type,
+      long ttl,
+      Collection<RecordData> records,
+      String ownerGroupId) {
     this.zoneId = zoneId;
     this.name = name;
     this.type = type;
     this.ttl = ttl;
     this.records = records;
+    this.ownerGroupId = ownerGroupId;
   }
 
   public String getZoneId() {
@@ -84,6 +92,14 @@ public abstract class RecordSetBase {
     this.records = records;
   }
 
+  public String getownerGroupId() {
+    return ownerGroupId;
+  }
+
+  public void setownerGroupId(String ownerGroupId) {
+    this.ownerGroupId = ownerGroupId;
+  }
+
   @Override
   public String toString() {
     return "zoneId='"
@@ -97,7 +113,9 @@ public abstract class RecordSetBase {
         + ", ttl="
         + ttl
         + ", records="
-        + records;
+        + records
+        + ", 'ownerGroupId='"
+        + ownerGroupId;
   }
 
   @Override
@@ -111,6 +129,7 @@ public abstract class RecordSetBase {
     if (!zoneId.equals(that.zoneId)) return false;
     if (!name.equals(that.name)) return false;
     if (!type.equals(that.type)) return false;
+    if (!ownerGroupId.equals(that.ownerGroupId)) return false;
     return records.equals(that.records);
   }
 
@@ -121,6 +140,7 @@ public abstract class RecordSetBase {
     result = 31 * result + type.hashCode();
     result = 31 * result + (int) (ttl ^ (ttl >>> 32));
     result = 31 * result + records.hashCode();
+    result = 31 * result + ownerGroupId.hashCode();
     return result;
   }
 }
