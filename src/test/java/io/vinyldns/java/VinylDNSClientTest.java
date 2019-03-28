@@ -754,6 +754,8 @@ public class VinylDNSClientTest {
     batchResponse.setCreatedTimestamp(new Date());
     batchResponse.setChanges(singleChangeList);
     batchResponse.setStatus(BatchChangeStatus.Complete);
+    batchResponse.setOwnerGroupId(ownerGroupId);
+    batchResponse.setOwnerGroupName("testOwnerGroupName");
 
     String request = client.gson.toJson(batchRequest);
     String response = client.gson.toJson(batchResponse);

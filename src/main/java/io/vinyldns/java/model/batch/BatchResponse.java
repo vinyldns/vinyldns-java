@@ -21,10 +21,12 @@ public class BatchResponse {
   private String id;
   private String userId;
   private String userName;
-  private String comments;
+  private String comments; //optional
   private Date createdTimestamp;
   private List<SingleChange> changes;
   private BatchChangeStatus status;
+  private String ownerGroupId; //optional
+  private String ownerGroupName; //optional
 
   public String getId() {
     return id;
@@ -82,6 +84,14 @@ public class BatchResponse {
     this.status = status;
   }
 
+  public String getOwnerGroupId() { return ownerGroupId; }
+
+  public void setOwnerGroupId(String ownerGroupId) { this.ownerGroupId = ownerGroupId; }
+
+  public String getOwnerGroupName() { return ownerGroupName; }
+
+  public void setOwnerGroupName(String ownerGroupName) { this.ownerGroupName = ownerGroupName; }
+
   @Override
   public String toString() {
     return "BatchResponse{"
@@ -103,6 +113,12 @@ public class BatchResponse {
         + changes
         + ", status="
         + status
+        + ", ownerGroupId='"
+        + ownerGroupId
+        + '\''
+        + ", ownerGroupName='"
+        + ownerGroupName
+        + '\''
         + '}';
   }
 
@@ -117,12 +133,15 @@ public class BatchResponse {
         && Objects.equals(comments, that.comments)
         && Objects.equals(createdTimestamp, that.createdTimestamp)
         && Objects.equals(changes, that.changes)
-        && status == that.status;
+        && status == that.status
+        && Objects.equals(ownerGroupId, that.ownerGroupId)
+        && Objects.equals(ownerGroupName, that.ownerGroupName)
+            ;
   }
 
   @Override
   public int hashCode() {
 
-    return Objects.hash(id, userId, userName, comments, createdTimestamp, changes, status);
+    return Objects.hash(id, userId, userName, comments, createdTimestamp, changes, status, ownerGroupId, ownerGroupName);
   }
 }
