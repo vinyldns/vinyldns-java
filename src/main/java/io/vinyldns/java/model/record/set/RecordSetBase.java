@@ -92,11 +92,11 @@ public abstract class RecordSetBase {
     this.records = records;
   }
 
-  public String getownerGroupId() {
+  public String getOwnerGroupId() {
     return ownerGroupId;
   }
 
-  public void setownerGroupId(String ownerGroupId) {
+  public void setOwnerGroupId(String ownerGroupId) {
     this.ownerGroupId = ownerGroupId;
   }
 
