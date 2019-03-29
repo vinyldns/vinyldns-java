@@ -754,6 +754,8 @@ public class VinylDNSClientTest {
     batchResponse.setCreatedTimestamp(new Date());
     batchResponse.setChanges(singleChangeList);
     batchResponse.setStatus(BatchChangeStatus.Complete);
+    batchResponse.setOwnerGroupId(ownerGroupId);
+    batchResponse.setOwnerGroupName("testOwnerGroupName");
 
     String request = client.gson.toJson(batchRequest);
     String response = client.gson.toJson(batchResponse);
@@ -915,7 +917,7 @@ public class VinylDNSClientTest {
   private GetRecordSetChangeRequest getRecordSetChangeRequest =
       new GetRecordSetChangeRequest(zoneId, recordSetId, recordSetChangeId);
   private UpdateRecordSetRequest updateRecordSetRequest =
-      new UpdateRecordSetRequest(rsId, zoneId, recordSetName, RecordType.A, 100, recordDataList);
+      new UpdateRecordSetRequest(rsId, zoneId, recordSetName,ownerGroupId, RecordType.A, 100, recordDataList);
 
   private String adminId = "adminId";
   private Set<UserInfo> adminUserInfo = Collections.singleton(new UserInfo(adminId));

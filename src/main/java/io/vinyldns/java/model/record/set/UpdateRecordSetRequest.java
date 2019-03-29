@@ -24,6 +24,7 @@ public class UpdateRecordSetRequest extends RecordSet {
       String id,
       String zoneId,
       String name,
+      String ownerGroupId,
       RecordType type,
       long ttl,
       Collection<RecordData> records) {
@@ -31,6 +32,7 @@ public class UpdateRecordSetRequest extends RecordSet {
     this.setId(id);
     this.setZoneId(zoneId);
     this.setName(name);
+    this.setOwnerGroupId(ownerGroupId);
     this.setType(type);
     this.setTtl(ttl);
     this.setRecords(records);
