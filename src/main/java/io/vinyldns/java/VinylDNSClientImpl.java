@@ -170,6 +170,24 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
+  public VinylDNSResponse<ListRecordSetChangesResponse> listRecordSetChanges(ListRecordSetChangesRequest request) {
+    String path = "zones/" + request.getZoneId() + "/recordsetchanges";
+
+    VinylDNSRequest<Void> vinylDNSRequest =
+            new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    if (request.getStartFrom() != null) {
+      vinylDNSRequest.addParameter("startFrom", request.getStartFrom());
+    }
+
+    if (request.getMaxItems() != null) {
+      vinylDNSRequest.addParameter("maxItems", request.getMaxItems().toString());
+    }
+
+    return executeRequest(vinylDNSRequest, ListRecordSetChangesResponse.class);
+  }
+
+  @Override
   public VinylDNSResponse<RecordSetChange> getRecordSetChange(GetRecordSetChangeRequest request) {
     String path =
         "zones/"

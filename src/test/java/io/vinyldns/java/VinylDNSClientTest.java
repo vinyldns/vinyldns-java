@@ -772,6 +772,41 @@ public class VinylDNSClientTest {
     assertEquals(vinylDNSBatchResponse.getStatusCode(), 202);
   }
 
+  @Test
+  public void listRecordSetChangeSuccess() {
+    String response = client.gson.toJson(listRecordSetChangesResponse);
+
+    wireMockServer.stubFor(
+            get(urlEqualTo("/zones/" + zoneId + "/recordsetchanges"))
+                    .willReturn(
+                            aResponse()
+                                    .withStatus(200)
+                                    .withHeader("Content-Type", "application/json")
+                                    .withBody(response)));
+
+    VinylDNSResponse<ListRecordSetChangesResponse> vinylDNSResponse =
+            client.listRecordSetChanges(new ListRecordSetChangesRequest(zoneId));
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
+    assertEquals(vinylDNSResponse.getStatusCode(), 200);
+    assertEquals(vinylDNSResponse.getValue(), listRecordSetChangesResponse);
+  }
+
+  @Test
+  public void listRecordSetChangeFailure() {
+    wireMockServer.stubFor(
+            get(urlEqualTo("/zones/" + zoneId + "/recordsetchanges"))
+                    .willReturn(aResponse().withStatus(500).withBody("server error")));
+
+    VinylDNSResponse<ListRecordSetChangesResponse> vinylDNSResponse =
+            client.listRecordSetChanges(new ListRecordSetChangesRequest(zoneId));
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 500);
+    assertEquals(vinylDNSResponse.getMessageBody(), "server error");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
   private String rsId = "recordSetId";
   private String zoneId = "zoneId";
   private ZoneConnection testZoneConnection1 =
@@ -905,4 +940,9 @@ public class VinylDNSClientTest {
 
   private ListGroupsResponse listGroupsResponse =
       new ListGroupsResponse(groupList, "groupNameFilter", "startFrom", "nextId", 100);
+
+  private List<RecordSetChange> recordSetChangeList = Collections.singletonList(recordSetChangeCreate);
+
+  private ListRecordSetChangesResponse listRecordSetChangesResponse =
+          new ListRecordSetChangesResponse(zoneId,recordSetChangeList ,"", "startFrom", 1);
 }
