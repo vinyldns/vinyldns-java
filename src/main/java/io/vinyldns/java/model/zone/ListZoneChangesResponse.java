@@ -16,7 +16,7 @@ package io.vinyldns.java.model.zone;
 import java.util.List;
 
 public class ListZoneChangesResponse {
-    private List<ZoneChangeResponse> zoneChanges;
+    private List<ZoneResponse> zoneChanges;
 
     /**
      * (optional) The startFrom parameter that was sent in on the HTTP request. Will not be present if
@@ -33,12 +33,9 @@ public class ListZoneChangesResponse {
     /** The maxItems parameter that was sent in on the HTTP request. This will be 100 if not sent. */
     private Integer maxItems;
 
-    /** name filter sent in request */
-    private String nameFilter;
-
     public ListZoneChangesResponse() {}
 
-    public ListZoneChangesResponse(List<ZoneChangeResponse> zoneChanges,
+    public ListZoneChangesResponse(List<ZoneResponse> zoneChanges,
                                    String startFrom,
                                    String nextId,
                                    Integer maxItems,
@@ -47,14 +44,13 @@ public class ListZoneChangesResponse {
         this.startFrom = startFrom;
         this.nextId = nextId;
         this.maxItems = maxItems;
-        this.nameFilter = nameFilter;
     }
 
-    public List<ZoneChangeResponse> getZoneChanges() {
+    public List<ZoneResponse> getZoneChanges() {
         return zoneChanges;
     }
 
-    public void setZoneChanges(List<ZoneChangeResponse> zoneChanges) {
+    public void setZoneChanges(List<ZoneResponse> zoneChanges) {
         this.zoneChanges = zoneChanges;
     }
 
@@ -82,14 +78,6 @@ public class ListZoneChangesResponse {
         this.maxItems = maxItems;
     }
 
-    public String getNameFilter() {
-        return nameFilter;
-    }
-
-    public void setNameFilter(String nameFilter) {
-        this.nameFilter = nameFilter;
-    }
-
     @Override
     public String toString() {
         return "ListZoneChangesResponse{"
@@ -103,8 +91,6 @@ public class ListZoneChangesResponse {
                 + '\''
                 + ", maxItems="
                 + maxItems
-                + ", nameFilter='"
-                + nameFilter
                 + '\''
                 + '}';
     }
@@ -121,7 +107,6 @@ public class ListZoneChangesResponse {
             return false;
         if (nextId != null ? !nextId.equals(that.nextId) : that.nextId != null) return false;
         if (maxItems != null ? !maxItems.equals(that.maxItems) : that.maxItems != null) return false;
-        return nameFilter != null ? nameFilter.equals(that.nameFilter) : that.nameFilter == null;
     }
 
     @Override
@@ -130,7 +115,6 @@ public class ListZoneChangesResponse {
         result = 31 * result + (startFrom != null ? startFrom.hashCode() : 0);
         result = 31 * result + (nextId != null ? nextId.hashCode() : 0);
         result = 31 * result + (maxItems != null ? maxItems.hashCode() : 0);
-        result = 31 * result + (nameFilter != null ? nameFilter.hashCode() : 0);
         return result;
     }
 }
