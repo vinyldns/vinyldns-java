@@ -13,10 +13,10 @@
  */
 package io.vinyldns.java.model.zone;
 
-public class GetZoneResponse {
+public class ZoneResponse {
   private final Zone zone;
 
-  public GetZoneResponse(Zone zone) {
+  public ZoneResponse(Zone zone) {
     this.zone = zone;
   }
 
@@ -34,7 +34,7 @@ public class GetZoneResponse {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    GetZoneResponse that = (GetZoneResponse) o;
+    ZoneResponse that = (ZoneResponse) o;
     return zone.equals(that.zone);
   }
 

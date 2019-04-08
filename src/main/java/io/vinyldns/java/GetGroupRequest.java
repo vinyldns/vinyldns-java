@@ -26,7 +26,7 @@ public class GetGroupRequest {
 
   @Override
   public String toString() {
-    return "GetZoneRequest{id='" + id + "'}";
+    return "ZoneRequest{id='" + id + "'}";
   }
 
   @Override

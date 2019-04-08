@@ -13,10 +13,10 @@
  */
 package io.vinyldns.java.model.zone;
 
-public class GetZoneRequest {
+public class ZoneRequest {
   private final String zoneId;
 
-  public GetZoneRequest(String zoneId) {
+  public ZoneRequest(String zoneId) {
     this.zoneId = zoneId;
   }
 
@@ -26,7 +26,7 @@ public class GetZoneRequest {
 
   @Override
   public String toString() {
-    return "GetZoneRequest{" + "zoneId='" + zoneId + "'}";
+    return "ZoneRequest{" + "zoneId='" + zoneId + "'}";
   }
 
   @Override
@@ -34,7 +34,7 @@ public class GetZoneRequest {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    GetZoneRequest that = (GetZoneRequest) o;
+    ZoneRequest that = (ZoneRequest) o;
     return zoneId.equals(that.zoneId);
   }
 
