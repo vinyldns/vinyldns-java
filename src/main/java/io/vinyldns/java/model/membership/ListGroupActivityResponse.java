@@ -11,25 +11,30 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.vinyldns.java.model.record.set;
+package io.vinyldns.java.model.membership;
 
-public class ListRecordSetChangesRequest {
-  private final String zoneId;
-  private String startFrom;
-  private Integer maxItems;
+import java.util.Set;
 
-  public ListRecordSetChangesRequest(String zoneId) {
-    this.zoneId = zoneId;
-  }
+public class ListGroupActivityResponse {
+  private final Set<GroupChange> changes;
+  private String startFrom, nextId; // optional
+  private final Integer maxItems;
 
-  public ListRecordSetChangesRequest(String zoneId, String startFrom, int maxItems) {
-    this.zoneId = zoneId;
-    this.startFrom = startFrom;
+  public ListGroupActivityResponse(Set<GroupChange> changes, Integer maxItems) {
+    this.changes = changes;
     this.maxItems = maxItems;
   }
 
-  public String getZoneId() {
-    return zoneId;
+  public ListGroupActivityResponse(
+      Set<GroupChange> changes, String startFrom, String nextId, Integer maxItems) {
+    this.changes = changes;
+    this.startFrom = startFrom;
+    this.nextId = nextId;
+    this.maxItems = maxItems;
+  }
+
+  public Set<GroupChange> getGroups() {
+    return changes;
   }
 
   public String getStartFrom() {
@@ -44,18 +49,29 @@ public class ListRecordSetChangesRequest {
     return maxItems;
   }
 
-  public void setMaxItems(int maxItems) {
-    this.maxItems = maxItems;
+  public Set<GroupChange> getChanges() {
+    return changes;
+  }
+
+  public String getNextId() {
+    return nextId;
+  }
+
+  public void setNextId(String nextId) {
+    this.nextId = nextId;
   }
 
   @Override
   public String toString() {
-    return "ListRecordSetChangesRequest{"
-        + "zoneId='"
-        + zoneId
+    return "ListGroupActivityResponse{"
+        + "changes='"
+        + changes
         + '\''
         + ", startFrom='"
         + startFrom
+        + '\''
+        + ", nextId='"
+        + nextId
         + '\''
         + ", maxItems="
         + maxItems
@@ -67,18 +83,20 @@ public class ListRecordSetChangesRequest {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    ListRecordSetChangesRequest that = (ListRecordSetChangesRequest) o;
+    ListGroupActivityResponse that = (ListGroupActivityResponse) o;
 
-    if (zoneId != null ? !zoneId.equals(that.zoneId) : that.zoneId != null) return false;
+    if (!changes.equals(that.changes)) return false;
     if (startFrom != null ? !startFrom.equals(that.startFrom) : that.startFrom != null)
       return false;
+    if (nextId != null ? !nextId.equals(that.nextId) : that.nextId != null) return false;
     return maxItems != null ? maxItems.equals(that.maxItems) : that.maxItems == null;
   }
 
   @Override
   public int hashCode() {
-    int result = zoneId != null ? zoneId.hashCode() : 0;
+    int result = changes.hashCode();
     result = 31 * result + (startFrom != null ? startFrom.hashCode() : 0);
+    result = 31 * result + (nextId != null ? nextId.hashCode() : 0);
     result = 31 * result + (maxItems != null ? maxItems.hashCode() : 0);
     return result;
   }

@@ -111,6 +111,13 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
+  public VinylDNSResponse<Group> updateGroup(UpdateGroupRequest request) {
+    String path = "groups/" + request.getGroupId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.PUT.name(), getBaseUrl(), path, request), Group.class);
+  }
+
+  @Override
   public VinylDNSResponse<Group> deleteGroup(DeleteGroupRequest request) {
     String path = "/groups/" + request.getId();
     return executeRequest(
@@ -135,6 +142,51 @@ public class VinylDNSClientImpl implements VinylDNSClient {
     }
 
     return executeRequest(vinylDNSRequest, ListGroupsResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<ListAdminsResponse> listAdmins(String groupId) {
+    String path = "groups/" + groupId + "/admins";
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null),
+        ListAdminsResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<ListMembersResponse> listMembers(ListMembersRequest request) {
+    String path = "groups/" + request.getGroupId() + "/members";
+
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    if (request.getStartFrom() != null) {
+      vinylDNSRequest.addParameter("startFrom", request.getStartFrom());
+    }
+
+    if (request.getMaxItems() != null) {
+      vinylDNSRequest.addParameter("maxItems", request.getMaxItems().toString());
+    }
+
+    return executeRequest(vinylDNSRequest, ListMembersResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<ListGroupActivityResponse> listGroupActivity(
+      ListGroupActivityRequest request) {
+    String path = "groups/" + request.getGroupId() + "/activity";
+
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    if (request.getStartFrom() != null) {
+      vinylDNSRequest.addParameter("startFrom", request.getStartFrom());
+    }
+
+    if (request.getMaxItems() != null) {
+      vinylDNSRequest.addParameter("maxItems", request.getMaxItems().toString());
+    }
+
+    return executeRequest(vinylDNSRequest, ListGroupActivityResponse.class);
   }
 
   @Override
@@ -170,11 +222,12 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
-  public VinylDNSResponse<ListRecordSetChangesResponse> listRecordSetChanges(ListRecordSetChangesRequest request) {
+  public VinylDNSResponse<ListRecordSetChangesResponse> listRecordSetChanges(
+      ListRecordSetChangesRequest request) {
     String path = "zones/" + request.getZoneId() + "/recordsetchanges";
 
     VinylDNSRequest<Void> vinylDNSRequest =
-            new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
 
     if (request.getStartFrom() != null) {
       vinylDNSRequest.addParameter("startFrom", request.getStartFrom());

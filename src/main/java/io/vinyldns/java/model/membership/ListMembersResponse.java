@@ -11,51 +11,49 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.vinyldns.java.model.record.set;
+package io.vinyldns.java.model.membership;
 
-public class ListRecordSetChangesRequest {
-  private final String zoneId;
-  private String startFrom;
-  private Integer maxItems;
+import java.util.Set;
 
-  public ListRecordSetChangesRequest(String zoneId) {
-    this.zoneId = zoneId;
-  }
+public class ListMembersResponse {
+  private final Set<UserInfo> members;
+  private String startFrom, nextId; // optional
+  private final Integer maxItems;
 
-  public ListRecordSetChangesRequest(String zoneId, String startFrom, int maxItems) {
-    this.zoneId = zoneId;
+  public ListMembersResponse(
+      Set<UserInfo> members, String startFrom, String nextId, Integer maxItems) {
+    this.members = members;
     this.startFrom = startFrom;
+    this.nextId = nextId;
     this.maxItems = maxItems;
   }
 
-  public String getZoneId() {
-    return zoneId;
-  }
-
-  public String getStartFrom() {
-    return startFrom;
-  }
-
-  public void setStartFrom(String startFrom) {
-    this.startFrom = startFrom;
+  public Set<UserInfo> getMembers() {
+    return members;
   }
 
   public Integer getMaxItems() {
     return maxItems;
   }
 
-  public void setMaxItems(int maxItems) {
-    this.maxItems = maxItems;
+  public String getStartFrom() {
+    return startFrom;
+  }
+
+  public String getNextId() {
+    return nextId;
   }
 
   @Override
   public String toString() {
-    return "ListRecordSetChangesRequest{"
-        + "zoneId='"
-        + zoneId
-        + '\''
+    return "ListMembersResponse{"
+        + "members="
+        + members
         + ", startFrom='"
         + startFrom
+        + '\''
+        + ", nextId='"
+        + nextId
         + '\''
         + ", maxItems="
         + maxItems
@@ -67,18 +65,18 @@ public class ListRecordSetChangesRequest {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    ListRecordSetChangesRequest that = (ListRecordSetChangesRequest) o;
+    ListMembersResponse that = (ListMembersResponse) o;
 
-    if (zoneId != null ? !zoneId.equals(that.zoneId) : that.zoneId != null) return false;
+    if (!members.equals(that.members)) return false;
     if (startFrom != null ? !startFrom.equals(that.startFrom) : that.startFrom != null)
       return false;
+    if (nextId != null ? !nextId.equals(that.nextId) : that.nextId != null) return false;
     return maxItems != null ? maxItems.equals(that.maxItems) : that.maxItems == null;
   }
 
   @Override
   public int hashCode() {
-    int result = zoneId != null ? zoneId.hashCode() : 0;
-    result = 31 * result + (startFrom != null ? startFrom.hashCode() : 0);
+    int result = members.hashCode();
     result = 31 * result + (maxItems != null ? maxItems.hashCode() : 0);
     return result;
   }

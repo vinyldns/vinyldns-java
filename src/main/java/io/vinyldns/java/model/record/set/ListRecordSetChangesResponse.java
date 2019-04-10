@@ -17,95 +17,99 @@ import java.util.List;
 import java.util.Objects;
 
 public class ListRecordSetChangesResponse {
-    private String zoneId;
-    private List<RecordSetChange> recordSetChanges;
-    private String nextId; //optional
-    private String startFrom; //optional
-    private Integer maxItems;
+  private String zoneId;
+  private List<RecordSetChange> recordSetChanges;
+  private String nextId; // optional
+  private String startFrom; // optional
+  private Integer maxItems;
 
-    public ListRecordSetChangesResponse(
-            String zoneId,
-            List<RecordSetChange> recordSetChanges,
-            String nextId,
-            String startFrom,
-            Integer maxItems) {
-        this.zoneId = zoneId;
-        this.recordSetChanges = recordSetChanges;
-        this.nextId = nextId;
-        this.startFrom = startFrom;
-        this.maxItems = maxItems;
-    }
+  public ListRecordSetChangesResponse(
+      String zoneId,
+      List<RecordSetChange> recordSetChanges,
+      String nextId,
+      String startFrom,
+      Integer maxItems) {
+    this.zoneId = zoneId;
+    this.recordSetChanges = recordSetChanges;
+    this.nextId = nextId;
+    this.startFrom = startFrom;
+    this.maxItems = maxItems;
+  }
 
-    public String getZoneId() {
-        return zoneId;
-    }
+  public String getZoneId() {
+    return zoneId;
+  }
 
-    public void setZoneId(String zoneId) {
-        this.zoneId = zoneId;
-    }
+  public void setZoneId(String zoneId) {
+    this.zoneId = zoneId;
+  }
 
-    public List<RecordSetChange> getRecordSetChanges() {
-        return recordSetChanges;
-    }
+  public List<RecordSetChange> getRecordSetChanges() {
+    return recordSetChanges;
+  }
 
-    public void setRecordSetChanges(List<RecordSetChange> recordSetChanges) {
-        this.recordSetChanges = recordSetChanges;
-    }
+  public void setRecordSetChanges(List<RecordSetChange> recordSetChanges) {
+    this.recordSetChanges = recordSetChanges;
+  }
 
-    public String getNextId() {
-        return nextId;
-    }
+  public String getNextId() {
+    return nextId;
+  }
 
-    public void setNextId(String nextId) {
-        this.nextId = nextId;
-    }
+  public void setNextId(String nextId) {
+    this.nextId = nextId;
+  }
 
-    public String getStartFrom() {
-        return startFrom;
-    }
+  public String getStartFrom() {
+    return startFrom;
+  }
 
-    public void setStartFrom(String startFrom) {
-        this.startFrom = startFrom;
-    }
+  public void setStartFrom(String startFrom) {
+    this.startFrom = startFrom;
+  }
 
-    public Integer getMaxItems() {
-        return maxItems;
-    }
+  public Integer getMaxItems() {
+    return maxItems;
+  }
 
-    public void setMaxItems(Integer maxItems) {
-        this.maxItems = maxItems;
-    }
+  public void setMaxItems(Integer maxItems) {
+    this.maxItems = maxItems;
+  }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ListRecordSetChangesResponse)) return false;
-        ListRecordSetChangesResponse that = (ListRecordSetChangesResponse) o;
-        return Objects.equals(getZoneId(), that.getZoneId()) &&
-                Objects.equals(getRecordSetChanges(), that.getRecordSetChanges()) &&
-                Objects.equals(getNextId(), that.getNextId()) &&
-                Objects.equals(getStartFrom(), that.getStartFrom()) &&
-                Objects.equals(getMaxItems(), that.getMaxItems());
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof ListRecordSetChangesResponse)) return false;
+    ListRecordSetChangesResponse that = (ListRecordSetChangesResponse) o;
+    return Objects.equals(getZoneId(), that.getZoneId())
+        && Objects.equals(getRecordSetChanges(), that.getRecordSetChanges())
+        && Objects.equals(getNextId(), that.getNextId())
+        && Objects.equals(getStartFrom(), that.getStartFrom())
+        && Objects.equals(getMaxItems(), that.getMaxItems());
+  }
 
-    @Override
-    public int hashCode() {
-        return Objects.hash(getZoneId(),
-                getRecordSetChanges(),
-                getNextId(),
-                getStartFrom(),
-                getMaxItems());
-    }
+  @Override
+  public int hashCode() {
+    return Objects.hash(
+        getZoneId(), getRecordSetChanges(), getNextId(), getStartFrom(), getMaxItems());
+  }
 
-    @Override
-    public String toString() {
-        return "ListRecordSetChangesResponse{" +
-                "zoneId='" + zoneId + '\'' +
-                ", recordSetChanges=" + recordSetChanges +
-                ", nextId='" + nextId + '\'' +
-                ", startFrom='" + startFrom + '\'' +
-                ", maxItems=" + maxItems +
-                '}';
-    }
+  @Override
+  public String toString() {
+    return "ListRecordSetChangesResponse{"
+        + "zoneId='"
+        + zoneId
+        + '\''
+        + ", recordSetChanges="
+        + recordSetChanges
+        + ", nextId='"
+        + nextId
+        + '\''
+        + ", startFrom='"
+        + startFrom
+        + '\''
+        + ", maxItems="
+        + maxItems
+        + '}';
+  }
 }
-

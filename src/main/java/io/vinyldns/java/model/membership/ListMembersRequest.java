@@ -11,25 +11,25 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.vinyldns.java.model.record.set;
+package io.vinyldns.java.model.membership;
 
-public class ListRecordSetChangesRequest {
-  private final String zoneId;
+public class ListMembersRequest {
+  private final String groupId;
   private String startFrom;
   private Integer maxItems;
 
-  public ListRecordSetChangesRequest(String zoneId) {
-    this.zoneId = zoneId;
+  public ListMembersRequest(String groupId) {
+    this.groupId = groupId;
   }
 
-  public ListRecordSetChangesRequest(String zoneId, String startFrom, int maxItems) {
-    this.zoneId = zoneId;
+  public ListMembersRequest(String groupId, String startFrom, int maxItems) {
+    this.groupId = groupId;
     this.startFrom = startFrom;
     this.maxItems = maxItems;
   }
 
-  public String getZoneId() {
-    return zoneId;
+  public String getGroupId() {
+    return groupId;
   }
 
   public String getStartFrom() {
@@ -50,9 +50,9 @@ public class ListRecordSetChangesRequest {
 
   @Override
   public String toString() {
-    return "ListRecordSetChangesRequest{"
-        + "zoneId='"
-        + zoneId
+    return "ListGroupsRequest{"
+        + "groupId='"
+        + groupId
         + '\''
         + ", startFrom='"
         + startFrom
@@ -67,9 +67,9 @@ public class ListRecordSetChangesRequest {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    ListRecordSetChangesRequest that = (ListRecordSetChangesRequest) o;
+    ListMembersRequest that = (ListMembersRequest) o;
 
-    if (zoneId != null ? !zoneId.equals(that.zoneId) : that.zoneId != null) return false;
+    if (groupId != null ? !groupId.equals(that.groupId) : that.groupId != null) return false;
     if (startFrom != null ? !startFrom.equals(that.startFrom) : that.startFrom != null)
       return false;
     return maxItems != null ? maxItems.equals(that.maxItems) : that.maxItems == null;
@@ -77,7 +77,7 @@ public class ListRecordSetChangesRequest {
 
   @Override
   public int hashCode() {
-    int result = zoneId != null ? zoneId.hashCode() : 0;
+    int result = groupId != null ? groupId.hashCode() : 0;
     result = 31 * result + (startFrom != null ? startFrom.hashCode() : 0);
     result = 31 * result + (maxItems != null ? maxItems.hashCode() : 0);
     return result;

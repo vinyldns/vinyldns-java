@@ -11,25 +11,25 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.vinyldns.java.model.record.set;
+package io.vinyldns.java.model.membership;
 
-public class ListRecordSetChangesRequest {
-  private final String zoneId;
+public class ListGroupActivityRequest {
+  private String groupId;
   private String startFrom;
   private Integer maxItems;
 
-  public ListRecordSetChangesRequest(String zoneId) {
-    this.zoneId = zoneId;
-  }
-
-  public ListRecordSetChangesRequest(String zoneId, String startFrom, int maxItems) {
-    this.zoneId = zoneId;
+  public ListGroupActivityRequest(String groupId, String startFrom, Integer maxItems) {
+    this.groupId = groupId;
     this.startFrom = startFrom;
     this.maxItems = maxItems;
   }
 
-  public String getZoneId() {
-    return zoneId;
+  public String getGroupId() {
+    return groupId;
+  }
+
+  public void setGroupId(String groupId) {
+    this.groupId = groupId;
   }
 
   public String getStartFrom() {
@@ -44,15 +44,15 @@ public class ListRecordSetChangesRequest {
     return maxItems;
   }
 
-  public void setMaxItems(int maxItems) {
+  public void setMaxItems(Integer maxItems) {
     this.maxItems = maxItems;
   }
 
   @Override
   public String toString() {
-    return "ListRecordSetChangesRequest{"
-        + "zoneId='"
-        + zoneId
+    return "ListGroupActivityRequest{"
+        + "groupId='"
+        + groupId
         + '\''
         + ", startFrom='"
         + startFrom
@@ -67,17 +67,17 @@ public class ListRecordSetChangesRequest {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    ListRecordSetChangesRequest that = (ListRecordSetChangesRequest) o;
+    ListGroupActivityRequest that = (ListGroupActivityRequest) o;
 
-    if (zoneId != null ? !zoneId.equals(that.zoneId) : that.zoneId != null) return false;
-    if (startFrom != null ? !startFrom.equals(that.startFrom) : that.startFrom != null)
-      return false;
+    if (groupId != null ? !groupId.equals(that.groupId) : that.groupId != null)
+      if (startFrom != null ? !startFrom.equals(that.startFrom) : that.startFrom != null)
+        return false;
     return maxItems != null ? maxItems.equals(that.maxItems) : that.maxItems == null;
   }
 
   @Override
   public int hashCode() {
-    int result = zoneId != null ? zoneId.hashCode() : 0;
+    int result = groupId.hashCode();
     result = 31 * result + (startFrom != null ? startFrom.hashCode() : 0);
     result = 31 * result + (maxItems != null ? maxItems.hashCode() : 0);
     return result;
