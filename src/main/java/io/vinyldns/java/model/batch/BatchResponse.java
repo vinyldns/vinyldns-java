@@ -21,12 +21,12 @@ public class BatchResponse {
   private String id;
   private String userId;
   private String userName;
-  private String comments; //optional
+  private String comments; // optional
   private Date createdTimestamp;
   private List<SingleChange> changes;
   private BatchChangeStatus status;
-  private String ownerGroupId; //optional
-  private String ownerGroupName; //optional
+  private String ownerGroupId; // optional
+  private String ownerGroupName; // optional
 
   public String getId() {
     return id;
@@ -84,13 +84,21 @@ public class BatchResponse {
     this.status = status;
   }
 
-  public String getOwnerGroupId() { return ownerGroupId; }
+  public String getOwnerGroupId() {
+    return ownerGroupId;
+  }
 
-  public void setOwnerGroupId(String ownerGroupId) { this.ownerGroupId = ownerGroupId; }
+  public void setOwnerGroupId(String ownerGroupId) {
+    this.ownerGroupId = ownerGroupId;
+  }
 
-  public String getOwnerGroupName() { return ownerGroupName; }
+  public String getOwnerGroupName() {
+    return ownerGroupName;
+  }
 
-  public void setOwnerGroupName(String ownerGroupName) { this.ownerGroupName = ownerGroupName; }
+  public void setOwnerGroupName(String ownerGroupName) {
+    this.ownerGroupName = ownerGroupName;
+  }
 
   @Override
   public String toString() {
@@ -135,13 +143,21 @@ public class BatchResponse {
         && Objects.equals(changes, that.changes)
         && status == that.status
         && Objects.equals(ownerGroupId, that.ownerGroupId)
-        && Objects.equals(ownerGroupName, that.ownerGroupName)
-            ;
+        && Objects.equals(ownerGroupName, that.ownerGroupName);
   }
 
   @Override
   public int hashCode() {
 
-    return Objects.hash(id, userId, userName, comments, createdTimestamp, changes, status, ownerGroupId, ownerGroupName);
+    return Objects.hash(
+        id,
+        userId,
+        userName,
+        comments,
+        createdTimestamp,
+        changes,
+        status,
+        ownerGroupId,
+        ownerGroupName);
   }
 }

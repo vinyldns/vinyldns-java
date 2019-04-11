@@ -156,9 +156,13 @@ public class Zone {
     this.latestSync = latestSync;
   }
 
-  public Boolean getTest() { return isTest; }
+  public Boolean getTest() {
+    return isTest;
+  }
 
-  public void setTest(Boolean test) { isTest = test; }
+  public void setTest(Boolean test) {
+    isTest = test;
+  }
 
   @Override
   public String toString() {
@@ -217,8 +221,9 @@ public class Zone {
         : zone.transferConnection != null) return false;
     if (!acl.equals(zone.acl)) return false;
     if (!adminGroupId.equals(zone.adminGroupId)) return false;
-    return latestSync != null ? latestSync.equals(zone.latestSync) : zone.latestSync == null;
-    return zone.isTest != isTest;
+    if (latestSync != null ? !latestSync.equals(zone.latestSync) : zone.latestSync != null)
+      return false;
+    return zone.isTest == isTest;
   }
 
   @Override

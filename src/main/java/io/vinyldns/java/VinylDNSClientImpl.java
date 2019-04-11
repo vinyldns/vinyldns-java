@@ -70,7 +70,8 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   @Override
   public VinylDNSResponse<ZoneResponse> createZone(Zone zone) {
     return executeRequest(
-            new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), "zones", zone), ZoneResponse.class);
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), "zones", zone),
+        ZoneResponse.class);
   }
 
   @Override
@@ -84,14 +85,14 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   public VinylDNSResponse<ZoneResponse> updateZone(Zone zone) {
     String path = "zones/" + zone.getId();
     return executeRequest(
-            new VinylDNSRequest<>(Methods.PUT.name(), getBaseUrl(), path, zone), ZoneResponse.class);
+        new VinylDNSRequest<>(Methods.PUT.name(), getBaseUrl(), path, zone), ZoneResponse.class);
   }
 
   @Override
   public VinylDNSResponse<ZoneResponse> deleteZone(ZoneRequest request) {
     String path = "zones/" + request.getZoneId();
     return executeRequest(
-            new VinylDNSRequest<>(Methods.DELETE.name(), getBaseUrl(), path, null), ZoneResponse.class);
+        new VinylDNSRequest<>(Methods.DELETE.name(), getBaseUrl(), path, null), ZoneResponse.class);
   }
 
   @Override
@@ -99,7 +100,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
     String path = "zones/" + request.getZoneId() + "/changes";
 
     VinylDNSRequest<Void> vinylDNSRequest =
-            new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
 
     if (request.getStartFrom() != null) {
       vinylDNSRequest.addParameter("startFrom", request.getStartFrom());
@@ -116,7 +117,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   public VinylDNSResponse<ZoneResponse> syncZone(ZoneRequest request) {
     String path = "zones/" + request.getZoneId() + "/sync";
     return executeRequest(
-            new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, null), ZoneResponse.class);
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, null), ZoneResponse.class);
   }
 
   // RecordSet
@@ -215,11 +216,12 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
-  public VinylDNSResponse<ListRecordSetChangesResponse> listRecordSetChanges(ListRecordSetChangesRequest request) {
+  public VinylDNSResponse<ListRecordSetChangesResponse> listRecordSetChanges(
+      ListRecordSetChangesRequest request) {
     String path = "zones/" + request.getZoneId() + "/recordsetchanges";
 
     VinylDNSRequest<Void> vinylDNSRequest =
-            new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
 
     if (request.getStartFrom() != null) {
       vinylDNSRequest.addParameter("startFrom", request.getStartFrom());

@@ -122,35 +122,42 @@ public class VinylDNSClientTest {
   }
 
   @Test
-  public void createZoneSucess() {
-    Zone newZone = new Zone(
-                    "newid",
-                    "name",
-                    "some@company.com",
-                    ZoneStatus.Active,
-                    new DateTime(),
-                    new DateTime(),
-                    testZoneConnection1,
-                    null,
-                    true,
-                    testZoneAcl1,
-                    "group",
-                    null);
+  public void createZoneSuccess() {
+    Zone newZone =
+        new Zone(
+            "newid",
+            "name",
+            "some@company.com",
+            ZoneStatus.Active,
+            new DateTime(),
+            new DateTime(),
+            testZoneConnection1,
+            null,
+            true,
+            testZoneAcl1,
+            "group",
+            null);
 
-    ZoneResponse response = new ZoneResponse(
-            newZone,"someUserId", ZoneChangeType.Create,ZoneChangeStatus.Pending, new DateTime(), "", "1234");
+    ZoneResponse response =
+        new ZoneResponse(
+            newZone,
+            "someUserId",
+            ZoneChangeType.Create,
+            ZoneChangeStatus.Pending,
+            new DateTime(),
+            "",
+            "1234");
 
     wireMockServer.stubFor(
         post(urlEqualTo("/zones"))
             .willReturn(
-            aResponse()
+                aResponse()
                     .withStatus(202)
-                    .withBody(newZone)
+                    .withBody(client.gson.toJson(newZone))
                     .withHeader("Content-Type", "application/json")
-                    .withBody(response)));
+                    .withBody(client.gson.toJson(response))));
 
-    VinylDNSResponse<ZoneResponse> vinylDNSResponse =
-            client.createZone(newZone);
+    VinylDNSResponse<ZoneResponse> vinylDNSResponse = client.createZone(newZone);
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 202);
@@ -192,8 +199,9 @@ public class VinylDNSClientTest {
   }
 
   @Test
-  public void updateZoneSucess() {
-    Zone newZone = new Zone(
+  public void updateZoneSuccess() {
+    Zone newZone =
+        new Zone(
             "newid",
             "name123",
             "some@company.com",
@@ -207,20 +215,26 @@ public class VinylDNSClientTest {
             "group",
             null);
 
-    ZoneResponse response = new ZoneResponse(
-            newZone,"someUserId", ZoneChangeType.Update,ZoneChangeStatus.Pending, new DateTime(), "", "1234");
+    ZoneResponse response =
+        new ZoneResponse(
+            newZone,
+            "someUserId",
+            ZoneChangeType.Update,
+            ZoneChangeStatus.Pending,
+            new DateTime(),
+            "",
+            "1234");
 
     wireMockServer.stubFor(
-            put(urlEqualTo("/zones/" + newZone.getId()))
-                    .willReturn(
-                            aResponse()
-                                    .withStatus(202)
-                                    .withBody(newZone)
-                                    .withHeader("Content-Type", "application/json")
-                                    .withBody(response)));
+        put(urlEqualTo("/zones/" + newZone.getId()))
+            .willReturn(
+                aResponse()
+                    .withStatus(202)
+                    .withBody(client.gson.toJson(newZone))
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(client.gson.toJson(response))));
 
-    VinylDNSResponse<ZoneResponse> vinylDNSResponse =
-            client.updateZone(newZone);
+    VinylDNSResponse<ZoneResponse> vinylDNSResponse = client.updateZone(newZone);
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 202);
@@ -229,19 +243,26 @@ public class VinylDNSClientTest {
 
   @Test
   public void deleteZoneSuccess() {
-    ZoneResponse response = new ZoneResponse(
-            testZone1,"someUserId", ZoneChangeType.Delete,ZoneChangeStatus.Pending, new DateTime(), "", "1234");
+    ZoneResponse response =
+        new ZoneResponse(
+            testZone1,
+            "someUserId",
+            ZoneChangeType.Delete,
+            ZoneChangeStatus.Pending,
+            new DateTime(),
+            "",
+            "1234");
 
     wireMockServer.stubFor(
-            delete(urlEqualTo("/zones/" + testZone1.getId()))
-                    .willReturn(
-                            aResponse()
-                                    .withStatus(202)
-                                    .withHeader("Content-Type", "application/json")
-                                    .withBody(response)));
+        delete(urlEqualTo("/zones/" + testZone1.getId()))
+            .willReturn(
+                aResponse()
+                    .withStatus(202)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(client.gson.toJson(response))));
 
     VinylDNSResponse<ZoneResponse> vinylDNSResponse =
-            client.deleteZone(new ZoneRequest(testZone1.getId()));
+        client.deleteZone(new ZoneRequest(testZone1.getId()));
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 202);
@@ -251,28 +272,34 @@ public class VinylDNSClientTest {
   @Test
   public void listZoneChangesSuccess() {
 
-    String recordNameFilter = "someFilter";
     String startFrom = "someStart";
     int maxItems = 55;
-    List<ZoneResponse> zoneChanges = Collections.singletonList(
-            testZone1,"someUserId", ZoneChangeType.Update,ZoneChangeStatus.Pending, new DateTime(), "", "1234");
+    List<ZoneResponse> zoneChanges =
+        Collections.singletonList(
+            new ZoneResponse(
+                testZone1,
+                "someUserId",
+                ZoneChangeType.Update,
+                ZoneChangeStatus.Pending,
+                new DateTime(),
+                "",
+                "1234"));
 
-    ListZoneChangesResponse listZoneChangesResponse = new ListZoneChangesResponse(zoneChanges,startFrom, "nextId", maxItems, recordNameFilter)
+    ListZoneChangesResponse listZoneChangesResponse =
+        new ListZoneChangesResponse(zoneChanges, startFrom, "nextId", maxItems);
 
     wireMockServer.stubFor(
-            get(urlEqualTo("/zones/" + testZone1.getId() + "/changes?(.*)"))
-                    .withQueryParam("recordNameFilter", equalTo(recordNameFilter))
-                    .withQueryParam("startFrom", equalTo(startFrom))
-                    .withQueryParam("maxItems", equalTo(String.valueOf(maxItems)))
-                    .willReturn(
-                            aResponse()
-                                    .withStatus(200)
-                                    .withHeader("Content-Type", "application/json")
-                                    .withBody(listZoneChangesResponse)));
+        get(urlMatching("/zones/" + testZone1.getId() + "/changes?(.*)"))
+            .withQueryParam("startFrom", equalTo(startFrom))
+            .withQueryParam("maxItems", equalTo(String.valueOf(maxItems)))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(client.gson.toJson(listZoneChangesResponse))));
 
     VinylDNSResponse<ListZoneChangesResponse> vinylDNSResponse =
-            client.listZoneChanges(new ListZoneChangesRequest(testZone1.getId(), startFrom, maxItems));
-
+        client.listZoneChanges(new ListZoneChangesRequest(testZone1.getId(), startFrom, maxItems));
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 200);
@@ -281,21 +308,30 @@ public class VinylDNSClientTest {
 
   @Test
   public void syncZoneSuccess() {
-    String response = client.gson.toJson(new GetZoneResponse(testZone1));
+
+    ZoneResponse response =
+        new ZoneResponse(
+            testZone1,
+            "someUserId",
+            ZoneChangeType.Create,
+            ZoneChangeStatus.Pending,
+            new DateTime(),
+            "",
+            "1234");
 
     wireMockServer.stubFor(
-            post(urlEqualTo("/zones/" + testZone1.getId() + "/sync"))
-                    .willReturn(
-                            aResponse()
-                                    .withStatus(202)
-                                    .withHeader("Content-Type", "application/json")
-                                    .withBody(response)));
+        post(urlEqualTo("/zones/" + testZone1.getId() + "/sync"))
+            .willReturn(
+                aResponse()
+                    .withStatus(202)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(client.gson.toJson(response))));
 
     VinylDNSResponse<ZoneResponse> vinylDNSResponse =
-            client.deleteZone(new ZoneRequest(testZone1.getId()));
+        client.syncZone(new ZoneRequest(testZone1.getId()));
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
-    assertEquals(vinylDNSResponse.getStatusCode(), 200);
+    assertEquals(vinylDNSResponse.getStatusCode(), 202);
     assertEquals(vinylDNSResponse.getValue().getZone(), testZone1);
   }
 
@@ -923,15 +959,15 @@ public class VinylDNSClientTest {
     String response = client.gson.toJson(listRecordSetChangesResponse);
 
     wireMockServer.stubFor(
-            get(urlEqualTo("/zones/" + zoneId + "/recordsetchanges"))
-                    .willReturn(
-                            aResponse()
-                                    .withStatus(200)
-                                    .withHeader("Content-Type", "application/json")
-                                    .withBody(response)));
+        get(urlEqualTo("/zones/" + zoneId + "/recordsetchanges"))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
 
     VinylDNSResponse<ListRecordSetChangesResponse> vinylDNSResponse =
-            client.listRecordSetChanges(new ListRecordSetChangesRequest(zoneId));
+        client.listRecordSetChanges(new ListRecordSetChangesRequest(zoneId));
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 200);
@@ -941,11 +977,11 @@ public class VinylDNSClientTest {
   @Test
   public void listRecordSetChangeFailure() {
     wireMockServer.stubFor(
-            get(urlEqualTo("/zones/" + zoneId + "/recordsetchanges"))
-                    .willReturn(aResponse().withStatus(500).withBody("server error")));
+        get(urlEqualTo("/zones/" + zoneId + "/recordsetchanges"))
+            .willReturn(aResponse().withStatus(500).withBody("server error")));
 
     VinylDNSResponse<ListRecordSetChangesResponse> vinylDNSResponse =
-            client.listRecordSetChanges(new ListRecordSetChangesRequest(zoneId));
+        client.listRecordSetChanges(new ListRecordSetChangesRequest(zoneId));
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
     assertEquals(vinylDNSResponse.getStatusCode(), 500);
@@ -1061,7 +1097,8 @@ public class VinylDNSClientTest {
   private GetRecordSetChangeRequest getRecordSetChangeRequest =
       new GetRecordSetChangeRequest(zoneId, recordSetId, recordSetChangeId);
   private UpdateRecordSetRequest updateRecordSetRequest =
-      new UpdateRecordSetRequest(rsId, zoneId, recordSetName,ownerGroupId, RecordType.A, 100, recordDataList);
+      new UpdateRecordSetRequest(
+          rsId, zoneId, recordSetName, ownerGroupId, RecordType.A, 100, recordDataList);
 
   private String adminId = "adminId";
   private Set<UserInfo> adminUserInfo = Collections.singleton(new UserInfo(adminId));
@@ -1087,8 +1124,9 @@ public class VinylDNSClientTest {
   private ListGroupsResponse listGroupsResponse =
       new ListGroupsResponse(groupList, "groupNameFilter", "startFrom", "nextId", 100);
 
-  private List<RecordSetChange> recordSetChangeList = Collections.singletonList(recordSetChangeCreate);
+  private List<RecordSetChange> recordSetChangeList =
+      Collections.singletonList(recordSetChangeCreate);
 
   private ListRecordSetChangesResponse listRecordSetChangesResponse =
-          new ListRecordSetChangesResponse(zoneId,recordSetChangeList ,"", "startFrom", 1);
+      new ListRecordSetChangesResponse(zoneId, recordSetChangeList, "", "startFrom", 1);
 }

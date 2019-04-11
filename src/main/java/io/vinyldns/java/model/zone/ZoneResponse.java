@@ -13,130 +13,124 @@
  */
 package io.vinyldns.java.model.zone;
 
+import java.util.Objects;
 import org.joda.time.DateTime;
 
-import java.util.Objects;
-
 public class ZoneResponse {
-    private Zone zone;
-    private String userId;
-    private ZoneChangeType changeType;
-    private ZoneChangeStatus status = ZoneChangeStatus.Pending;
-    private DateTime created;
-    private String systemMessage; //optional
-    private String id;
+  private final Zone zone;
+  private final String userId;
+  private final ZoneChangeType changeType;
+  private final ZoneChangeStatus status;
+  private final DateTime created;
+  private String systemMessage; // optional
+  private final String id;
 
-    public ZoneResponse() {}
+  public ZoneResponse(
+      Zone zone,
+      String userId,
+      ZoneChangeType changeType,
+      ZoneChangeStatus status,
+      DateTime created,
+      String id) {
+    this.zone = zone;
+    this.userId = userId;
+    this.changeType = changeType;
+    this.status = status;
+    this.created = created;
+    this.id = id;
+  }
 
-    public ZoneResponse(Zone zone,
-                        String userId,
-                        ZoneChangeType changeType,
-                        ZoneChangeStatus status,
-                        DateTime created,
-                        String systemMessage,
-                        String id) {
-        this.zone = zone;
-        this.userId = userId;
-        this.changeType = changeType;
-        this.status = status;
-        this.created = created;
-        this.systemMessage = systemMessage;
-        this.id = id;
-    }
+  public ZoneResponse(
+      Zone zone,
+      String userId,
+      ZoneChangeType changeType,
+      ZoneChangeStatus status,
+      DateTime created,
+      String systemMessage,
+      String id) {
+    this.zone = zone;
+    this.userId = userId;
+    this.changeType = changeType;
+    this.status = status;
+    this.created = created;
+    this.systemMessage = systemMessage;
+    this.id = id;
+  }
 
-    public Zone getZone() {
-        return zone;
-    }
+  public Zone getZone() {
+    return zone;
+  }
 
-    public void setZone(Zone zone) {
-        this.zone = zone;
-    }
+  public String getUserId() {
+    return userId;
+  }
 
-    public String getUserId() {
-        return userId;
-    }
+  public ZoneChangeType getChangeType() {
+    return changeType;
+  }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
+  public ZoneChangeStatus getStatus() {
+    return status;
+  }
 
-    public ZoneChangeType getChangeType() {
-        return changeType;
-    }
+  public DateTime getCreated() {
+    return created;
+  }
 
-    public void setChangeType(ZoneChangeType changeType) {
-        this.changeType = changeType;
-    }
+  public String getSystemMessage() {
+    return systemMessage;
+  }
 
-    public ZoneChangeStatus getStatus() {
-        return status;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public void setStatus(ZoneChangeStatus status) {
-        this.status = status;
-    }
+  @Override
+  public String toString() {
+    return "ZoneResponse{"
+        + "zone="
+        + zone
+        + ", userId='"
+        + userId
+        + '\''
+        + ", changeType="
+        + changeType
+        + ", status="
+        + status
+        + ", created="
+        + created
+        + ", systemMessage='"
+        + systemMessage
+        + '\''
+        + ", id='"
+        + id
+        + '\''
+        + '}';
+  }
 
-    public DateTime getCreated() {
-        return created;
-    }
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (!(o instanceof ZoneResponse)) return false;
+    ZoneResponse that = (ZoneResponse) o;
+    return Objects.equals(getZone(), that.getZone())
+        && Objects.equals(getUserId(), that.getUserId())
+        && getChangeType() == that.getChangeType()
+        && getStatus() == that.getStatus()
+        && Objects.equals(getCreated(), that.getCreated())
+        && Objects.equals(getSystemMessage(), that.getSystemMessage())
+        && Objects.equals(getId(), that.getId());
+  }
 
-    public void setCreated(DateTime created) {
-        this.created = created;
-    }
-
-    public String getSystemMessage() {
-        return systemMessage;
-    }
-
-    public void setSystemMessage(String systemMessage) {
-        this.systemMessage = systemMessage;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    @Override
-    public String toString() {
-        return "ZoneResponse{" +
-                "zone=" + zone +
-                ", userId='" + userId + '\'' +
-                ", changeType=" + changeType +
-                ", status=" + status +
-                ", created=" + created +
-                ", systemMessage='" + systemMessage + '\'' +
-                ", id='" + id + '\'' +
-                '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof ZoneResponse)) return false;
-        ZoneResponse that = (ZoneResponse) o;
-        return Objects.equals(getZone(), that.getZone()) &&
-                Objects.equals(getUserId(), that.getUserId()) &&
-                getChangeType() == that.getChangeType() &&
-                getStatus() == that.getStatus() &&
-                Objects.equals(getCreated(), that.getCreated()) &&
-                Objects.equals(getSystemMessage(), that.getSystemMessage()) &&
-                Objects.equals(getId(), that.getId());
-    }
-
-    @Override
-    public int hashCode() {
-        int result = zone.hashCode();
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
-        result = 31 * result + (changeType != null ? changeType.hashCode() : 0);
-        result = 31 * result + (status != null ? status.hashCode() : 0);
-        result = 31 * result + (created != null ? created.hashCode() : 0);
-        result = 31 * result + (systemMessage != null ? systemMessage.hashCode() : 0);
-        result = 31 * result + (id != null ? id.hashCode() : 0);
-        return result;
-    }
-
+  @Override
+  public int hashCode() {
+    int result = zone.hashCode();
+    result = 31 * result + (userId != null ? userId.hashCode() : 0);
+    result = 31 * result + (changeType != null ? changeType.hashCode() : 0);
+    result = 31 * result + (status != null ? status.hashCode() : 0);
+    result = 31 * result + (created != null ? created.hashCode() : 0);
+    result = 31 * result + (systemMessage != null ? systemMessage.hashCode() : 0);
+    result = 31 * result + (id != null ? id.hashCode() : 0);
+    return result;
+  }
 }
