@@ -11,22 +11,22 @@
  * express or implied. See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.vinyldns.java;
+package io.vinyldns.java.model.zone;
 
-public class GetGroupRequest {
-  private final String id;
+public class ZoneRequest {
+  private final String zoneId;
 
-  public GetGroupRequest(String id) {
-    this.id = id;
+  public ZoneRequest(String zoneId) {
+    this.zoneId = zoneId;
   }
 
-  public String getId() {
-    return id;
+  public String getZoneId() {
+    return zoneId;
   }
 
   @Override
   public String toString() {
-    return "ZoneRequest{id='" + id + "'}";
+    return "ZoneRequest{" + "zoneId='" + zoneId + "'}";
   }
 
   @Override
@@ -34,12 +34,12 @@ public class GetGroupRequest {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    GetGroupRequest that = (GetGroupRequest) o;
-    return id.equals(that.id);
+    ZoneRequest that = (ZoneRequest) o;
+    return zoneId.equals(that.zoneId);
   }
 
   @Override
   public int hashCode() {
-    return id.hashCode();
+    return zoneId.hashCode();
   }
 }

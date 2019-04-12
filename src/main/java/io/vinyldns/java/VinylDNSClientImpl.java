@@ -68,10 +68,56 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
-  public VinylDNSResponse<GetZoneResponse> getZone(GetZoneRequest request) {
+  public VinylDNSResponse<ZoneResponse> createZone(Zone zone) {
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), "zones", zone),
+        ZoneResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<GetZoneResponse> getZone(ZoneRequest request) {
     String path = "zones/" + request.getZoneId();
     return executeRequest(
         new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null), GetZoneResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<ZoneResponse> updateZone(Zone zone) {
+    String path = "zones/" + zone.getId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.PUT.name(), getBaseUrl(), path, zone), ZoneResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<ZoneResponse> deleteZone(ZoneRequest request) {
+    String path = "zones/" + request.getZoneId();
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.DELETE.name(), getBaseUrl(), path, null), ZoneResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<ListZoneChangesResponse> listZoneChanges(ListZoneChangesRequest request) {
+    String path = "zones/" + request.getZoneId() + "/changes";
+
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    if (request.getStartFrom() != null) {
+      vinylDNSRequest.addParameter("startFrom", request.getStartFrom());
+    }
+
+    if (request.getMaxItems() != null) {
+      vinylDNSRequest.addParameter("maxItems", request.getMaxItems().toString());
+    }
+
+    return executeRequest(vinylDNSRequest, ListZoneChangesResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<ZoneResponse> syncZone(ZoneRequest request) {
+    String path = "zones/" + request.getZoneId() + "/sync";
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, null), ZoneResponse.class);
   }
 
   // RecordSet

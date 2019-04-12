@@ -29,6 +29,8 @@ public class Zone {
   private String adminGroupId;
   private DateTime latestSync; // optional
 
+  private Boolean isTest = false;
+
   public Zone() {}
 
   public Zone(
@@ -154,6 +156,14 @@ public class Zone {
     this.latestSync = latestSync;
   }
 
+  public Boolean getTest() {
+    return isTest;
+  }
+
+  public void setTest(Boolean test) {
+    isTest = test;
+  }
+
   @Override
   public String toString() {
     return "Zone{"
@@ -185,6 +195,8 @@ public class Zone {
         + '\''
         + ", latestSync="
         + latestSync
+        + ", isTest="
+        + isTest
         + '}';
   }
 
@@ -209,7 +221,9 @@ public class Zone {
         : zone.transferConnection != null) return false;
     if (!acl.equals(zone.acl)) return false;
     if (!adminGroupId.equals(zone.adminGroupId)) return false;
-    return latestSync != null ? latestSync.equals(zone.latestSync) : zone.latestSync == null;
+    if (latestSync != null ? !latestSync.equals(zone.latestSync) : zone.latestSync != null)
+      return false;
+    return zone.isTest == isTest;
   }
 
   @Override
@@ -226,6 +240,7 @@ public class Zone {
     result = 31 * result + acl.hashCode();
     result = 31 * result + adminGroupId.hashCode();
     result = 31 * result + (latestSync != null ? latestSync.hashCode() : 0);
+    result = 31 * result + isTest.hashCode();
     return result;
   }
 }

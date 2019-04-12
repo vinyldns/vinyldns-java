@@ -32,22 +32,67 @@ public interface VinylDNSClient {
    *     VinylDNSFailureResponse&lt;ListZonesResponse&gt;} in case of failure
    */
   VinylDNSResponse<ListZonesResponse> listZones(ListZonesRequest request);
-  // ToDo: Create Zone
-  // ToDo: Get Zone
-  // ToDo: Delete Zone
-  // ToDo: Update Zone
-  // ToDo: List Zone Changes
-  // ToDo: Sync Zone
+
+  /**
+   * Creates a zone.
+   *
+   * @param zone See {@link Zone Zone model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ZoneResponse&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;ZoneResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<ZoneResponse> createZone(Zone zone);
 
   /**
    * Retrieves zone by ID.
    *
-   * @param request See {@link GetZoneRequest GetZoneRequest Model}
-   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ListZonesResponse&gt;} in
-   *     case of success and {@link VinylDNSFailureResponse
-   *     VinylDNSFailureResponse&lt;ListZonesResponse&gt;} in case of failure
+   * @param request See {@link ZoneRequest ZoneRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetZoneResponse&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;GetZonesResponse&gt;} in case of failure
    */
-  VinylDNSResponse<GetZoneResponse> getZone(GetZoneRequest request);
+  VinylDNSResponse<GetZoneResponse> getZone(ZoneRequest request);
+
+  /**
+   * Updates a zone.
+   *
+   * @param zone See {@link Zone Zone model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ZoneResponse&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;ZoneResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<ZoneResponse> updateZone(Zone zone);
+
+  /**
+   * Deletes zone by ID.
+   *
+   * @param request See {@link ZoneRequest ZoneRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ZoneResponse&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;ZoneResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<ZoneResponse> deleteZone(ZoneRequest request);
+
+  /**
+   * Retrieves up to 100 (default) zone changes sorted by most recent. This call will return a
+   * subset of the full information in each change, as detailed in the attributes section.
+   *
+   * @param request See {@link ListZoneChangesRequest ListBatchChangesRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ListZoneChangesResponse&gt;}
+   *     in case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;ListZoneChangesResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<ListZoneChangesResponse> listZoneChanges(ListZoneChangesRequest request);
+
+  /**
+   * Sync zone info with existing zone info.
+   *
+   * @param request See {@link ZoneRequest ZoneRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ZoneResponse&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;ZoneResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<ZoneResponse> syncZone(ZoneRequest request);
 
   // RecordSet
   /**
