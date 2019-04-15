@@ -189,6 +189,16 @@ public interface VinylDNSClient {
   VinylDNSResponse<Group> createGroup(CreateGroupRequest request);
 
   /**
+   * Update a group.
+   *
+   * @param request See {@link UpdateGroupRequest CreateGroupRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;Group&gt;} in case of success
+   *     and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;Group&gt;} in case of
+   *     failure.
+   */
+  VinylDNSResponse<Group> updateGroup(UpdateGroupRequest request);
+
+  /**
    * Delete a group with a specific ID
    *
    * @param request See {@link DeleteGroupRequest DeleteGroupRequest Model}
@@ -207,6 +217,37 @@ public interface VinylDNSClient {
    *     VinylDNSFailureResponse&lt;ListGroupsResponse&gt;} in case of failure.
    */
   VinylDNSResponse<ListGroupsResponse> listGroups(ListGroupsRequest request);
+
+  /**
+   * Retrieves the list of admins for a group.
+   *
+   * @param groupId groupId
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ListAdminsResponse&gt;} in
+   *     case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;ListAdminsResponse&gt;} in case of failure.
+   */
+  VinylDNSResponse<ListAdminsResponse> listAdmins(String groupId);
+
+  /**
+   * Retrieves the atmost 100 members for a group.
+   *
+   * @param request See {@link ListMembersRequest ListMembersRequest}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ListMembersResponse&gt;} in
+   *     case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;ListMembersResponse&gt;} in case of failure.
+   */
+  VinylDNSResponse<ListMembersResponse> listMembers(ListMembersRequest request);
+
+  /**
+   * Retrieves the list of group activity for a groupId.
+   *
+   * @param request See {@link ListGroupActivityRequest ListGroupActivityRequest}
+   * @return {@link VinylDNSSuccessResponse
+   *     VinylDNSSuccessResponse&lt;ListGroupActivityResponse&gt;} in case of success and {@link
+   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;ListGroupActivityResponse&gt;} in case
+   *     of failure.
+   */
+  VinylDNSResponse<ListGroupActivityResponse> listGroupActivity(ListGroupActivityRequest request);
 
   // Batch
   /**
@@ -244,11 +285,4 @@ public interface VinylDNSClient {
    *     case of failure
    */
   VinylDNSResponse<BatchResponse> createBatchChanges(CreateBatchRequest request);
-
-  // ToDo: Membership:
-  // ToDo:   List Group Activity
-  // ToDo:   List Group Members
-  // ToDo:   List Group Admins
-  // ToDo:   List Groups
-  // ToDo:   Update Group
 }
