@@ -6,11 +6,15 @@
 
 ## Release
 
+### Sonatype credentials
+
+Follow https://github.com/vinyldns/vinyldns/blob/master/MAINTAINERS.md#sonatype-credentials to get vinyldns-sonatype-key.asc imported to your local
+
+### Maven settings
+
 Make sure you have `mvn`, on mac, this is `brew install maven`
 
-The following guide was used to setup releases to Sonatype: https://central.sonatype.org/pages/apache-maven.html
-
-To release to Sonatype, a `settings.xml` in `~/.m2` https://maven.apache.org/settings.html, like so:
+To release to Sonatype, make a `settings.xml` in `~/.m2` https://maven.apache.org/settings.html, like so:
 
 ```xml
 <settings>
@@ -32,7 +36,7 @@ To release to Sonatype, a `settings.xml` in `~/.m2` https://maven.apache.org/set
 		<vinyldns-fork>GITHUB_USERNAME</vinyldns-fork>
                 <gpg.executable>gpg</gpg.executable>
 		<gpg.keyname>F6D171DC24C6EB30FCAC1E85AEF7D1D58E3C1B9A</gpg.keyname>
-                <gpg.passphrase>KEY_PASSPHRASE</gpg.passphrase>
+                <gpg.passphrase><![CDATA[KEY_PASSPHRASE]]></gpg.passphrase>
             </properties>
        </profile>
     </profiles>
@@ -46,8 +50,25 @@ The following information must be provided:
 * GITHUB_USERNAME - Github username that your fork is published to
 * KEY_PASSPHRASE - passphrase for key F6D171DC24C6EB30FCAC1E85AEF7D1D58E3C1B9A
 
+### Proxies
+
+Make sure you are not behind any corporate proxies as that may cause issues with the release
+
+### Github SSH
+
+The release process makes a commit to your fork with the updated version and tag. Make sure you have ssh setup for your account on github.com
+
+### Run
+
 To run the release, execute `bin/release.sh`
 
 For a full release, use the flag `--full`, otherwise, only a `SNAPSHOT` will be released to the Sonatype staging endpoint
 
 > Note, you will need the passphrase handy for the key F6D171DC24C6EB30FCAC1E85AEF7D1D58E3C1B9A
+
+You can validate the release went through at https://oss.sonatype.org/#nexus-search;quick~io.vinyldns
+
+### Post
+
+* Your fork's master should have a commit added to it, make a pr to github.com/vinyldns/vinyldns-java to sync up versions
+* Make a release on github.com/vinyldns/vinyldns-java
