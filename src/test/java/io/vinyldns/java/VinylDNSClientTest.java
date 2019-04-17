@@ -199,6 +199,39 @@ public class VinylDNSClientTest {
   }
 
   @Test
+  public void getZoneByNameSuccess() {
+    String response = client.gson.toJson(new GetZoneResponse(testZone1));
+
+    wireMockServer.stubFor(
+        get(urlEqualTo("/zones/name/" + testZone1.getName()))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+
+    VinylDNSResponse<GetZoneResponse> vinylDNSResponse = client.getZoneByName(testZone1.getName());
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
+    assertEquals(vinylDNSResponse.getStatusCode(), 200);
+    assertEquals(vinylDNSResponse.getValue().getZone(), testZone1);
+  }
+
+  @Test
+  public void getZoneByNameFailure404() {
+    wireMockServer.stubFor(
+        get(urlEqualTo("/zones/name/no-existo"))
+            .willReturn(aResponse().withStatus(404).withBody("not found")));
+
+    VinylDNSResponse<GetZoneResponse> vinylDNSResponse = client.getZoneByName("no-existo");
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 404);
+    assertEquals(vinylDNSResponse.getMessageBody(), "not found");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
   public void updateZoneSuccess() {
     Zone newZone =
         new Zone(
