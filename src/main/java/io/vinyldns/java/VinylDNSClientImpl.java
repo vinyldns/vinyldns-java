@@ -82,6 +82,13 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
+  public VinylDNSResponse<GetZoneResponse> getZoneByName(String zoneName) {
+    String path = "zones/name/" + zoneName;
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null), GetZoneResponse.class);
+  }
+
+  @Override
   public VinylDNSResponse<ZoneResponse> updateZone(Zone zone) {
     String path = "zones/" + zone.getId();
     return executeRequest(

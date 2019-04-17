@@ -54,6 +54,16 @@ public interface VinylDNSClient {
   VinylDNSResponse<GetZoneResponse> getZone(ZoneRequest request);
 
   /**
+   * Retrieves zone by name.
+   *
+   * @param zoneName Name to use for zone lookup
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetZoneResponse&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;GetZonesResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<GetZoneResponse> getZoneByName(String zoneName);
+
+  /**
    * Updates a zone.
    *
    * @param zone See {@link Zone Zone model}
