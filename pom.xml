@@ -4,13 +4,12 @@
     <groupId>io.vinyldns</groupId>
     <artifactId>vinyldns-java</artifactId>
     <version>0.7.4-SNAPSHOT</version>
-
     <scm>
         <connection>scm:git:ssh://git@github.com/${vinyldns-fork}/vinyldns-java.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/${vinyldns-fork}/vinyldns-java.git</developerConnection>
         <url>http://github.com/vinyldns/vinyldns-java</url>
-    <tag>HEAD</tag>
-  </scm>
+    <tag>vinyldns-java-0.7.3</tag>
+    </scm>
 
     <name>vinyldns-java</name>
     <description>java client for https://vinyldns.io</description>
