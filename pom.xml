@@ -9,8 +9,8 @@
         <connection>scm:git:ssh://git@github.com/${vinyldns-fork}/vinyldns-java.git</connection>
         <developerConnection>scm:git:ssh://git@github.com/${vinyldns-fork}/vinyldns-java.git</developerConnection>
         <url>http://github.com/vinyldns/vinyldns-java</url>
-        <tag>HEAD</tag>
-    </scm>
+    <tag>HEAD</tag>
+  </scm>
 
     <name>vinyldns-java</name>
     <description>java client for https://vinyldns.io</description>

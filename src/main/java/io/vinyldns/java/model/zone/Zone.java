@@ -28,8 +28,8 @@ public class Zone {
   private ZoneACL acl;
   private String adminGroupId;
   private DateTime latestSync; // optional
-
   private Boolean isTest = false;
+  private String backendId; // optional
 
   public Zone() {}
 
@@ -45,7 +45,9 @@ public class Zone {
       boolean shared,
       ZoneACL acl,
       String adminGroupId,
-      DateTime latestSync) {
+      DateTime latestSync,
+      Boolean isTest,
+      String backendId) {
     this.id = id;
     this.name = name;
     this.email = email;
@@ -58,6 +60,8 @@ public class Zone {
     this.acl = acl;
     this.adminGroupId = adminGroupId;
     this.latestSync = latestSync;
+    this.isTest = isTest;
+    this.backendId = backendId;
   }
 
   public String getId() {
@@ -161,7 +165,15 @@ public class Zone {
   }
 
   public void setTest(Boolean test) {
-    isTest = test;
+    this.isTest = test;
+  }
+
+  public String getBackendId() {
+    return backendId;
+  }
+
+  public void setBackendId(String backendId) {
+    this.backendId = backendId;
   }
 
   @Override
@@ -197,6 +209,9 @@ public class Zone {
         + latestSync
         + ", isTest="
         + isTest
+        + ", backendId='"
+        + backendId
+        + '\''
         + '}';
   }
 
@@ -223,6 +238,7 @@ public class Zone {
     if (!adminGroupId.equals(zone.adminGroupId)) return false;
     if (latestSync != null ? !latestSync.equals(zone.latestSync) : zone.latestSync != null)
       return false;
+    if (backendId != null ? !backendId.equals(zone.backendId) : zone.backendId != null) return false;
     return zone.isTest == isTest;
   }
 
@@ -241,6 +257,7 @@ public class Zone {
     result = 31 * result + adminGroupId.hashCode();
     result = 31 * result + (latestSync != null ? latestSync.hashCode() : 0);
     result = 31 * result + isTest.hashCode();
+    result = 31 * result + backendId.hashCode();
     return result;
   }
 }
