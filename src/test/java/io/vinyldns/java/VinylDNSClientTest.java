@@ -136,7 +136,9 @@ public class VinylDNSClientTest {
             true,
             testZoneAcl1,
             "group",
-            null);
+            null,
+            true,
+            "somebackId");
 
     ZoneResponse response =
         new ZoneResponse(
@@ -246,7 +248,9 @@ public class VinylDNSClientTest {
             true,
             testZoneAcl1,
             "group",
-            null);
+            null,
+            true,
+            "somebackId");
 
     ZoneResponse response =
         new ZoneResponse(
@@ -1174,7 +1178,9 @@ public class VinylDNSClientTest {
           true,
           testZoneAcl1,
           "group",
-          null);
+          null,
+          true,
+          "somebackId");
   private List<Zone> zones = Collections.singletonList(testZone1);
   private ListZonesResponse listZonesResponse =
       new ListZonesResponse(zones, "startFrom", "nextId", 100, "nameFilter");
