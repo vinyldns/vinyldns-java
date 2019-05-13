@@ -238,7 +238,8 @@ public class Zone {
     if (!adminGroupId.equals(zone.adminGroupId)) return false;
     if (latestSync != null ? !latestSync.equals(zone.latestSync) : zone.latestSync != null)
       return false;
-    if (backendId != null ? !backendId.equals(zone.backendId) : zone.backendId != null) return false;
+    if (backendId != null ? !backendId.equals(zone.backendId) : zone.backendId != null)
+      return false;
     return zone.isTest == isTest;
   }
 
