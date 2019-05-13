@@ -40,6 +40,6 @@ if [[ "$SNAPSHOT" == 1 ]]; then
     mvn clean deploy -P release,ossrh
 else
     printf "\nperforming a full release\n"
-    mvn release:clean release:prepare -P release,ossrh
-    mvn release:perform -P release,ossrh
+    mvn -e release:clean release:prepare -P release,ossrh
+    mvn -e release:perform -P release,ossrh
 fi
