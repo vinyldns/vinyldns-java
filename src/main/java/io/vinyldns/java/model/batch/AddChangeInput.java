@@ -17,36 +17,14 @@ import io.vinyldns.java.model.record.RecordType;
 import io.vinyldns.java.model.record.data.RecordData;
 import java.util.Objects;
 
-public class AddChangeInput implements ChangeInput {
-  private String inputName;
-
-  private RecordType type;
-
+public class AddChangeInput extends ChangeInput {
   private Long ttl;
-
   private RecordData record;
 
-  private ChangeInputType changeType = ChangeInputType.Add;
-
   public AddChangeInput(String inputName, RecordType type, Long ttl, RecordData record) {
-    this.inputName = inputName;
-    this.type = type;
+    super(ChangeInputType.Add, inputName, type);
     this.ttl = ttl;
     this.record = record;
-  }
-
-  @Override
-  public ChangeInputType getChangeType() {
-    return changeType;
-  }
-
-  @Override
-  public String getInputName() {
-    return inputName;
-  }
-
-  public RecordType getType() {
-    return type;
   }
 
   public Long getTtl() {
@@ -59,17 +37,9 @@ public class AddChangeInput implements ChangeInput {
 
   @Override
   public String toString() {
-    return "AddChangeInput{"
-        + "inputName='"
-        + inputName
-        + '\''
-        + ", type="
-        + type
-        + ", ttl="
-        + ttl
-        + ", record="
-        + record
-        + '}';
+    return String.format(
+        "AddChangeInput{changeType='%s', inputName='%s', recordType='%s', ttl='%s', record='%s'}",
+        this.getChangeType(), this.getInputName(), this.getRecordType(), this.ttl, this.record);
   }
 
   @Override
@@ -77,14 +47,13 @@ public class AddChangeInput implements ChangeInput {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     AddChangeInput that = (AddChangeInput) o;
-    return Objects.equals(inputName, that.inputName)
-        && type == that.type
-        && Objects.equals(ttl, that.ttl)
-        && Objects.equals(record, that.record);
+    return super.equals(o)
+        && Objects.equals(this.ttl, that.ttl)
+        && Objects.equals(this.record, that.record);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(inputName, type, ttl, record);
+    return super.hashCode() + Objects.hash(ttl, record);
   }
 }
