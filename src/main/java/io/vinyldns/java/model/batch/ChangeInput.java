@@ -13,9 +13,44 @@
  */
 package io.vinyldns.java.model.batch;
 
-public interface ChangeInput {
+import io.vinyldns.java.model.record.RecordType;
+import java.util.Objects;
 
-  ChangeInputType getChangeType();
+public class ChangeInput {
+  private final ChangeInputType changeType;
+  private final String inputName;
+  private final RecordType type;
 
-  String getInputName();
+  public ChangeInput(ChangeInputType changeType, String inputName, RecordType type) {
+    this.changeType = changeType;
+    this.inputName = inputName;
+    this.type = type;
+  }
+
+  public ChangeInputType getChangeType() {
+    return changeType;
+  }
+
+  public String getInputName() {
+    return inputName;
+  }
+
+  public RecordType getType() {
+    return type;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+    ChangeInput that = (ChangeInput) o;
+    return this.inputName.equals(that.inputName)
+        && this.changeType == that.changeType
+        && this.type == that.type;
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(inputName, changeType, type);
+  }
 }

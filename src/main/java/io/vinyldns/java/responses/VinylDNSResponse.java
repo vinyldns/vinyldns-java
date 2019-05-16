@@ -40,7 +40,7 @@ public class VinylDNSResponse<T> implements ResponseMarker {
 
   @Override
   public String toString() {
-    return "value=" + value + ", statusCode=" + statusCode;
+    return "value=" + value + ", messageBody=" + messageBody + ", statusCode=" + statusCode;
   }
 
   @Override

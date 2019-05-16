@@ -1066,27 +1066,44 @@ public class VinylDNSClientTest {
 
     List<ChangeInput> changes = new ArrayList<>();
     AData adata = new AData("1.2.3.4");
-    AddChangeInput input = new AddChangeInput("www.example.com", RecordType.A, 300L, adata);
-    changes.add(input);
+    AddChangeInput addInput = new AddChangeInput("www.example.com", RecordType.A, 300L, adata);
+    DeleteRecordSetChangeInput deleteInput =
+        new DeleteRecordSetChangeInput("www.example.com", RecordType.A);
+    changes.add(addInput);
+    changes.add(deleteInput);
 
     CreateBatchRequest batchRequest = new CreateBatchRequest(changes);
 
-    AddSingleChange singleChange = new AddSingleChange();
-    singleChange.setChangeType(ChangeInputType.Add);
-    singleChange.setId("1234");
-    singleChange.setInputName("testString");
-    singleChange.setRecord(adata);
-    singleChange.setRecordChangeId("1111");
-    singleChange.setRecordName("testName");
-    singleChange.setRecordSetId("testId");
-    singleChange.setZoneId("testZone");
-    singleChange.setZoneName("testZoneName");
-    singleChange.setType(RecordType.A);
-    singleChange.setSystemMessage("testMessage");
-    singleChange.setStatus(SingleChangeStatus.Complete);
+    AddSingleChange addSingleChange = new AddSingleChange();
+    addSingleChange.setChangeType(ChangeInputType.Add);
+    addSingleChange.setId("1234");
+    addSingleChange.setInputName("testString");
+    addSingleChange.setRecord(adata);
+    addSingleChange.setRecordChangeId("1111");
+    addSingleChange.setRecordName("testName");
+    addSingleChange.setRecordSetId("testId");
+    addSingleChange.setZoneId("testZone");
+    addSingleChange.setZoneName("testZoneName");
+    addSingleChange.setType(RecordType.A);
+    addSingleChange.setSystemMessage("testMessage");
+    addSingleChange.setStatus(SingleChangeStatus.Complete);
+
+    DeleteRecordSetSingleChange deleteSingleChange = new DeleteRecordSetSingleChange();
+    deleteSingleChange.setChangeType(ChangeInputType.DeleteRecordSet);
+    deleteSingleChange.setId("1234");
+    deleteSingleChange.setInputName("testString");
+    deleteSingleChange.setRecordChangeId("1111");
+    deleteSingleChange.setRecordName("testName");
+    deleteSingleChange.setRecordSetId("testId");
+    deleteSingleChange.setZoneId("testZone");
+    deleteSingleChange.setZoneName("testZoneName");
+    deleteSingleChange.setTyp(RecordType.A);
+    deleteSingleChange.setSystemMessage("testMessage");
+    deleteSingleChange.setStatus(SingleChangeStatus.Complete);
 
     List<SingleChange> singleChangeList = new ArrayList<>();
-    singleChangeList.add(singleChange);
+    singleChangeList.add(addSingleChange);
+    singleChangeList.add(deleteSingleChange);
 
     BatchResponse batchResponse = new BatchResponse();
     batchResponse.setId("1234");
