@@ -23,7 +23,7 @@ public class DeleteRecordSetChangeInput extends ChangeInput {
   @Override
   public String toString() {
     return String.format(
-        "DeleteRecordSetChangeInput{changeType='%s', inputName='%s', recordType='%s'}",
+        "DeleteRecordSetChangeInput{changeType='%s', inputName='%s', type='%s'}",
         this.getChangeType().name(), this.getInputName(), this.getType().name());
   }
 }

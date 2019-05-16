@@ -38,7 +38,7 @@ public class AddChangeInput extends ChangeInput {
   @Override
   public String toString() {
     return String.format(
-        "AddChangeInput{changeType='%s', inputName='%s', recordType='%s', ttl='%s', record='%s'}",
+        "AddChangeInput{changeType='%s', inputName='%s', type='%s', ttl='%s', record='%s'}",
         this.getChangeType(), this.getInputName(), this.getType(), this.ttl, this.record);
   }
 
