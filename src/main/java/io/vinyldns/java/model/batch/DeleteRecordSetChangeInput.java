@@ -16,14 +16,14 @@ package io.vinyldns.java.model.batch;
 import io.vinyldns.java.model.record.RecordType;
 
 public class DeleteRecordSetChangeInput extends ChangeInput {
-  public DeleteRecordSetChangeInput(String inputName, RecordType recordType) {
-    super(ChangeInputType.DeleteRecordSet, inputName, recordType);
+  public DeleteRecordSetChangeInput(String inputName, RecordType type) {
+    super(ChangeInputType.DeleteRecordSet, inputName, type);
   }
 
   @Override
   public String toString() {
     return String.format(
         "DeleteRecordSetChangeInput{changeType='%s', inputName='%s', recordType='%s'}",
-        this.getChangeType().name(), this.getInputName(), this.getRecordType().name());
+        this.getChangeType().name(), this.getInputName(), this.getType().name());
   }
 }

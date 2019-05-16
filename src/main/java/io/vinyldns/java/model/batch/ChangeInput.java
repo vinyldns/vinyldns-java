@@ -17,14 +17,14 @@ import io.vinyldns.java.model.record.RecordType;
 import java.util.Objects;
 
 public class ChangeInput {
-  private ChangeInputType changeType;
-  private String inputName;
-  private RecordType recordType;
+  private final ChangeInputType changeType;
+  private final String inputName;
+  private final RecordType type;
 
-  public ChangeInput(ChangeInputType changeType, String inputName, RecordType recordType) {
+  public ChangeInput(ChangeInputType changeType, String inputName, RecordType type) {
     this.changeType = changeType;
     this.inputName = inputName;
-    this.recordType = recordType;
+    this.type = type;
   }
 
   public ChangeInputType getChangeType() {
@@ -35,8 +35,8 @@ public class ChangeInput {
     return inputName;
   }
 
-  public RecordType getRecordType() {
-    return recordType;
+  public RecordType getType() {
+    return type;
   }
 
   @Override
@@ -46,11 +46,11 @@ public class ChangeInput {
     ChangeInput that = (ChangeInput) o;
     return this.inputName.equals(that.inputName)
         && this.changeType == that.changeType
-        && this.recordType == that.recordType;
+        && this.type == that.type;
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(inputName, changeType, recordType);
+    return Objects.hash(inputName, changeType, type);
   }
 }

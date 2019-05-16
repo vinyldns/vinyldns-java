@@ -18,8 +18,8 @@ import io.vinyldns.java.model.record.data.RecordData;
 import java.util.Objects;
 
 public class AddChangeInput extends ChangeInput {
-  private Long ttl;
-  private RecordData record;
+  private final Long ttl;
+  private final RecordData record;
 
   public AddChangeInput(String inputName, RecordType type, Long ttl, RecordData record) {
     super(ChangeInputType.Add, inputName, type);
@@ -39,7 +39,7 @@ public class AddChangeInput extends ChangeInput {
   public String toString() {
     return String.format(
         "AddChangeInput{changeType='%s', inputName='%s', recordType='%s', ttl='%s', record='%s'}",
-        this.getChangeType(), this.getInputName(), this.getRecordType(), this.ttl, this.record);
+        this.getChangeType(), this.getInputName(), this.getType(), this.ttl, this.record);
   }
 
   @Override
