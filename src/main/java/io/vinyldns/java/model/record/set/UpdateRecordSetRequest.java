@@ -38,6 +38,23 @@ public class UpdateRecordSetRequest extends RecordSet {
     this.setRecords(records);
   }
 
+  public UpdateRecordSetRequest(
+          String id,
+          String zoneId,
+          String name,
+          RecordType type,
+          long ttl,
+          Collection<RecordData> records) {
+    super();
+    this.setId(id);
+    this.setZoneId(zoneId);
+    this.setName(name);
+    this.setOwnerGroupId(null);
+    this.setType(type);
+    this.setTtl(ttl);
+    this.setRecords(records);
+  }
+
   @Override
   public String toString() {
     return "UpdateRecordSetRequest{" + super.toString() + "}";

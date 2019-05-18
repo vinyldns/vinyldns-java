@@ -52,6 +52,19 @@ public abstract class RecordSetBase {
     this.ownerGroupId = ownerGroupId;
   }
 
+  public RecordSetBase(
+          String zoneId,
+          String name,
+          RecordType type,
+          long ttl,
+          Collection<RecordData> records) {
+    this.zoneId = zoneId;
+    this.name = name;
+    this.type = type;
+    this.ttl = ttl;
+    this.records = records;
+  }
+
   public String getZoneId() {
     return zoneId;
   }
@@ -115,7 +128,7 @@ public abstract class RecordSetBase {
         + ", records="
         + records
         + ", 'ownerGroupId='"
-        + ownerGroupId;
+        + ownerGroupId == null ? "NULL" : ownerGroupId;
   }
 
   @Override
@@ -129,7 +142,7 @@ public abstract class RecordSetBase {
     if (!zoneId.equals(that.zoneId)) return false;
     if (!name.equals(that.name)) return false;
     if (!type.equals(that.type)) return false;
-    if (!ownerGroupId.equals(that.ownerGroupId)) return false;
+    if (ownerGroupId != null && !ownerGroupId.equals(that.ownerGroupId)) return false;
     return records.equals(that.records);
   }
 
@@ -140,7 +153,7 @@ public abstract class RecordSetBase {
     result = 31 * result + type.hashCode();
     result = 31 * result + (int) (ttl ^ (ttl >>> 32));
     result = 31 * result + records.hashCode();
-    result = 31 * result + ownerGroupId.hashCode();
+    result = 31 * result + (ownerGroupId == null ? "NULL".hashCode() : ownerGroupId.hashCode());
     return result;
   }
 }
