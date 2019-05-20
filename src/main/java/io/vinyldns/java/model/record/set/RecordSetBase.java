@@ -53,11 +53,7 @@ public abstract class RecordSetBase {
   }
 
   public RecordSetBase(
-          String zoneId,
-          String name,
-          RecordType type,
-          long ttl,
-          Collection<RecordData> records) {
+      String zoneId, String name, RecordType type, long ttl, Collection<RecordData> records) {
     this.zoneId = zoneId;
     this.name = name;
     this.type = type;
@@ -116,19 +112,22 @@ public abstract class RecordSetBase {
   @Override
   public String toString() {
     return "zoneId='"
-        + zoneId
-        + '\''
-        + ", name='"
-        + name
-        + '\''
-        + ", type="
-        + type
-        + ", ttl="
-        + ttl
-        + ", records="
-        + records
-        + ", 'ownerGroupId='"
-        + ownerGroupId == null ? "NULL" : ownerGroupId;
+                + zoneId
+                + '\''
+                + ", name='"
+                + name
+                + '\''
+                + ", type="
+                + type
+                + ", ttl="
+                + ttl
+                + ", records="
+                + records
+                + ", 'ownerGroupId='"
+                + ownerGroupId
+            == null
+        ? "NULL"
+        : ownerGroupId;
   }
 
   @Override

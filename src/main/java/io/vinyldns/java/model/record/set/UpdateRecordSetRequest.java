@@ -39,12 +39,12 @@ public class UpdateRecordSetRequest extends RecordSet {
   }
 
   public UpdateRecordSetRequest(
-          String id,
-          String zoneId,
-          String name,
-          RecordType type,
-          long ttl,
-          Collection<RecordData> records) {
+      String id,
+      String zoneId,
+      String name,
+      RecordType type,
+      long ttl,
+      Collection<RecordData> records) {
     super();
     this.setId(id);
     this.setZoneId(zoneId);

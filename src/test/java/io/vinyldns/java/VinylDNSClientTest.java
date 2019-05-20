@@ -599,16 +599,16 @@ public class VinylDNSClientTest {
     String response = client.gson.toJson(recordSetChangeCreateNoOwner);
 
     wireMockServer.stubFor(
-            post(urlEqualTo("/zones/" + zoneId + "/recordsets"))
-                    .willReturn(
-                            aResponse()
-                                    .withStatus(202)
-                                    .withBody(request)
-                                    .withHeader("Content-Type", "application/json")
-                                    .withBody(response)));
+        post(urlEqualTo("/zones/" + zoneId + "/recordsets"))
+            .willReturn(
+                aResponse()
+                    .withStatus(202)
+                    .withBody(request)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
 
     VinylDNSResponse<RecordSetChange> vinylDNSResponse =
-            client.createRecordSet(createRecordSetRequestNoOwner);
+        client.createRecordSet(createRecordSetRequestNoOwner);
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 202);
@@ -688,16 +688,16 @@ public class VinylDNSClientTest {
     String response = client.gson.toJson(recordSetChangeUpdateNoOwner);
 
     wireMockServer.stubFor(
-            put(urlEqualTo("/zones/" + zoneId + "/recordsets/" + recordSet.getId()))
-                    .willReturn(
-                            aResponse()
-                                    .withStatus(202)
-                                    .withBody(request)
-                                    .withHeader("Content-Type", "application/json")
-                                    .withBody(response)));
+        put(urlEqualTo("/zones/" + zoneId + "/recordsets/" + recordSet.getId()))
+            .willReturn(
+                aResponse()
+                    .withStatus(202)
+                    .withBody(request)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
 
     VinylDNSResponse<RecordSetChange> vinylDNSResponse =
-            client.updateRecordSet(updateRecordSetRequestNoOwner);
+        client.updateRecordSet(updateRecordSetRequestNoOwner);
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 202);
@@ -1265,17 +1265,17 @@ public class VinylDNSClientTest {
           new DateTime(),
           new DateTime());
   private RecordSet recordSetNoOwner =
-          new RecordSet(
-                  zoneId,
-                  recordSetName,
-                  RecordType.A,
-                  100,
-                  recordDataList,
-                  recordSetId,
-                  null,
-                  RecordSetStatus.Active,
-                  new DateTime(),
-                  new DateTime());
+      new RecordSet(
+          zoneId,
+          recordSetName,
+          RecordType.A,
+          100,
+          recordDataList,
+          recordSetId,
+          null,
+          RecordSetStatus.Active,
+          new DateTime(),
+          new DateTime());
   private RecordSet recordSetUpdate =
       new RecordSet(
           zoneId,
@@ -1317,16 +1317,16 @@ public class VinylDNSClientTest {
           null,
           null);
   private RecordSetChange recordSetChangeCreateNoOwner =
-          new RecordSetChange(
-                  recordSetChangeId,
-                  testZone1,
-                  recordSetNoOwner,
-                  "userId",
-                  RecordSetChangeType.Create,
-                  RecordSetChangeStatus.Pending,
-                  new DateTime(),
-                  null,
-                  null);
+      new RecordSetChange(
+          recordSetChangeId,
+          testZone1,
+          recordSetNoOwner,
+          "userId",
+          RecordSetChangeType.Create,
+          RecordSetChangeStatus.Pending,
+          new DateTime(),
+          null,
+          null);
   private RecordSetChange recordSetChangeUpdate =
       new RecordSetChange(
           recordSetChangeId,
@@ -1339,22 +1339,21 @@ public class VinylDNSClientTest {
           null,
           recordSet);
   private RecordSetChange recordSetChangeUpdateNoOwner =
-          new RecordSetChange(
-                  recordSetChangeId,
-                  testZone1,
-                  recordSetNoOwner,
-                  "userId",
-                  RecordSetChangeType.Update,
-                  RecordSetChangeStatus.Pending,
-                  new DateTime(),
-                  null,
-                  recordSetNoOwner);
+      new RecordSetChange(
+          recordSetChangeId,
+          testZone1,
+          recordSetNoOwner,
+          "userId",
+          RecordSetChangeType.Update,
+          RecordSetChangeStatus.Pending,
+          new DateTime(),
+          null,
+          recordSetNoOwner);
   private CreateRecordSetRequest createRecordSetRequest =
       new CreateRecordSetRequest(
           zoneId, recordSetName, RecordType.A, 100, recordDataList, ownerGroupId);
   private CreateRecordSetRequest createRecordSetRequestNoOwner =
-          new CreateRecordSetRequest(
-                  zoneId, recordSetName, RecordType.A, 100, recordDataList);
+      new CreateRecordSetRequest(zoneId, recordSetName, RecordType.A, 100, recordDataList);
   private GetRecordSetRequest getRecordSetRequest = new GetRecordSetRequest(zoneId, recordSetId);
 
   private String groupId = "groupId";
@@ -1364,8 +1363,7 @@ public class VinylDNSClientTest {
       new UpdateRecordSetRequest(
           rsId, zoneId, recordSetName, ownerGroupId, RecordType.A, 100, recordDataList);
   private UpdateRecordSetRequest updateRecordSetRequestNoOwner =
-          new UpdateRecordSetRequest(
-                  rsId, zoneId, recordSetName, RecordType.A, 100, recordDataList);
+      new UpdateRecordSetRequest(rsId, zoneId, recordSetName, RecordType.A, 100, recordDataList);
 
   private String adminId = "adminId";
   private Set<UserInfo> adminUserInfo = Collections.singleton(new UserInfo(adminId));

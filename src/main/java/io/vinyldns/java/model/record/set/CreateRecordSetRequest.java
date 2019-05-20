@@ -31,11 +31,7 @@ public class CreateRecordSetRequest extends RecordSetBase {
   }
 
   public CreateRecordSetRequest(
-          String zoneId,
-          String name,
-          RecordType type,
-          long ttl,
-          Collection<RecordData> records) {
+      String zoneId, String name, RecordType type, long ttl, Collection<RecordData> records) {
     super(zoneId, name, type, ttl, records);
   }
 
