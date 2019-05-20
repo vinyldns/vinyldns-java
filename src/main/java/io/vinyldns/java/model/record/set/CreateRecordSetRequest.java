@@ -30,6 +30,11 @@ public class CreateRecordSetRequest extends RecordSetBase {
     super(zoneId, name, type, ttl, records, ownerGroupId);
   }
 
+  public CreateRecordSetRequest(
+      String zoneId, String name, RecordType type, long ttl, Collection<RecordData> records) {
+    super(zoneId, name, type, ttl, records);
+  }
+
   @Override
   public String toString() {
     return "CreateRecordSetRequest{" + super.toString() + "}";
