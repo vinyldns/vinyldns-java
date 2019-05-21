@@ -15,14 +15,14 @@ package io.vinyldns.java.model.record.data;
 
 public class SSHFPData implements RecordData {
   private int algorithm;
-  private int typ;
+  private int type;
   private String fingerprint;
 
   public SSHFPData() {}
 
   public SSHFPData(int algorithm, int typ, String fingerprint) {
     this.algorithm = algorithm;
-    this.typ = typ;
+    this.type = typ;
     this.fingerprint = fingerprint;
   }
 
@@ -34,12 +34,12 @@ public class SSHFPData implements RecordData {
     this.algorithm = algorithm;
   }
 
-  public int getTyp() {
-    return typ;
+  public int getType() {
+    return type;
   }
 
-  public void setTyp(int typ) {
-    this.typ = typ;
+  public void setType(int type) {
+    this.type = type;
   }
 
   public String getFingerprint() {
@@ -55,8 +55,8 @@ public class SSHFPData implements RecordData {
     return "SSHFPData{"
         + "algorithm="
         + algorithm
-        + ", typ="
-        + typ
+        + ", type="
+        + type
         + ", fingerprint='"
         + fingerprint
         + '\''
@@ -71,14 +71,14 @@ public class SSHFPData implements RecordData {
     SSHFPData sshfpData = (SSHFPData) o;
 
     if (algorithm != sshfpData.algorithm) return false;
-    if (typ != sshfpData.typ) return false;
+    if (type != sshfpData.type) return false;
     return fingerprint.equals(sshfpData.fingerprint);
   }
 
   @Override
   public int hashCode() {
     int result = algorithm;
-    result = 31 * result + typ;
+    result = 31 * result + type;
     result = 31 * result + fingerprint.hashCode();
     return result;
   }
