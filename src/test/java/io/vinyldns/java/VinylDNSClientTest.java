@@ -1143,7 +1143,7 @@ public class VinylDNSClientTest {
     deleteSingleChange.setRecordSetId("testId");
     deleteSingleChange.setZoneId("testZone");
     deleteSingleChange.setZoneName("testZoneName");
-    deleteSingleChange.setTyp(RecordType.A);
+    deleteSingleChange.setType(RecordType.A);
     deleteSingleChange.setSystemMessage("testMessage");
     deleteSingleChange.setStatus(SingleChangeStatus.Complete);
 

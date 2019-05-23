@@ -23,7 +23,7 @@ public class DeleteRecordSetSingleChange implements SingleChange {
   private String zoneName;
   private String recordName;
   private String inputName;
-  private RecordType typ;
+  private RecordType type;
   private SingleChangeStatus status;
   private String systemMessage;
   private String recordChangeId;
@@ -85,11 +85,11 @@ public class DeleteRecordSetSingleChange implements SingleChange {
 
   @Override
   public RecordType getType() {
-    return typ;
+    return type;
   }
 
-  public void setTyp(RecordType typ) {
-    this.typ = typ;
+  public void setType(RecordType type) {
+    this.type = type;
   }
 
   @Override
@@ -147,8 +147,8 @@ public class DeleteRecordSetSingleChange implements SingleChange {
         + ", inputName='"
         + inputName
         + '\''
-        + ", typ="
-        + typ
+        + ", type="
+        + type
         + ", status="
         + status
         + ", systemMessage='"
@@ -174,7 +174,7 @@ public class DeleteRecordSetSingleChange implements SingleChange {
         && Objects.equals(zoneName, that.zoneName)
         && Objects.equals(recordName, that.recordName)
         && Objects.equals(inputName, that.inputName)
-        && typ == that.typ
+        && type == that.type
         && status == that.status
         && Objects.equals(systemMessage, that.systemMessage)
         && Objects.equals(recordChangeId, that.recordChangeId)
@@ -191,7 +191,7 @@ public class DeleteRecordSetSingleChange implements SingleChange {
         zoneName,
         recordName,
         inputName,
-        typ,
+        type,
         status,
         systemMessage,
         recordChangeId,
