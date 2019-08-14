@@ -27,6 +27,12 @@ public class BatchResponse {
   private BatchChangeStatus status;
   private String ownerGroupId; // optional
   private String ownerGroupName; // optional
+  private BatchChangeApprovalStatus approvalStatus;
+  private String reviewerId; // optional
+  private String reviewComment; // optional
+  private Date reviewTimestamp; // optional
+  private Date scheduledTime; // optional
+  private Date cancelledTimestamp; // optional
 
   public String getId() {
     return id;
@@ -100,6 +106,54 @@ public class BatchResponse {
     this.ownerGroupName = ownerGroupName;
   }
 
+  public BatchChangeApprovalStatus getApprovalStatus() {
+    return approvalStatus;
+  }
+
+  public void setApprovalStatus(BatchChangeApprovalStatus approvalStatus) {
+    this.approvalStatus = approvalStatus;
+  }
+
+  public String getReviewerId() {
+    return reviewerId;
+  }
+
+  public void setReviewerId(String reviewerId) {
+    this.reviewerId = reviewerId;
+  }
+
+  public String getReviewComment() {
+    return reviewComment;
+  }
+
+  public void setReviewComment(String reviewComment) {
+    this.reviewComment = reviewComment;
+  }
+
+  public Date getReviewTimestamp() {
+    return reviewTimestamp;
+  }
+
+  public void setReviewTimestamp(Date reviewTimestamp) {
+    this.reviewTimestamp = reviewTimestamp;
+  }
+
+  public Date getScheduledTime() {
+    return scheduledTime;
+  }
+
+  public void setScheduledTime(Date scheduledTime) {
+    this.scheduledTime = scheduledTime;
+  }
+
+  public Date getCancelledTimestamp() {
+    return cancelledTimestamp;
+  }
+
+  public void setCancelledTimestamp(Date cancelledTimestamp) {
+    this.cancelledTimestamp = cancelledTimestamp;
+  }
+
   @Override
   public String toString() {
     return "BatchResponse{"
@@ -127,6 +181,20 @@ public class BatchResponse {
         + ", ownerGroupName='"
         + ownerGroupName
         + '\''
+        + ", approvalStatus="
+        + approvalStatus
+        + ", reviewerId='"
+        + reviewerId
+        + '\''
+        + ", reviewComment='"
+        + reviewComment
+        + '\''
+        + ", reviewTimestamp="
+        + reviewTimestamp
+        + ", scheduledTime="
+        + scheduledTime
+        + ", cancelledTimestamp="
+        + cancelledTimestamp
         + '}';
   }
 
@@ -143,7 +211,13 @@ public class BatchResponse {
         && Objects.equals(changes, that.changes)
         && status == that.status
         && Objects.equals(ownerGroupId, that.ownerGroupId)
-        && Objects.equals(ownerGroupName, that.ownerGroupName);
+        && Objects.equals(ownerGroupName, that.ownerGroupName)
+        && Objects.equals(approvalStatus, that.approvalStatus)
+        && Objects.equals(reviewerId, that.reviewerId)
+        && Objects.equals(reviewComment, that.reviewComment)
+        && Objects.equals(reviewTimestamp, that.reviewTimestamp)
+        && Objects.equals(scheduledTime, that.scheduledTime)
+        && Objects.equals(cancelledTimestamp, that.cancelledTimestamp);
   }
 
   @Override
@@ -158,6 +232,12 @@ public class BatchResponse {
         changes,
         status,
         ownerGroupId,
-        ownerGroupName);
+        ownerGroupName,
+        approvalStatus,
+        reviewerId,
+        reviewComment,
+        reviewTimestamp,
+        scheduledTime,
+        cancelledTimestamp);
   }
 }

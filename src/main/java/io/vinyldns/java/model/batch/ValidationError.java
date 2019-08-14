@@ -13,30 +13,32 @@
  */
 package io.vinyldns.java.model.batch;
 
-import io.vinyldns.java.model.record.RecordType;
-import java.util.List;
+import java.util.Objects;
 
-public interface SingleChange {
+public class ValidationError {
+  private final SingleChangeError errorType;
+  private final String message;
 
-  String getId();
+  public ValidationError(SingleChangeError errorType, String message) {
+    this.errorType = errorType;
+    this.message = message;
+  }
 
-  ChangeInputType getChangeType();
+  public SingleChangeError getErrorType() {
+    return errorType;
+  }
 
-  SingleChangeStatus getStatus();
+  public String getMessage() {
+    return message;
+  }
 
-  String getSystemMessage();
+  @Override
+  public int hashCode() {
+    return Objects.hash(errorType, message);
+  }
 
-  String getRecordChangeId();
-
-  String getZoneId();
-
-  String getRecordName();
-
-  RecordType getType();
-
-  String getInputName();
-
-  String getZoneName();
-
-  List<ValidationError> getValidationErrors();
+  @Override
+  public String toString() {
+    return "ValidationError{" + "errorType=" + errorType + ", message='" + message + '\'' + "}";
+  }
 }

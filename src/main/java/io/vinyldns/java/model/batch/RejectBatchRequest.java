@@ -13,30 +13,28 @@
  */
 package io.vinyldns.java.model.batch;
 
-import io.vinyldns.java.model.record.RecordType;
-import java.util.List;
+public class RejectBatchRequest {
+  private final String id;
+  private String reviewComment; // optional
 
-public interface SingleChange {
+  public RejectBatchRequest(String id) {
+    this.id = id;
+  }
 
-  String getId();
+  public RejectBatchRequest(String id, String reviewComment) {
+    this.id = id;
+    this.reviewComment = reviewComment;
+  }
 
-  ChangeInputType getChangeType();
+  public String getId() {
+    return id;
+  }
 
-  SingleChangeStatus getStatus();
+  public String getReviewComment() {
+    return reviewComment;
+  }
 
-  String getSystemMessage();
-
-  String getRecordChangeId();
-
-  String getZoneId();
-
-  String getRecordName();
-
-  RecordType getType();
-
-  String getInputName();
-
-  String getZoneName();
-
-  List<ValidationError> getValidationErrors();
+  public void setReviewComment(String reviewComment) {
+    this.reviewComment = reviewComment;
+  }
 }

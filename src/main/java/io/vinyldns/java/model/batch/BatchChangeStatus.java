@@ -14,8 +14,12 @@
 package io.vinyldns.java.model.batch;
 
 public enum BatchChangeStatus {
-  Pending,
+  Cancelled,
   Complete,
   Failed,
-  PartialFailure
+  PartialFailure,
+  PendingProcessing,
+  PendingReview,
+  Rejected,
+  Scheduled
 }

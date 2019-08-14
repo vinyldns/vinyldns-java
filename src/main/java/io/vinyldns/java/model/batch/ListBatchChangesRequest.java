@@ -23,13 +23,22 @@ public class ListBatchChangesRequest {
    * client wishes to advance forward and backward. If not specified, will return the first page of
    * results
    */
-  private String startFrom;
+  private String startFrom; // optional
 
   /**
    * The number of items to return in the page. Valid values are 1 to 100. Defaults to 100 if not
    * provided.
    */
-  private Integer maxItems;
+  private Integer maxItems; // optional
+
+  /** Filter for batch approval status */
+  private BatchChangeApprovalStatus approvalStatus; // optional
+
+  /**
+   * Flag on whether to ignore whether requesting user has access to the batches that are being
+   * returned in the response.
+   */
+  private Boolean ignoreAccess; // optional
 
   public ListBatchChangesRequest() {}
 
@@ -52,6 +61,22 @@ public class ListBatchChangesRequest {
 
   public void setMaxItems(Integer maxItems) {
     this.maxItems = maxItems;
+  }
+
+  public Boolean getIgnoreAccess() {
+    return ignoreAccess;
+  }
+
+  public void setIgnoreAccess(Boolean ignoreAccess) {
+    this.ignoreAccess = ignoreAccess;
+  }
+
+  public BatchChangeApprovalStatus getApprovalStatus() {
+    return approvalStatus;
+  }
+
+  public void setApprovalStatus(BatchChangeApprovalStatus approvalStatus) {
+    this.approvalStatus = approvalStatus;
   }
 
   @Override

@@ -15,6 +15,7 @@ package io.vinyldns.java.model.batch;
 
 import io.vinyldns.java.model.record.RecordType;
 import io.vinyldns.java.model.record.data.RecordData;
+import java.util.List;
 import java.util.Objects;
 
 public class AddSingleChange implements SingleChange {
@@ -29,6 +30,7 @@ public class AddSingleChange implements SingleChange {
   private String systemMessage;
   private String recordChangeId;
   private String recordSetId;
+  private List<ValidationError> validationErrors;
 
   private RecordData record;
   private Long ttl;
@@ -147,6 +149,14 @@ public class AddSingleChange implements SingleChange {
     this.ttl = ttl;
   }
 
+  public List<ValidationError> getValidationErrors() {
+    return validationErrors;
+  }
+
+  public void setValidationErrors(List<ValidationError> validationErrors) {
+    this.validationErrors = validationErrors;
+  }
+
   @Override
   public String toString() {
     return "AddSingleChange{"
@@ -184,6 +194,8 @@ public class AddSingleChange implements SingleChange {
         + record
         + ", ttl="
         + ttl
+        + ", validationErrors="
+        + validationErrors
         + '}';
   }
 
@@ -204,7 +216,8 @@ public class AddSingleChange implements SingleChange {
         && Objects.equals(recordChangeId, that.recordChangeId)
         && Objects.equals(recordSetId, that.recordSetId)
         && Objects.equals(record, that.record)
-        && Objects.equals(ttl, that.ttl);
+        && Objects.equals(ttl, that.ttl)
+        && Objects.equals(validationErrors, that.validationErrors);
   }
 
   @Override
@@ -223,6 +236,7 @@ public class AddSingleChange implements SingleChange {
         recordChangeId,
         recordSetId,
         record,
-        ttl);
+        ttl,
+        validationErrors);
   }
 }

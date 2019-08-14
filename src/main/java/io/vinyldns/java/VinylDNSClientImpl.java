@@ -32,6 +32,7 @@ import io.vinyldns.java.responses.VinylDNSResponse;
 import io.vinyldns.java.responses.VinylDNSSuccessResponse;
 import io.vinyldns.java.serializers.SerializationFactory;
 import java.io.ByteArrayInputStream;
+import java.nio.charset.StandardCharsets;
 
 public class VinylDNSClientImpl implements VinylDNSClient {
   private VinylDNSClientConfig config;
@@ -322,6 +323,14 @@ public class VinylDNSClientImpl implements VinylDNSClient {
       vinylDNSRequest.addParameter("maxItems", request.getMaxItems().toString());
     }
 
+    if (request.getIgnoreAccess() != null) {
+      vinylDNSRequest.addParameter("ignoreAccess", request.getIgnoreAccess().toString());
+    }
+
+    if (request.getApprovalStatus() != null) {
+      vinylDNSRequest.addParameter("approvalStatus", request.getApprovalStatus().toString());
+    }
+
     return executeRequest(vinylDNSRequest, ListBatchChangesResponse.class);
   }
 
@@ -335,9 +344,38 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   @Override
   public VinylDNSResponse<BatchResponse> createBatchChanges(CreateBatchRequest request) {
     String path = "zones/batchrecordchanges";
+
+    VinylDNSRequest<CreateBatchRequest> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, request);
+
+    if (request.getAllowManualReview() != null) {
+      vinylDNSRequest.addParameter("startFrom", request.getAllowManualReview().toString());
+    }
+
+    return executeRequest(vinylDNSRequest, BatchResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<BatchResponse> approveBatchChanges(ApproveBatchRequest request) {
+    String path = "zones/batchrecordchanges/" + request.getId() + "/approve";
     return executeRequest(
         new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, request),
         BatchResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<BatchResponse> rejectBatchChanges(RejectBatchRequest request) {
+    String path = "zones/batchrecordchanges/" + request.getId() + "/reject";
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, request),
+        BatchResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<BatchResponse> cancelBatchChanges(String id) {
+    String path = "zones/batchrecordchanges/" + id + "/cancel";
+    return executeRequest(
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, null), BatchResponse.class);
   }
 
   private <S, R> VinylDNSResponse<R> executeRequest(VinylDNSRequest<S> req, Class<R> responseType) {
@@ -354,7 +392,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
       String content = gson.toJson(req.getPayload());
 
       try {
-        request.setContent(new ByteArrayInputStream(content.getBytes("UTF-8")));
+        request.setContent(new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
       } catch (Exception e) {
         throw new RuntimeException(e);
       }
