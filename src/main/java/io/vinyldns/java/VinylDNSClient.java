@@ -299,7 +299,7 @@ public interface VinylDNSClient {
 
   /**
    * Approve a batch change that is currently in PendingReview status. Approving user must be a
-   * system administrator (ie. support or super user). Successful approval will cause the batch to
+   * system administrator (i.e. support or super user). Successful approval will cause the batch to
    * enter the queue for auto-processing.
    *
    * @param request See {@link ApproveBatchRequest ApproveBatchRequest Model}
@@ -311,7 +311,7 @@ public interface VinylDNSClient {
 
   /**
    * Reject a batch change that is currently in PendingReview status. Rejecting user must be a
-   * system administrator (ie. support or super user). Successful rejection will cause the batch to
+   * system administrator (i.e. support or super user). Successful rejection will cause the batch to
    * enter a Rejected state where none of the changes will be implemented.
    *
    * @param request See {@link ApproveBatchRequest ApproveBatchRequest Model}
@@ -323,7 +323,7 @@ public interface VinylDNSClient {
 
   /**
    * Cancel a batch change that is currently in PendingReview status. Cancelling user must be the
-   * submitter of the batch change; system administrators (ie. support or super users) will have to
+   * submitter of the batch change; system administrators (i.e. support or super users) will have to
    * reject the batch change instead of cancelling. Successful cancellation will cause the batch to
    * enter a Cancelled state where none of the changes will be implemented.
    *

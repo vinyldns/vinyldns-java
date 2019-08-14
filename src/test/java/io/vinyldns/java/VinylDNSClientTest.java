@@ -32,6 +32,9 @@ import io.vinyldns.java.model.record.set.*;
 import io.vinyldns.java.model.zone.*;
 import io.vinyldns.java.responses.ResponseMarker;
 import io.vinyldns.java.responses.VinylDNSResponse;
+
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.*;
 import org.joda.time.DateTime;
 import org.testng.annotations.*;
@@ -1190,8 +1193,7 @@ public class VinylDNSClientTest {
 
     CreateBatchRequest batchRequest = new CreateBatchRequest(changes);
 
-    Date scheduledTime = new Date();
-    scheduledTime.setTime(scheduledTime.getTime() + 5000);
+    Instant scheduledTime = Instant.now().plus(5, ChronoUnit.SECONDS);
     batchRequest.setScheduledTime(scheduledTime);
 
     AddSingleChange addSingleChange = new AddSingleChange();

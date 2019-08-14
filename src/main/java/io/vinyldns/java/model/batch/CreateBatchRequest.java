@@ -13,11 +13,9 @@
  */
 package io.vinyldns.java.model.batch;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
-import java.util.TimeZone;
+import java.time.Instant;
 
 public class CreateBatchRequest {
   private String comments;
@@ -26,7 +24,7 @@ public class CreateBatchRequest {
 
   private String ownerGroupId;
 
-  private String scheduledTime; // optional
+  private Instant scheduledTime; // optional
 
   private Boolean allowManualReview; // optional
 
@@ -72,28 +70,15 @@ public class CreateBatchRequest {
     this.allowManualReview = allowManualReview;
   }
 
-  /** Returns String representation of timestamp in ISO 8601 format */
-  public String getScheduledTime() {
+  public Instant getScheduledTime() {
     return scheduledTime;
   }
 
-  public void setScheduledTime(Date scheduledTime, String timeZone) {
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssX");
-    sdf.setTimeZone(TimeZone.getTimeZone(timeZone));
-    this.scheduledTime = sdf.format(scheduledTime);
-  }
-
-  /** Helper for setting scheduled time, where a default time zone of "UTC" is assumed. */
-  public void setScheduledTime(Date scheduledTime) {
-    setScheduledTime(scheduledTime, "UTC");
-  }
-
   /**
-   * Sets String representation of scheduled time. Since scheduled time is expected to be in the ISO
-   * format of "yyyy-MM-dd'T'HH:mm:ssX", it is encouraged that users only use this if they are
-   * properly formatting their date.
+   * Sets the scheduled time (UTC). Note: Since VinylDNS truncates at SECONDS, the request will truncate anything
+   * more precise than the SECONDS value.
    */
-  public void setScheduledTime(String scheduledTime) {
+  public void setScheduledTime(Instant scheduledTime) {
     this.scheduledTime = scheduledTime;
   }
 

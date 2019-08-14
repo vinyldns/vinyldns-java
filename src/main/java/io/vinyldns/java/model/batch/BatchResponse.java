@@ -13,6 +13,7 @@
  */
 package io.vinyldns.java.model.batch;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -31,7 +32,7 @@ public class BatchResponse {
   private String reviewerId; // optional
   private String reviewComment; // optional
   private Date reviewTimestamp; // optional
-  private Date scheduledTime; // optional
+  private Instant scheduledTime; // optional
   private Date cancelledTimestamp; // optional
 
   public String getId() {
@@ -138,11 +139,11 @@ public class BatchResponse {
     this.reviewTimestamp = reviewTimestamp;
   }
 
-  public Date getScheduledTime() {
+  public Instant getScheduledTime() {
     return scheduledTime;
   }
 
-  public void setScheduledTime(Date scheduledTime) {
+  public void setScheduledTime(Instant scheduledTime) {
     this.scheduledTime = scheduledTime;
   }
 
