@@ -1159,6 +1159,7 @@ public class VinylDNSClientTest {
     batchResponse.setCreatedTimestamp(new Date());
     batchResponse.setChanges(singleChangeList);
     batchResponse.setStatus(BatchChangeStatus.Complete);
+    batchResponse.setApprovalStatus(BatchChangeApprovalStatus.AutoApproved);
     batchResponse.setOwnerGroupId(ownerGroupId);
     batchResponse.setOwnerGroupName("testOwnerGroupName");
 
@@ -1177,6 +1178,230 @@ public class VinylDNSClientTest {
     VinylDNSResponse<BatchResponse> vinylDNSBatchResponse = client.createBatchChanges(batchRequest);
 
     assertEquals(vinylDNSBatchResponse.getStatusCode(), 202);
+  }
+
+  @Test
+  public void createScheduledBatchChangeSuccess() {
+
+    List<ChangeInput> changes = new ArrayList<>();
+    AData adata = new AData("1.2.3.4");
+    AddChangeInput addInput = new AddChangeInput("www.example.com", RecordType.A, 300L, adata);
+    changes.add(addInput);
+
+    CreateBatchRequest batchRequest = new CreateBatchRequest(changes);
+
+    Date scheduledTime = new Date();
+    scheduledTime.setTime(scheduledTime.getTime() + 5000);
+    batchRequest.setScheduledTime(scheduledTime);
+
+    AddSingleChange addSingleChange = new AddSingleChange();
+    addSingleChange.setChangeType(ChangeInputType.Add);
+    addSingleChange.setId("1234");
+    addSingleChange.setInputName("testString");
+    addSingleChange.setRecord(adata);
+    addSingleChange.setType(RecordType.A);
+    addSingleChange.setStatus(SingleChangeStatus.NeedsReview);
+
+    List<ValidationError> validationErrors = new ArrayList<>();
+    validationErrors.add(
+        new ValidationError(SingleChangeError.ZoneDiscoveryError, "Zone does not exist"));
+    addSingleChange.setValidationErrors(validationErrors);
+
+    List<SingleChange> singleChangeList = new ArrayList<>();
+    singleChangeList.add(addSingleChange);
+
+    BatchResponse batchResponse = new BatchResponse();
+    batchResponse.setId("1234");
+    batchResponse.setUserId("testUserId");
+    batchResponse.setUserName("testUserName");
+    batchResponse.setComments("testComments");
+    batchResponse.setCreatedTimestamp(new Date());
+    batchResponse.setChanges(singleChangeList);
+    batchResponse.setStatus(BatchChangeStatus.Scheduled);
+    batchResponse.setApprovalStatus(BatchChangeApprovalStatus.PendingReview);
+    batchResponse.setOwnerGroupId(ownerGroupId);
+    batchResponse.setOwnerGroupName("testOwnerGroupName");
+
+    String request = client.gson.toJson(batchRequest);
+    String response = client.gson.toJson(batchResponse);
+
+    wireMockServer.stubFor(
+        post(urlEqualTo("/zones/batchrecordchanges"))
+            .withRequestBody(new EqualToJsonPattern(request, true, true))
+            .willReturn(
+                aResponse()
+                    .withStatus(202)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+
+    VinylDNSResponse<BatchResponse> vinylDNSBatchResponse = client.createBatchChanges(batchRequest);
+
+    assertEquals(vinylDNSBatchResponse.getStatusCode(), 202);
+  }
+
+  @Test
+  public void approveBatchChangeSuccess() {
+    ApproveBatchRequest approveBatchRequest =
+        new ApproveBatchRequest("1234", "some approval comment");
+
+    List<SingleChange> singleChangeList = new ArrayList<>();
+
+    AddSingleChange addSingleChange = new AddSingleChange();
+    addSingleChange.setChangeType(ChangeInputType.Add);
+    addSingleChange.setId("1234");
+    addSingleChange.setInputName("testString");
+    addSingleChange.setRecord(new AData("1.2.3.4"));
+    addSingleChange.setType(RecordType.A);
+    addSingleChange.setStatus(SingleChangeStatus.Pending);
+    singleChangeList.add(addSingleChange);
+
+    BatchResponse batchResponse = new BatchResponse();
+    batchResponse.setId("1234");
+    batchResponse.setUserId("testuser");
+    batchResponse.setUserName("testuser");
+    batchResponse.setCreatedTimestamp(new Date());
+    batchResponse.setChanges(singleChangeList);
+    batchResponse.setStatus(BatchChangeStatus.PendingProcessing);
+    batchResponse.setApprovalStatus(BatchChangeApprovalStatus.ManuallyApproved);
+    batchResponse.setOwnerGroupId("someOwnerGroupId");
+    batchResponse.setReviewerId("reviewerId");
+    batchResponse.setReviewComment(approveBatchRequest.getReviewComment());
+    batchResponse.setReviewTimestamp(new Date());
+
+    String request = client.gson.toJson(approveBatchRequest);
+    String response = client.gson.toJson(batchResponse);
+
+    wireMockServer.stubFor(
+        post(urlEqualTo("/zones/batchrecordchanges/" + batchResponse.getId() + "/approve"))
+            .withRequestBody(new EqualToJsonPattern(request, true, true))
+            .willReturn(
+                aResponse()
+                    .withStatus(202)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+  }
+
+  @Test
+  public void approveBatchChangeFailure() {
+    wireMockServer.stubFor(
+        post(urlEqualTo("/zones/batchrecordchanges/noExisto/approve"))
+            .willReturn(aResponse().withStatus(404).withBody("Not found")));
+
+    VinylDNSResponse<BatchResponse> vinylDNSResponse =
+        client.approveBatchChanges(new ApproveBatchRequest("noExisto"));
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 404);
+    assertEquals(vinylDNSResponse.getMessageBody(), "Not found");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
+  public void rejectBatchChangeSuccess() {
+    RejectBatchRequest rejectBatchRequest =
+        new RejectBatchRequest("1234", "some rejection comment");
+
+    List<SingleChange> singleChangeList = new ArrayList<>();
+
+    AddSingleChange addSingleChange = new AddSingleChange();
+    addSingleChange.setChangeType(ChangeInputType.Add);
+    addSingleChange.setId("1234");
+    addSingleChange.setInputName("testString");
+    addSingleChange.setRecord(new AData("1.2.3.4"));
+    addSingleChange.setType(RecordType.A);
+    addSingleChange.setStatus(SingleChangeStatus.Rejected);
+    singleChangeList.add(addSingleChange);
+
+    BatchResponse batchResponse = new BatchResponse();
+    batchResponse.setId("1234");
+    batchResponse.setUserId("testuser");
+    batchResponse.setUserName("testuser");
+    batchResponse.setCreatedTimestamp(new Date());
+    batchResponse.setChanges(singleChangeList);
+    batchResponse.setStatus(BatchChangeStatus.Rejected);
+    batchResponse.setApprovalStatus(BatchChangeApprovalStatus.ManuallyRejected);
+    batchResponse.setOwnerGroupId("someOwnerGroupId");
+    batchResponse.setReviewerId("reviewerId");
+    batchResponse.setReviewComment(rejectBatchRequest.getReviewComment());
+    batchResponse.setReviewTimestamp(new Date());
+
+    String request = client.gson.toJson(rejectBatchRequest);
+    String response = client.gson.toJson(batchResponse);
+
+    wireMockServer.stubFor(
+        post(urlEqualTo("/zones/batchrecordchanges/" + batchResponse.getId() + "/reject"))
+            .withRequestBody(new EqualToJsonPattern(request, true, true))
+            .willReturn(
+                aResponse()
+                    .withStatus(202)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+  }
+
+  @Test
+  public void rejectBatchChangeFailure() {
+    wireMockServer.stubFor(
+        post(urlEqualTo("/zones/batchrecordchanges/noExisto/reject"))
+            .willReturn(aResponse().withStatus(404).withBody("Not found")));
+
+    VinylDNSResponse<BatchResponse> vinylDNSResponse =
+        client.rejectBatchChanges(new RejectBatchRequest("noExisto"));
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 404);
+    assertEquals(vinylDNSResponse.getMessageBody(), "Not found");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
+  public void cancelBatchChangeSuccess() {
+    List<SingleChange> singleChangeList = new ArrayList<>();
+
+    AddSingleChange addSingleChange = new AddSingleChange();
+    addSingleChange.setChangeType(ChangeInputType.Add);
+    addSingleChange.setId("1234");
+    addSingleChange.setInputName("testString");
+    addSingleChange.setRecord(new AData("1.2.3.4"));
+    addSingleChange.setType(RecordType.A);
+    addSingleChange.setStatus(SingleChangeStatus.Rejected);
+    singleChangeList.add(addSingleChange);
+
+    BatchResponse batchResponse = new BatchResponse();
+    batchResponse.setId("1234");
+    batchResponse.setUserId("testuser");
+    batchResponse.setUserName("testuser");
+    batchResponse.setCreatedTimestamp(new Date());
+    batchResponse.setChanges(singleChangeList);
+    batchResponse.setStatus(BatchChangeStatus.Cancelled);
+    batchResponse.setApprovalStatus(BatchChangeApprovalStatus.Cancelled);
+    batchResponse.setOwnerGroupId("someOwnerGroupId");
+    batchResponse.setReviewerId("reviewerId");
+    batchResponse.setReviewComment("Looks good!");
+    batchResponse.setReviewTimestamp(new Date());
+
+    String response = client.gson.toJson(batchResponse);
+
+    wireMockServer.stubFor(
+        post(urlEqualTo("/zones/batchrecordchanges/" + batchResponse.getId() + "/cancel"))
+            .willReturn(
+                aResponse()
+                    .withStatus(202)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+  }
+
+  @Test
+  public void cancelBatchChangeFailure() {
+    wireMockServer.stubFor(
+        post(urlEqualTo("/zones/batchrecordchanges/noExisto/cancel"))
+            .willReturn(aResponse().withStatus(404).withBody("Not found")));
+
+    VinylDNSResponse<BatchResponse> vinylDNSResponse = client.cancelBatchChanges("noExisto");
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 404);
+    assertEquals(vinylDNSResponse.getMessageBody(), "Not found");
+    assertNull(vinylDNSResponse.getValue());
   }
 
   @Test
