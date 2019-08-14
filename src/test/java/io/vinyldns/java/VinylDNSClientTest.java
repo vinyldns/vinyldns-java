@@ -32,7 +32,6 @@ import io.vinyldns.java.model.record.set.*;
 import io.vinyldns.java.model.zone.*;
 import io.vinyldns.java.responses.ResponseMarker;
 import io.vinyldns.java.responses.VinylDNSResponse;
-
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -1243,9 +1242,6 @@ public class VinylDNSClientTest {
 
   @Test
   public void approveBatchChangeSuccess() {
-    ApproveBatchRequest approveBatchRequest =
-        new ApproveBatchRequest("1234", "some approval comment");
-
     List<SingleChange> singleChangeList = new ArrayList<>();
 
     AddSingleChange addSingleChange = new AddSingleChange();
@@ -1267,10 +1263,11 @@ public class VinylDNSClientTest {
     batchResponse.setApprovalStatus(BatchChangeApprovalStatus.ManuallyApproved);
     batchResponse.setOwnerGroupId("someOwnerGroupId");
     batchResponse.setReviewerId("reviewerId");
-    batchResponse.setReviewComment(approveBatchRequest.getReviewComment());
+    String reviewComment = "some approval comment";
+    batchResponse.setReviewComment(reviewComment);
     batchResponse.setReviewTimestamp(new Date());
 
-    String request = client.gson.toJson(approveBatchRequest);
+    String request = client.gson.toJson(new BatchChangeReview(reviewComment));
     String response = client.gson.toJson(batchResponse);
 
     wireMockServer.stubFor(
@@ -1281,6 +1278,11 @@ public class VinylDNSClientTest {
                     .withStatus(202)
                     .withHeader("Content-Type", "application/json")
                     .withBody(response)));
+
+    VinylDNSResponse<BatchResponse> vinylDNSBatchResponse =
+        client.approveBatchChanges("1234", reviewComment);
+
+    assertEquals(vinylDNSBatchResponse.getStatusCode(), 202);
   }
 
   @Test
@@ -1289,8 +1291,7 @@ public class VinylDNSClientTest {
         post(urlEqualTo("/zones/batchrecordchanges/noExisto/approve"))
             .willReturn(aResponse().withStatus(404).withBody("Not found")));
 
-    VinylDNSResponse<BatchResponse> vinylDNSResponse =
-        client.approveBatchChanges(new ApproveBatchRequest("noExisto"));
+    VinylDNSResponse<BatchResponse> vinylDNSResponse = client.approveBatchChanges("noExisto");
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
     assertEquals(vinylDNSResponse.getStatusCode(), 404);
@@ -1300,9 +1301,6 @@ public class VinylDNSClientTest {
 
   @Test
   public void rejectBatchChangeSuccess() {
-    RejectBatchRequest rejectBatchRequest =
-        new RejectBatchRequest("1234", "some rejection comment");
-
     List<SingleChange> singleChangeList = new ArrayList<>();
 
     AddSingleChange addSingleChange = new AddSingleChange();
@@ -1324,10 +1322,12 @@ public class VinylDNSClientTest {
     batchResponse.setApprovalStatus(BatchChangeApprovalStatus.ManuallyRejected);
     batchResponse.setOwnerGroupId("someOwnerGroupId");
     batchResponse.setReviewerId("reviewerId");
-    batchResponse.setReviewComment(rejectBatchRequest.getReviewComment());
+
+    String reviewComment = "some rejection comment";
+    batchResponse.setReviewComment(reviewComment);
     batchResponse.setReviewTimestamp(new Date());
 
-    String request = client.gson.toJson(rejectBatchRequest);
+    String request = client.gson.toJson(new BatchChangeReview(reviewComment));
     String response = client.gson.toJson(batchResponse);
 
     wireMockServer.stubFor(
@@ -1338,6 +1338,11 @@ public class VinylDNSClientTest {
                     .withStatus(202)
                     .withHeader("Content-Type", "application/json")
                     .withBody(response)));
+
+    VinylDNSResponse<BatchResponse> vinylDNSBatchResponse =
+        client.rejectBatchChanges("1234", reviewComment);
+
+    assertEquals(vinylDNSBatchResponse.getStatusCode(), 202);
   }
 
   @Test
@@ -1346,8 +1351,7 @@ public class VinylDNSClientTest {
         post(urlEqualTo("/zones/batchrecordchanges/noExisto/reject"))
             .willReturn(aResponse().withStatus(404).withBody("Not found")));
 
-    VinylDNSResponse<BatchResponse> vinylDNSResponse =
-        client.rejectBatchChanges(new RejectBatchRequest("noExisto"));
+    VinylDNSResponse<BatchResponse> vinylDNSResponse = client.rejectBatchChanges("noExisto");
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
     assertEquals(vinylDNSResponse.getStatusCode(), 404);

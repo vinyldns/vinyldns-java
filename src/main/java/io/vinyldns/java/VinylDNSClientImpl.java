@@ -356,18 +356,34 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
-  public VinylDNSResponse<BatchResponse> approveBatchChanges(ApproveBatchRequest request) {
-    String path = "zones/batchrecordchanges/" + request.getId() + "/approve";
+  public VinylDNSResponse<BatchResponse> approveBatchChanges(String id) {
+    String path = "zones/batchrecordchanges/" + id + "/approve";
     return executeRequest(
-        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, request),
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, null), BatchResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<BatchResponse> approveBatchChanges(String id, String reviewComment) {
+    String path = "zones/batchrecordchanges/" + id + "/approve";
+    return executeRequest(
+        new VinylDNSRequest<>(
+            Methods.POST.name(), getBaseUrl(), path, new BatchChangeReview(reviewComment)),
         BatchResponse.class);
   }
 
   @Override
-  public VinylDNSResponse<BatchResponse> rejectBatchChanges(RejectBatchRequest request) {
-    String path = "zones/batchrecordchanges/" + request.getId() + "/reject";
+  public VinylDNSResponse<BatchResponse> rejectBatchChanges(String id) {
+    String path = "zones/batchrecordchanges/" + id + "/reject";
     return executeRequest(
-        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, request),
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, null), BatchResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<BatchResponse> rejectBatchChanges(String id, String reviewComment) {
+    String path = "zones/batchrecordchanges/" + id + "/reject";
+    return executeRequest(
+        new VinylDNSRequest<>(
+            Methods.POST.name(), getBaseUrl(), path, new BatchChangeReview(reviewComment)),
         BatchResponse.class);
   }
 

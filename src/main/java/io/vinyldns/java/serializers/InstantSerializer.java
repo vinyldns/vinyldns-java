@@ -26,21 +26,20 @@ import java.time.temporal.ChronoUnit;
 
 public class InstantSerializer implements JsonSerializer<Instant>, JsonDeserializer<Instant> {
 
-    @Override
-    public Instant deserialize(
-        JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
-        throws JsonParseException {
-        if (jsonElement.isJsonNull()) {
-            return null;
-        }
-
-        System.out.println("json element: " + jsonElement.getAsString());
-        return Instant.parse(jsonElement.getAsString());
+  @Override
+  public Instant deserialize(
+      JsonElement jsonElement, Type type, JsonDeserializationContext jsonDeserializationContext)
+      throws JsonParseException {
+    if (jsonElement.isJsonNull()) {
+      return null;
     }
 
-    @Override
-    public JsonElement serialize(
-        Instant instant, Type type, JsonSerializationContext jsonSerializationContext) {
-        return new JsonPrimitive(instant.truncatedTo(ChronoUnit.SECONDS).toString());
-    }
+    return Instant.parse(jsonElement.getAsString());
+  }
+
+  @Override
+  public JsonElement serialize(
+      Instant instant, Type type, JsonSerializationContext jsonSerializationContext) {
+    return new JsonPrimitive(instant.truncatedTo(ChronoUnit.SECONDS).toString());
+  }
 }

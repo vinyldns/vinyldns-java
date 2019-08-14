@@ -13,47 +13,25 @@
  */
 package io.vinyldns.java.model.batch;
 
-import java.util.Objects;
+/** Helper class for serializing review comments (when approving/rejecting batch changes) */
+public final class BatchChangeReview {
+  private final String reviewComment;
 
-public class ApproveBatchRequest {
-  private final String id;
-  private String reviewComment; // optional
-
-  public ApproveBatchRequest(String id) {
-    this.id = id;
-  }
-
-  public ApproveBatchRequest(String id, String reviewComment) {
-    this.id = id;
+  public BatchChangeReview(String reviewComment) {
     this.reviewComment = reviewComment;
-  }
-
-  public String getId() {
-    return id;
   }
 
   public String getReviewComment() {
     return reviewComment;
   }
 
-  public void setReviewComment(String reviewComment) {
-    this.reviewComment = reviewComment;
-  }
-
   @Override
   public int hashCode() {
-    return Objects.hash(id, reviewComment);
+    return reviewComment.hashCode();
   }
 
   @Override
   public String toString() {
-    return "ApproveBatchRequest{"
-        + "id='"
-        + id
-        + '\''
-        + ", reviewComment='"
-        + reviewComment
-        + '\''
-        + "}";
+    return "BatchChangeReview{" + "reviewComment='" + reviewComment + '\'' + "}";
   }
 }

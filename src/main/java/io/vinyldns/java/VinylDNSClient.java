@@ -302,24 +302,50 @@ public interface VinylDNSClient {
    * system administrator (i.e. support or super user). Successful approval will cause the batch to
    * enter the queue for auto-processing.
    *
-   * @param request See {@link ApproveBatchRequest ApproveBatchRequest Model}
+   * @param id Identifier for batch change requiring review.
    * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;BatchResponse&gt;} in case of
    *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;BatchResponse&gt;} in
    *     case of failure
    */
-  VinylDNSResponse<BatchResponse> approveBatchChanges(ApproveBatchRequest request);
+  VinylDNSResponse<BatchResponse> approveBatchChanges(String id);
+
+  /**
+   * Approve a batch change that is currently in PendingReview status. Approving user must be a
+   * system administrator (i.e. support or super user). Successful approval will cause the batch to
+   * enter the queue for auto-processing.
+   *
+   * @param id Identifier for batch change requiring review.
+   * @param reviewComment Comment for the review.
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;BatchResponse&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;BatchResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<BatchResponse> approveBatchChanges(String id, String reviewComment);
 
   /**
    * Reject a batch change that is currently in PendingReview status. Rejecting user must be a
    * system administrator (i.e. support or super user). Successful rejection will cause the batch to
    * enter a Rejected state where none of the changes will be implemented.
    *
-   * @param request See {@link ApproveBatchRequest ApproveBatchRequest Model}
+   * @param id Identifier for batch change requiring review.
    * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;BatchResponse&gt;} in case of
    *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;BatchResponse&gt;} in
    *     case of failure
    */
-  VinylDNSResponse<BatchResponse> rejectBatchChanges(RejectBatchRequest request);
+  VinylDNSResponse<BatchResponse> rejectBatchChanges(String id);
+
+  /**
+   * Reject a batch change that is currently in PendingReview status. Rejecting user must be a
+   * system administrator (i.e. support or super user). Successful rejection will cause the batch to
+   * enter a Rejected state where none of the changes will be implemented.
+   *
+   * @param id Identifier for batch change requiring review.
+   * @param reviewComment Comment for the review.
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;BatchResponse&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;BatchResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<BatchResponse> rejectBatchChanges(String id, String reviewComment);
 
   /**
    * Cancel a batch change that is currently in PendingReview status. Cancelling user must be the

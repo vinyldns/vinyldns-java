@@ -13,9 +13,9 @@
  */
 package io.vinyldns.java.model.batch;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
-import java.time.Instant;
 
 public class CreateBatchRequest {
   private String comments;
@@ -75,8 +75,8 @@ public class CreateBatchRequest {
   }
 
   /**
-   * Sets the scheduled time (UTC). Note: Since VinylDNS truncates at SECONDS, the request will truncate anything
-   * more precise than the SECONDS value.
+   * Sets the scheduled time (UTC). Note: Since VinylDNS truncates at SECONDS, the request will
+   * truncate anything more precise than the SECONDS value.
    */
   public void setScheduledTime(Instant scheduledTime) {
     this.scheduledTime = scheduledTime;

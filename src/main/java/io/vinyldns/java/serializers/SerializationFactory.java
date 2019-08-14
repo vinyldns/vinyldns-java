@@ -17,9 +17,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.vinyldns.java.model.batch.SingleChange;
 import io.vinyldns.java.model.record.data.RecordData;
-import org.joda.time.DateTime;
-
 import java.time.Instant;
+import org.joda.time.DateTime;
 
 public class SerializationFactory {
   public static Gson createGson() {
