@@ -17,6 +17,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import io.vinyldns.java.model.batch.SingleChange;
 import io.vinyldns.java.model.record.data.RecordData;
+import java.time.Instant;
 import org.joda.time.DateTime;
 
 public class SerializationFactory {
@@ -27,6 +28,7 @@ public class SerializationFactory {
     gsonBuilder.registerTypeAdapter(RecordData.class, new RecordDataDeserializer());
     gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeSerializer());
     gsonBuilder.registerTypeAdapter(SingleChange.class, new ChangeInputDeserializer());
+    gsonBuilder.registerTypeAdapter(Instant.class, new InstantSerializer());
     return gsonBuilder.create();
   }
 }

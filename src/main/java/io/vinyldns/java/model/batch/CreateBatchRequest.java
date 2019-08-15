@@ -13,6 +13,7 @@
  */
 package io.vinyldns.java.model.batch;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,6 +23,10 @@ public class CreateBatchRequest {
   private List<ChangeInput> changes;
 
   private String ownerGroupId;
+
+  private Instant scheduledTime; // optional
+
+  private Boolean allowManualReview; // optional
 
   public CreateBatchRequest(String comments, List<ChangeInput> changes, String ownerGroupId) {
     this.comments = comments;
@@ -57,6 +62,26 @@ public class CreateBatchRequest {
     this.ownerGroupId = ownerGroupId;
   }
 
+  public Boolean getAllowManualReview() {
+    return allowManualReview;
+  }
+
+  public void setAllowManualReview(Boolean allowManualReview) {
+    this.allowManualReview = allowManualReview;
+  }
+
+  public Instant getScheduledTime() {
+    return scheduledTime;
+  }
+
+  /**
+   * Sets the scheduled time (UTC). Note: Since VinylDNS truncates at SECONDS, the request will
+   * truncate anything more precise than the SECONDS value.
+   */
+  public void setScheduledTime(Instant scheduledTime) {
+    this.scheduledTime = scheduledTime;
+  }
+
   @Override
   public String toString() {
     return "CreateBatchRequest{"
@@ -68,6 +93,9 @@ public class CreateBatchRequest {
         + '\''
         + ", 'ownerGroupId='"
         + ownerGroupId
+        + '\''
+        + ", scheduledTime="
+        + scheduledTime
         + '}';
   }
 

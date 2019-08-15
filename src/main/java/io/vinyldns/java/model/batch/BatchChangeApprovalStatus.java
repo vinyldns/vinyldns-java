@@ -13,30 +13,10 @@
  */
 package io.vinyldns.java.model.batch;
 
-import io.vinyldns.java.model.record.RecordType;
-import java.util.List;
-
-public interface SingleChange {
-
-  String getId();
-
-  ChangeInputType getChangeType();
-
-  SingleChangeStatus getStatus();
-
-  String getSystemMessage();
-
-  String getRecordChangeId();
-
-  String getZoneId();
-
-  String getRecordName();
-
-  RecordType getType();
-
-  String getInputName();
-
-  String getZoneName();
-
-  List<ValidationError> getValidationErrors();
+public enum BatchChangeApprovalStatus {
+  AutoApproved,
+  Cancelled,
+  ManuallyApproved,
+  ManuallyRejected,
+  PendingReview
 }

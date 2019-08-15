@@ -13,30 +13,25 @@
  */
 package io.vinyldns.java.model.batch;
 
-import io.vinyldns.java.model.record.RecordType;
-import java.util.List;
+/** Helper class for serializing review comments (when approving/rejecting batch changes) */
+public final class BatchChangeReview {
+  private final String reviewComment;
 
-public interface SingleChange {
+  public BatchChangeReview(String reviewComment) {
+    this.reviewComment = reviewComment;
+  }
 
-  String getId();
+  public String getReviewComment() {
+    return reviewComment;
+  }
 
-  ChangeInputType getChangeType();
+  @Override
+  public int hashCode() {
+    return reviewComment.hashCode();
+  }
 
-  SingleChangeStatus getStatus();
-
-  String getSystemMessage();
-
-  String getRecordChangeId();
-
-  String getZoneId();
-
-  String getRecordName();
-
-  RecordType getType();
-
-  String getInputName();
-
-  String getZoneName();
-
-  List<ValidationError> getValidationErrors();
+  @Override
+  public String toString() {
+    return "BatchChangeReview{" + "reviewComment='" + reviewComment + '\'' + "}";
+  }
 }
