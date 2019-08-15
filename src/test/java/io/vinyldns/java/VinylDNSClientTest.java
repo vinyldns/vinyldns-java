@@ -1394,6 +1394,11 @@ public class VinylDNSClientTest {
                     .withStatus(202)
                     .withHeader("Content-Type", "application/json")
                     .withBody(response)));
+
+    VinylDNSResponse<BatchResponse> vinylDNSBatchResponse =
+        client.cancelBatchChanges("1234");
+
+    assertEquals(vinylDNSBatchResponse.getStatusCode(), 202);
   }
 
   @Test
