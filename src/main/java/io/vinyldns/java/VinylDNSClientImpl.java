@@ -349,7 +349,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
         new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, request);
 
     if (request.getAllowManualReview() != null) {
-      vinylDNSRequest.addParameter("startFrom", request.getAllowManualReview().toString());
+      vinylDNSRequest.addParameter("allowManualReview", request.getAllowManualReview().toString());
     }
 
     return executeRequest(vinylDNSRequest, BatchResponse.class);

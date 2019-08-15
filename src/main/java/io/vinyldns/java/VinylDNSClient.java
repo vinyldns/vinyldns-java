@@ -287,8 +287,8 @@ public interface VinylDNSClient {
    * A delete and add of the same record will be treated as an update on that record set. Regardless
    * of the input order in the batch change, all deletes for the same recordset will be logically
    * applied before the adds. Current supported record types for creating a batch change are: A,
-   * AAAA, CNAME, and PTR. A batch must contain at least one change and no more than the configured
-   * number of changes.
+   * AAAA, CNAME, MX, PTR and TXT. A batch must contain at least one change and no more than the
+   * configured number of changes.
    *
    * @param request See {@link CreateBatchRequest CreateBatchRequest Model}
    * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;BatchResponse&gt;} in case of
