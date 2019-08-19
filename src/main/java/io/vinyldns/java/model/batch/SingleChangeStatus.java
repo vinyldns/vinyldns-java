@@ -14,7 +14,10 @@
 package io.vinyldns.java.model.batch;
 
 public enum SingleChangeStatus {
-  Pending,
+  Cancelled,
   Complete,
-  Failed
+  Failed,
+  NeedsReview,
+  Pending,
+  Rejected
 }

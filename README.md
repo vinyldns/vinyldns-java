@@ -1,3 +1,5 @@
+[![Travis build](https://api.travis-ci.org/vinyldns/vinyldns-java.svg?branch=master)](https://travis-ci.org/vinyldns/vinyldns-java)
+
 # vinyldns-java
 Java client for working with VinylDNS
 

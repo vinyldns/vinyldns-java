@@ -287,7 +287,8 @@ public interface VinylDNSClient {
    * A delete and add of the same record will be treated as an update on that record set. Regardless
    * of the input order in the batch change, all deletes for the same recordset will be logically
    * applied before the adds. Current supported record types for creating a batch change are: A,
-   * AAAA, CNAME, and PTR. A batch must contain at least one change and no more than 20 changes.
+   * AAAA, CNAME, MX, PTR and TXT. A batch must contain at least one change and no more than the
+   * configured number of changes.
    *
    * @param request See {@link CreateBatchRequest CreateBatchRequest Model}
    * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;BatchResponse&gt;} in case of
@@ -295,4 +296,66 @@ public interface VinylDNSClient {
    *     case of failure
    */
   VinylDNSResponse<BatchResponse> createBatchChanges(CreateBatchRequest request);
+
+  /**
+   * Approve a batch change that is currently in PendingReview status. Approving user must be a
+   * system administrator (i.e. support or super user). Successful approval will cause the batch to
+   * enter the queue for auto-processing.
+   *
+   * @param id Identifier for batch change requiring review.
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;BatchResponse&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;BatchResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<BatchResponse> approveBatchChanges(String id);
+
+  /**
+   * Approve a batch change that is currently in PendingReview status. Approving user must be a
+   * system administrator (i.e. support or super user). Successful approval will cause the batch to
+   * enter the queue for auto-processing.
+   *
+   * @param id Identifier for batch change requiring review.
+   * @param reviewComment Comment for the review.
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;BatchResponse&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;BatchResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<BatchResponse> approveBatchChanges(String id, String reviewComment);
+
+  /**
+   * Reject a batch change that is currently in PendingReview status. Rejecting user must be a
+   * system administrator (i.e. support or super user). Successful rejection will cause the batch to
+   * enter a Rejected state where none of the changes will be implemented.
+   *
+   * @param id Identifier for batch change requiring review.
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;BatchResponse&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;BatchResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<BatchResponse> rejectBatchChanges(String id);
+
+  /**
+   * Reject a batch change that is currently in PendingReview status. Rejecting user must be a
+   * system administrator (i.e. support or super user). Successful rejection will cause the batch to
+   * enter a Rejected state where none of the changes will be implemented.
+   *
+   * @param id Identifier for batch change requiring review.
+   * @param reviewComment Comment for the review.
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;BatchResponse&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;BatchResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<BatchResponse> rejectBatchChanges(String id, String reviewComment);
+
+  /**
+   * Cancel a batch change that is currently in PendingReview status. Cancelling user must be the
+   * submitter of the batch change; system administrators (i.e. support or super users) will have to
+   * reject the batch change instead of cancelling. Successful cancellation will cause the batch to
+   * enter a Cancelled state where none of the changes will be implemented.
+   *
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;BatchResponse&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;BatchResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<BatchResponse> cancelBatchChanges(String id);
 }
