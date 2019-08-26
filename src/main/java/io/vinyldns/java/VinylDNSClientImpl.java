@@ -22,6 +22,7 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.SignerFactory;
 import com.amazonaws.http.AmazonHttpClient;
 import com.google.gson.Gson;
+import io.vinyldns.java.VinylDNSClientConfig;
 import io.vinyldns.java.handlers.ErrorResponseHandler;
 import io.vinyldns.java.handlers.StringResponseHandler;
 import io.vinyldns.java.model.Methods;
@@ -51,7 +52,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
 
   public VinylDNSClientImpl() {
     this.config =
-        new io.vinyldns.java.VinylDNSClientConfig(
+        new VinylDNSClientConfig(
             System.getenv("VINYLDNS_API_URL"),
             new BasicAWSCredentials(
                 System.getenv("VINYLDNS_ACCESS_KEY_ID"),
