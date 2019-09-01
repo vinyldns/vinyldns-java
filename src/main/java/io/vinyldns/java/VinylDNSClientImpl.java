@@ -18,8 +18,11 @@ import com.amazonaws.ClientConfiguration;
 import com.amazonaws.DefaultRequest;
 import com.amazonaws.Request;
 import com.amazonaws.Response;
+import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.auth.SignerFactory;
 import com.amazonaws.http.AmazonHttpClient;
 import com.google.gson.Gson;
+import io.vinyldns.java.VinylDNSClientConfig;
 import io.vinyldns.java.handlers.ErrorResponseHandler;
 import io.vinyldns.java.handlers.StringResponseHandler;
 import io.vinyldns.java.model.Methods;
@@ -43,6 +46,18 @@ public class VinylDNSClientImpl implements VinylDNSClient {
 
   public VinylDNSClientImpl(VinylDNSClientConfig config) {
     this.config = config;
+
+    this.client = new AmazonHttpClient(new ClientConfiguration());
+  }
+
+  public VinylDNSClientImpl() {
+    this.config =
+        new VinylDNSClientConfig(
+            System.getenv("VINYLDNS_API_URL"),
+            new BasicAWSCredentials(
+                System.getenv("VINYLDNS_ACCESS_KEY_ID"),
+                System.getenv("VINYLDNS_SECRET_ACCESS_KEY")),
+            SignerFactory.getSigner("VinylDNS", "us/east"));
 
     this.client = new AmazonHttpClient(new ClientConfiguration());
   }
