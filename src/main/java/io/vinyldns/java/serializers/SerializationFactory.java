@@ -24,7 +24,7 @@ public class SerializationFactory {
   public static Gson createGson() {
     GsonBuilder gsonBuilder = new GsonBuilder();
     gsonBuilder.registerTypeAdapterFactory(new RecordSetTypeAdapterFactory());
-    gsonBuilder.registerTypeAdapterFactory(new AddSingleChangeAdapterFactory());
+    gsonBuilder.registerTypeAdapterFactory(new SingleChangeAdapterFactory());
     gsonBuilder.registerTypeAdapter(RecordData.class, new RecordDataDeserializer());
     gsonBuilder.registerTypeAdapter(DateTime.class, new DateTimeSerializer());
     gsonBuilder.registerTypeAdapter(SingleChange.class, new ChangeInputDeserializer());

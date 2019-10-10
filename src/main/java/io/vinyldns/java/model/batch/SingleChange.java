@@ -14,6 +14,7 @@
 package io.vinyldns.java.model.batch;
 
 import io.vinyldns.java.model.record.RecordType;
+import io.vinyldns.java.model.record.data.RecordData;
 import java.util.List;
 
 public interface SingleChange {
@@ -39,4 +40,6 @@ public interface SingleChange {
   String getZoneName();
 
   List<ValidationError> getValidationErrors();
+
+  RecordData getRecord();
 }

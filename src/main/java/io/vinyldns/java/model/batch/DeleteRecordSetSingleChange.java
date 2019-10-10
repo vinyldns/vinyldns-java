@@ -14,6 +14,7 @@
 package io.vinyldns.java.model.batch;
 
 import io.vinyldns.java.model.record.RecordType;
+import io.vinyldns.java.model.record.data.RecordData;
 import java.util.List;
 import java.util.Objects;
 
@@ -31,6 +32,8 @@ public class DeleteRecordSetSingleChange implements SingleChange {
   private String recordSetId;
 
   private List<ValidationError> validationErrors;
+
+  private RecordData record;
 
   @Override
   public String getId() {
@@ -130,8 +133,20 @@ public class DeleteRecordSetSingleChange implements SingleChange {
     this.recordSetId = recordSetId;
   }
 
+  public RecordData getRecord() {
+    return record;
+  }
+
+  public void setRecord(RecordData record) {
+    this.record = record;
+  }
+
   public List<ValidationError> getValidationErrors() {
     return validationErrors;
+  }
+
+  public void setValidationErrors(List<ValidationError> validationErrors) {
+    this.validationErrors = validationErrors;
   }
 
   @Override
@@ -167,6 +182,8 @@ public class DeleteRecordSetSingleChange implements SingleChange {
         + ", recordSetId='"
         + recordSetId
         + '\''
+        + ", record="
+        + record
         + ", validationErrors="
         + validationErrors
         + '}';
@@ -188,6 +205,7 @@ public class DeleteRecordSetSingleChange implements SingleChange {
         && Objects.equals(systemMessage, that.systemMessage)
         && Objects.equals(recordChangeId, that.recordChangeId)
         && Objects.equals(recordSetId, that.recordSetId)
+        && Objects.equals(record, that.record)
         && Objects.equals(validationErrors, that.validationErrors);
   }
 
@@ -202,6 +220,7 @@ public class DeleteRecordSetSingleChange implements SingleChange {
         recordName,
         inputName,
         type,
+        record,
         status,
         systemMessage,
         recordChangeId,
