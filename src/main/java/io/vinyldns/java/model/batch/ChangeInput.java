@@ -57,10 +57,10 @@ public class ChangeInput {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ChangeInput that = (ChangeInput) o;
-    return this.inputName.equals(that.inputName)
+    return Objects.equals(inputName, that.inputName)
         && this.changeType == that.changeType
         && this.type == that.type
-        && this.record == that.record;
+        && Objects.equals(record, that.record);
   }
 
   @Override
