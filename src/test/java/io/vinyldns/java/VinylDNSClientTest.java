@@ -19,6 +19,7 @@ import static io.vinyldns.java.model.membership.GroupStatus.Active;
 import static org.testng.Assert.*;
 
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.services.kinesis.model.Record;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.matching.EqualToJsonPattern;
 import io.vinyldns.java.model.acl.ACLRule;
@@ -1117,8 +1118,11 @@ public class VinylDNSClientTest {
     AddChangeInput addInput = new AddChangeInput("www.example.com", RecordType.A, 300L, adata);
     DeleteRecordSetChangeInput deleteInput =
         new DeleteRecordSetChangeInput("www.example.com", RecordType.A);
+    DeleteRecordSetChangeInput deleteInputWithData =
+        new DeleteRecordSetChangeInput("foo.example.com", RecordType.A, adata);
     changes.add(addInput);
     changes.add(deleteInput);
+    changes.add(deleteInputWithData);
 
     CreateBatchRequest batchRequest = new CreateBatchRequest(changes);
 
@@ -1149,9 +1153,24 @@ public class VinylDNSClientTest {
     deleteSingleChange.setSystemMessage("testMessage");
     deleteSingleChange.setStatus(SingleChangeStatus.Complete);
 
+    DeleteRecordSetSingleChange deleteSingleChangeWithData = new DeleteRecordSetSingleChange();
+    deleteSingleChangeWithData.setChangeType(ChangeInputType.DeleteRecordSet);
+    deleteSingleChangeWithData.setId("1234");
+    deleteSingleChangeWithData.setInputName("testString");
+    deleteSingleChangeWithData.setRecordChangeId("1111");
+    deleteSingleChangeWithData.setRecordName("testName");
+    deleteSingleChangeWithData.setRecordSetId("testId");
+    deleteSingleChangeWithData.setZoneId("testZone");
+    deleteSingleChangeWithData.setZoneName("testZoneName");
+    deleteSingleChangeWithData.setType(RecordType.A);
+    deleteSingleChangeWithData.setRecord(adata);
+    deleteSingleChangeWithData.setSystemMessage("testMessage");
+    deleteSingleChangeWithData.setStatus(SingleChangeStatus.Complete);
+
     List<SingleChange> singleChangeList = new ArrayList<>();
     singleChangeList.add(addSingleChange);
     singleChangeList.add(deleteSingleChange);
+    singleChangeList.add(deleteSingleChangeWithData);
 
     BatchResponse batchResponse = new BatchResponse();
     batchResponse.setId("1234");
@@ -1395,8 +1414,7 @@ public class VinylDNSClientTest {
                     .withHeader("Content-Type", "application/json")
                     .withBody(response)));
 
-    VinylDNSResponse<BatchResponse> vinylDNSBatchResponse =
-        client.cancelBatchChanges("1234");
+    VinylDNSResponse<BatchResponse> vinylDNSBatchResponse = client.cancelBatchChanges("1234");
 
     assertEquals(vinylDNSBatchResponse.getStatusCode(), 202);
   }

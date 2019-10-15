@@ -22,7 +22,6 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.SignerFactory;
 import com.amazonaws.http.AmazonHttpClient;
 import com.google.gson.Gson;
-import io.vinyldns.java.VinylDNSClientConfig;
 import io.vinyldns.java.handlers.ErrorResponseHandler;
 import io.vinyldns.java.handlers.StringResponseHandler;
 import io.vinyldns.java.model.Methods;
