@@ -14,17 +14,28 @@
 package io.vinyldns.java.model.batch;
 
 import io.vinyldns.java.model.record.RecordType;
+import io.vinyldns.java.model.record.data.RecordData;
+
 import java.util.Objects;
 
 public class ChangeInput {
   private final ChangeInputType changeType;
   private final String inputName;
   private final RecordType type;
+  private final RecordData record;
 
   public ChangeInput(ChangeInputType changeType, String inputName, RecordType type) {
     this.changeType = changeType;
     this.inputName = inputName;
     this.type = type;
+    this.record = null;
+  }
+
+  public ChangeInput(ChangeInputType changeType, String inputName, RecordType type, RecordData record) {
+    this.changeType = changeType;
+    this.inputName = inputName;
+    this.type = type;
+    this.record = record;
   }
 
   public ChangeInputType getChangeType() {
@@ -39,18 +50,21 @@ public class ChangeInput {
     return type;
   }
 
+  public RecordData getRecord() { return record; }
+
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
     ChangeInput that = (ChangeInput) o;
-    return this.inputName.equals(that.inputName)
+    return Objects.equals(inputName, that.inputName)
         && this.changeType == that.changeType
-        && this.type == that.type;
+        && this.type == that.type
+        && Objects.equals(record, that.record);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(inputName, changeType, type);
+    return Objects.hash(inputName, changeType, type, record);
   }
 }

@@ -19,27 +19,21 @@ import java.util.Objects;
 
 public class AddChangeInput extends ChangeInput {
   private final Long ttl;
-  private final RecordData record;
 
   public AddChangeInput(String inputName, RecordType type, Long ttl, RecordData record) {
-    super(ChangeInputType.Add, inputName, type);
+    super(ChangeInputType.Add, inputName, type, record);
     this.ttl = ttl;
-    this.record = record;
   }
 
   public Long getTtl() {
     return ttl;
   }
 
-  public RecordData getRecord() {
-    return record;
-  }
-
   @Override
   public String toString() {
     return String.format(
         "AddChangeInput{changeType='%s', inputName='%s', type='%s', ttl='%s', record='%s'}",
-        this.getChangeType(), this.getInputName(), this.getType(), this.ttl, this.record);
+        this.getChangeType(), this.getInputName(), this.getType(), this.ttl, this.getRecord());
   }
 
   @Override
@@ -48,12 +42,11 @@ public class AddChangeInput extends ChangeInput {
     if (o == null || getClass() != o.getClass()) return false;
     AddChangeInput that = (AddChangeInput) o;
     return super.equals(o)
-        && Objects.equals(this.ttl, that.ttl)
-        && Objects.equals(this.record, that.record);
+        && Objects.equals(this.ttl, that.ttl);
   }
 
   @Override
   public int hashCode() {
-    return super.hashCode() + Objects.hash(ttl, record);
+    return super.hashCode() + Objects.hash(ttl);
   }
 }
