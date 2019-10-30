@@ -1,4 +1,5 @@
 [![Travis build](https://api.travis-ci.org/vinyldns/vinyldns-java.svg?branch=master)](https://travis-ci.org/vinyldns/vinyldns-java)
+![GitHub](https://img.shields.io/github/license/vinyldns/vinyldns-java)
 
 # vinyldns-java
 
