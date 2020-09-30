@@ -408,6 +408,38 @@ public class VinylDNSClientImpl implements VinylDNSClient {
         new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), path, null), BatchResponse.class);
   }
 
+  @Override
+  public VinylDNSResponse<ListRecordSetGlobalResponse> listGlobalRecordSets(
+          ListRecordSetGlobalRequest request) {
+    String path = "recordsets";
+
+    VinylDNSRequest<Void> vinylDNSRequest =
+            new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    if (request.getStartFrom() != null) {
+      vinylDNSRequest.addParameter("startFrom", request.getStartFrom());
+    }
+
+    if (request.getMaxItems() != null) {
+      vinylDNSRequest.addParameter("maxItems", request.getMaxItems().toString());
+    }
+
+    if (request.getRecordNameFilter() != null) {
+      vinylDNSRequest.addParameter("recordNameFilter", request.getRecordNameFilter());
+    }
+
+    if (request.getNameSort() != null) {
+      vinylDNSRequest.addParameter( "nameSort", request.getNameSort().name());
+    }
+
+    if (request.getRecordOwnerGroupFilter() != null) {
+      vinylDNSRequest.addParameter( "recordOwnerGroupFilter",
+                                    request.getRecordOwnerGroupFilter());
+    }
+
+    return executeRequest(vinylDNSRequest, ListRecordSetGlobalResponse.class);
+  }
+
   private <S, R> VinylDNSResponse<R> executeRequest(VinylDNSRequest<S> req, Class<R> responseType) {
     Request<String> request = new DefaultRequest<>("VinylDNS");
     request.setEndpoint(req.getEndpoint());
