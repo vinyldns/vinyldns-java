@@ -358,4 +358,17 @@ public interface VinylDNSClient {
    *     case of failure
    */
   VinylDNSResponse<BatchResponse> cancelBatchChanges(String id);
+
+  /**
+   * Retrieves a list of RecordSets globally in the VinylDNS database based on search criteria. A
+   * minimum of two alpha-numeric characters is required.
+   *
+   * @param request See {@link ListRecordSetGlobalRequest ListRecordSetGlobalRequest Model}
+   * @return {@link VinylDNSSuccessResponse
+   *     VinylDNSSuccessResponse&lt;ListRecordSetGlobalResponse&gt;} in case of success and {@link
+   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;ListRecordSetGlobalResponse&gt;} in case
+   *     of failure
+   */
+  VinylDNSResponse<ListRecordSetGlobalResponse> listGlobalRecordSets(
+          ListRecordSetGlobalRequest request);
 }
