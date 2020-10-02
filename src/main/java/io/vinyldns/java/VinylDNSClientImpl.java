@@ -409,8 +409,8 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
-  public VinylDNSResponse<ListRecordSetGlobalResponse> listGlobalRecordSets(
-          ListRecordSetGlobalRequest request) {
+  public VinylDNSResponse<SearchRecordSetsResponse> searchRecordSets(
+          SearchRecordSetsRequest request) {
     String path = "recordsets";
 
     VinylDNSRequest<Void> vinylDNSRequest =
@@ -437,7 +437,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
                                     request.getRecordOwnerGroupFilter());
     }
 
-    return executeRequest(vinylDNSRequest, ListRecordSetGlobalResponse.class);
+    return executeRequest(vinylDNSRequest, SearchRecordSetsResponse.class);
   }
 
   private <S, R> VinylDNSResponse<R> executeRequest(VinylDNSRequest<S> req, Class<R> responseType) {

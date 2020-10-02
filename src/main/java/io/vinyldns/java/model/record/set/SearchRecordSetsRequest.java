@@ -18,18 +18,19 @@ package io.vinyldns.java.model.record.set;
 import io.vinyldns.java.model.Order;
 import java.util.Objects;
 
-public class ListRecordSetGlobalRequest {
+public class SearchRecordSetsRequest
+{
     private final String recordNameFilter;
     private String recordOwnerGroupFilter;
     private Order nameSort;
     private String startFrom;
     private Integer maxItems;
 
-    public ListRecordSetGlobalRequest(final String recordNameFilter) {
+    public SearchRecordSetsRequest(final String recordNameFilter) {
         this.recordNameFilter = recordNameFilter;
     }
 
-    public ListRecordSetGlobalRequest(
+    public SearchRecordSetsRequest(
             String recordNameFilter,
             String recordOwnerGroupFilter,
             Order nameSort,
@@ -65,7 +66,7 @@ public class ListRecordSetGlobalRequest {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        ListRecordSetGlobalRequest that = (ListRecordSetGlobalRequest) o;
+        SearchRecordSetsRequest that = (SearchRecordSetsRequest) o;
         return recordNameFilter.equals(that.recordNameFilter)
                 && recordOwnerGroupFilter.equals(that.recordOwnerGroupFilter)
                 && nameSort == that.nameSort

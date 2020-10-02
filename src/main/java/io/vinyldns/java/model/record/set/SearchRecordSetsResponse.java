@@ -18,7 +18,8 @@ package io.vinyldns.java.model.record.set;
 import io.vinyldns.java.model.record.RecordType;
 import java.util.Collection;
 
-public class ListRecordSetGlobalResponse {
+public class SearchRecordSetsResponse
+{
 
     private Collection<RecordSet> recordSets;
     private String startFrom;
@@ -29,7 +30,7 @@ public class ListRecordSetGlobalResponse {
     private String recordOwnerGroupFilter;
     private String nameSort;
 
-    public ListRecordSetGlobalResponse(
+    public SearchRecordSetsResponse(
             Collection<RecordSet> recordSets,
             String startFrom,
             String nextId,

@@ -19,7 +19,6 @@ import static io.vinyldns.java.model.membership.GroupStatus.Active;
 import static org.testng.Assert.*;
 
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.kinesis.model.Record;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.matching.EqualToJsonPattern;
 
@@ -1472,7 +1471,7 @@ public class VinylDNSClientTest {
 
   @Test
   public void listRecordSetGlobalSuccess() {
-    String response = client.gson.toJson(listRecordSetGlobalResponse);
+    String response = client.gson.toJson(searchRecordSetsResponse);
 
     String recordNameFilter = "someFilter";
     String startFrom = "someStart";
@@ -1489,15 +1488,15 @@ public class VinylDNSClientTest {
                                     .withHeader("Content-Type", "application/json")
                                     .withBody(response)));
 
-    VinylDNSResponse<ListRecordSetGlobalResponse> vinylDNSResponse =
-            client.listGlobalRecordSets(
-                    new ListRecordSetGlobalRequest(recordNameFilter, null,
-                                                   Order.ASC , startFrom, maxItems));
+    VinylDNSResponse<SearchRecordSetsResponse> vinylDNSResponse =
+            client.searchRecordSets(
+                    new SearchRecordSetsRequest(recordNameFilter, null,
+                                                Order.ASC , startFrom, maxItems));
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 200);
     assertEquals(vinylDNSResponse.getValue().getRecordNameFilter(),
-                 listRecordSetGlobalResponse.getRecordNameFilter());
+                 searchRecordSetsResponse.getRecordNameFilter());
 
   }
 
@@ -1518,10 +1517,10 @@ public class VinylDNSClientTest {
                                     .withHeader("Content-Type", "application/json")
                                     .withBody("server error")));
 
-    VinylDNSResponse<ListRecordSetGlobalResponse> vinylDNSResponse =
-            client.listGlobalRecordSets(
-                    new ListRecordSetGlobalRequest(recordNameFilter, null,
-                                                   Order.ASC , startFrom, maxItems));
+    VinylDNSResponse<SearchRecordSetsResponse> vinylDNSResponse =
+            client.searchRecordSets(
+                    new SearchRecordSetsRequest(recordNameFilter, null,
+                                                Order.ASC , startFrom, maxItems));
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
     assertEquals(vinylDNSResponse.getStatusCode(), 500);
@@ -1741,8 +1740,8 @@ public class VinylDNSClientTest {
   private ListRecordSetChangesResponse listRecordSetChangesResponse =
       new ListRecordSetChangesResponse(zoneId, recordSetChangeList, "", "startFrom", 1);
 
-  private ListRecordSetGlobalResponse listRecordSetGlobalResponse =
-          new ListRecordSetGlobalResponse(
+  private SearchRecordSetsResponse searchRecordSetsResponse =
+          new SearchRecordSetsResponse(
                   Collections.EMPTY_LIST,
                   "startFrom",
                   "nextId",

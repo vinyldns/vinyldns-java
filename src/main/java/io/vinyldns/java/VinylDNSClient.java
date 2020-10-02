@@ -363,12 +363,12 @@ public interface VinylDNSClient {
    * Retrieves a list of RecordSets globally in the VinylDNS database based on search criteria. A
    * minimum of two alpha-numeric characters is required.
    *
-   * @param request See {@link ListRecordSetGlobalRequest ListRecordSetGlobalRequest Model}
+   * @param request See {@link SearchRecordSetsRequest SearchRecordSetsRequest Model}
    * @return {@link VinylDNSSuccessResponse
-   *     VinylDNSSuccessResponse&lt;ListRecordSetGlobalResponse&gt;} in case of success and {@link
-   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;ListRecordSetGlobalResponse&gt;} in case
+   *     VinylDNSSuccessResponse&lt;SearchRecordSetsResponse&gt;} in case of success and {@link
+   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;SearchRecordSetsResponse&gt;} in case
    *     of failure
    */
-  VinylDNSResponse<ListRecordSetGlobalResponse> listGlobalRecordSets(
-          ListRecordSetGlobalRequest request);
+  VinylDNSResponse<SearchRecordSetsResponse> searchRecordSets(
+          SearchRecordSetsRequest request);
 }
