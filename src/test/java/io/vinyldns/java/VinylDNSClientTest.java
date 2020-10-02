@@ -19,9 +19,10 @@ import static io.vinyldns.java.model.membership.GroupStatus.Active;
 import static org.testng.Assert.*;
 
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.services.kinesis.model.Record;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.matching.EqualToJsonPattern;
+
+import io.vinyldns.java.model.Order;
 import io.vinyldns.java.model.acl.ACLRule;
 import io.vinyldns.java.model.acl.AccessLevel;
 import io.vinyldns.java.model.batch.*;
@@ -1468,6 +1469,66 @@ public class VinylDNSClientTest {
     assertNull(vinylDNSResponse.getValue());
   }
 
+  @Test
+  public void listRecordSetGlobalSuccess() {
+    String response = client.gson.toJson(searchRecordSetsResponse);
+
+    String recordNameFilter = "someFilter";
+    String startFrom = "someStart";
+    int maxItems = 55;
+
+    wireMockServer.stubFor(
+            get(urlMatching("/recordsets?(.*)"))
+                    .withQueryParam("recordNameFilter", equalTo(recordNameFilter))
+                    .withQueryParam("startFrom", equalTo(startFrom))
+                    .withQueryParam("maxItems", equalTo(String.valueOf(maxItems)))
+                    .willReturn(
+                            aResponse()
+                                    .withStatus(200)
+                                    .withHeader("Content-Type", "application/json")
+                                    .withBody(response)));
+
+    VinylDNSResponse<SearchRecordSetsResponse> vinylDNSResponse =
+            client.searchRecordSets(
+                    new SearchRecordSetsRequest(recordNameFilter, null,
+                                                Order.ASC , startFrom, maxItems));
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
+    assertEquals(vinylDNSResponse.getStatusCode(), 200);
+    assertEquals(vinylDNSResponse.getValue().getRecordNameFilter(),
+                 searchRecordSetsResponse.getRecordNameFilter());
+
+  }
+
+  @Test
+  public void listRecordSetGlobalFailure() {
+    String recordNameFilter = "someFilter";
+    String startFrom = "someStart";
+    int maxItems = 55;
+
+    wireMockServer.stubFor(
+            get(urlMatching("/recordsets?(.*)"))
+                    .withQueryParam("recordNameFilter", equalTo(recordNameFilter))
+                    .withQueryParam("startFrom", equalTo(startFrom))
+                    .withQueryParam("maxItems", equalTo(String.valueOf(maxItems)))
+                    .willReturn(
+                            aResponse()
+                                    .withStatus(500)
+                                    .withHeader("Content-Type", "application/json")
+                                    .withBody("server error")));
+
+    VinylDNSResponse<SearchRecordSetsResponse> vinylDNSResponse =
+            client.searchRecordSets(
+                    new SearchRecordSetsRequest(recordNameFilter, null,
+                                                Order.ASC , startFrom, maxItems));
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 500);
+    assertEquals(vinylDNSResponse.getMessageBody(), "server error");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+
   private String rsId = "recordSetId";
   private String zoneId = "zoneId";
   private ZoneConnection testZoneConnection1 =
@@ -1678,4 +1739,15 @@ public class VinylDNSClientTest {
 
   private ListRecordSetChangesResponse listRecordSetChangesResponse =
       new ListRecordSetChangesResponse(zoneId, recordSetChangeList, "", "startFrom", 1);
+
+  private SearchRecordSetsResponse searchRecordSetsResponse =
+          new SearchRecordSetsResponse(
+                  Collections.EMPTY_LIST,
+                  "startFrom",
+                  "nextId",
+                  55,
+                  "recordNameFilter",
+                  Collections.EMPTY_LIST,
+                  "recordOwnerGroupFilter",
+                  "nameSort");
 }
