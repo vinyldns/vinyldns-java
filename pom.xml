@@ -59,7 +59,7 @@
     <properties>
         <aws.sdk.version>1.11.160</aws.sdk.version>
         <gson.version>2.3.1</gson.version>
-        <httpcomponents.version>4.5.2</httpcomponents.version>
+        <httpcomponents.version>4.5.13</httpcomponents.version>
         <slf4j.version>1.7.25</slf4j.version>
         <testng.version>6.11</testng.version>
         <maven.mojo.version>2.2.1</maven.mojo.version>
