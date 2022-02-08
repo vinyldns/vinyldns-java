@@ -2,7 +2,10 @@
 # Currently, it's setup to run on any tag that matches the pattern "v*" (ie. v0.1.0).
 
 name: release
-on: [push, pull_request]
+on:
+  push:
+    tags:
+      - 'v*'
 
 jobs:
   build:
