@@ -32,7 +32,7 @@ jobs:
 
     - name: Build and Publish package
       run: make deploy
-      shell: sh
+      shell: bash
       env:
         MAVEN_USERNAME: ${{ secrets.PUBLISH_USERNAME }}
         MAVEN_PASSWORD: ${{ secrets.PUBLISH_PASSWORD }}
