@@ -46,7 +46,7 @@ To release to Sonatype, make a `settings.xml` in `~/.m2` https://maven.apache.or
 The following information must be provided:
 
 * SONATYPE_USERNAME - oss.sonatype.org login for io.vinyldns
-* SONATYPE_USERNAME - oss.sonatype.org password for io.vinyldns
+* SONATYPE_PASSWORD - oss.sonatype.org password for io.vinyldns
 * GITHUB_USERNAME - Github username that your fork is published to
 * KEY_PASSPHRASE - passphrase for key F6D171DC24C6EB30FCAC1E85AEF7D1D58E3C1B9A
 
