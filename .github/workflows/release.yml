@@ -3,8 +3,7 @@
 
 name: release
 on:
-  pull_request:
-    branches: [ '*' ]
+  create
 
 jobs:
   build:
