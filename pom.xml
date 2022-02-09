@@ -5,44 +5,25 @@
     <artifactId>vinyldns-java</artifactId>
     <version>0.9.4-SNAPSHOT</version>
 
-    <scm>
-        <connection>scm:git:ssh://git@github.com/${vinyldns-fork}/vinyldns-java.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/${vinyldns-fork}/vinyldns-java.git</developerConnection>
-        <url>http://github.com/vinyldns/vinyldns-java</url>
-    <tag>HEAD</tag>
+  <scm>
+    <connection>scm:git:git://github.com/vinyldns/vinyldns-java.git</connection>
+    <developerConnection>scm:git:ssh://github.com:vinyldns/vinyldns-java.git</developerConnection>
+    <url>http://github.com/vinyldns/vinyldns-java</url>
   </scm>
 
     <name>vinyldns-java</name>
     <description>java client for https://vinyldns.io</description>
     <url>https://vinyldns.io</url>
-    <developers>
-        <developer>
-            <id>pauljamescleary</id>
-            <name>Paul Cleary</name>
-            <email>pauljamescleary@gmail.com</email>
-        </developer>
-        <developer>
-            <id>rebstar6</id>
-            <name>Rebecca Star</name>
-            <email>rebstar6@gmail.com</email>
-        </developer>
-        <developer>
-            <id>nimaeskandary</id>
-            <name>Nima Eskandary</name>
-            <email>nimaesk1@gmail.com</email>
-        </developer>
-        <developer>
-            <id>mitruly</id>
-            <name>Michael Ly</name>
-            <email>michaeltrulyng@gmail.com</email>
-        </developer>
-        <developer>
-            <id>britneywright</id>
-            <name>Britney Wright</name>
-            <email>blw06g@gmail.com</email>
-        </developer>
-    </developers>
 
+  <developers>
+    <developer>
+      <name>VinylDNS Maintainers</name>
+      <email>vinyldns-core@googlegroups.com</email>
+      <organization>VinylDNS</organization>
+      <organizationUrl>https://github.com/vinyldns/vinyldns-java</organizationUrl>
+    </developer>
+  </developers>
+  
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -327,7 +308,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>3.0.1</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -335,6 +316,9 @@
                                 <goals>
                                     <goal>sign</goal>
                                 </goals>
+                                <configuration>
+                                <keyname>F6D171DC24C6EB30FCAC1E85AEF7D1D58E3C1B9A</keyname>
+                                </configuration>
                             </execution>
                         </executions>
                     </plugin>
