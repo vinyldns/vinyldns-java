@@ -317,7 +317,7 @@
                                     <goal>sign</goal>
                                 </goals>
                                 <configuration>
-                                <keyname>${{ secrets.PUBLISH_SIGNING_KEY_NAME }}</keyname>
+                                <keyname>F6D171DC24C6EB30FCAC1E85AEF7D1D58E3C1B9A</keyname>
                                 </configuration>
                             </execution>
                         </executions>
