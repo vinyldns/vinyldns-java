@@ -18,98 +18,97 @@ package io.vinyldns.java.model.record.set;
 import io.vinyldns.java.model.record.RecordType;
 import java.util.Collection;
 
-public class SearchRecordSetsResponse
-{
+public class SearchRecordSetsResponse {
 
-    private Collection<RecordSet> recordSets;
-    private String startFrom;
-    private String nextId;
-    private Integer maxItems;
-    private String recordNameFilter;
-    private Collection<RecordType> recordTypeFilter;
-    private String recordOwnerGroupFilter;
-    private String nameSort;
+  private Collection<RecordSet> recordSets;
+  private String startFrom;
+  private String nextId;
+  private Integer maxItems;
+  private String recordNameFilter;
+  private Collection<RecordType> recordTypeFilter;
+  private String recordOwnerGroupFilter;
+  private String nameSort;
 
-    public SearchRecordSetsResponse(
-            Collection<RecordSet> recordSets,
-            String startFrom,
-            String nextId,
-            Integer maxItems,
-            String recordNameFilter,
-            Collection<RecordType> recordTypeFilter,
-            String recordOwnerGroupFilter,
-            String nameSort) {
-        this.recordSets = recordSets;
-        this.startFrom = startFrom;
-        this.nextId = nextId;
-        this.maxItems = maxItems;
-        this.recordNameFilter = recordNameFilter;
-        this.recordTypeFilter = recordTypeFilter;
-        this.recordOwnerGroupFilter = recordOwnerGroupFilter;
-        this.nameSort = nameSort;
-    }
+  public SearchRecordSetsResponse(
+      Collection<RecordSet> recordSets,
+      String startFrom,
+      String nextId,
+      Integer maxItems,
+      String recordNameFilter,
+      Collection<RecordType> recordTypeFilter,
+      String recordOwnerGroupFilter,
+      String nameSort) {
+    this.recordSets = recordSets;
+    this.startFrom = startFrom;
+    this.nextId = nextId;
+    this.maxItems = maxItems;
+    this.recordNameFilter = recordNameFilter;
+    this.recordTypeFilter = recordTypeFilter;
+    this.recordOwnerGroupFilter = recordOwnerGroupFilter;
+    this.nameSort = nameSort;
+  }
 
-    public Collection<RecordSet> getRecordSets() {
-        return recordSets;
-    }
+  public Collection<RecordSet> getRecordSets() {
+    return recordSets;
+  }
 
-    public void setRecordSets(Collection<RecordSet> recordSets) {
-        this.recordSets = recordSets;
-    }
+  public void setRecordSets(Collection<RecordSet> recordSets) {
+    this.recordSets = recordSets;
+  }
 
-    public String getStartFrom() {
-        return startFrom;
-    }
+  public String getStartFrom() {
+    return startFrom;
+  }
 
-    public void setStartFrom(String startFrom) {
-        this.startFrom = startFrom;
-    }
+  public void setStartFrom(String startFrom) {
+    this.startFrom = startFrom;
+  }
 
-    public String getNextId() {
-        return nextId;
-    }
+  public String getNextId() {
+    return nextId;
+  }
 
-    public void setNextId(String nextId) {
-        this.nextId = nextId;
-    }
+  public void setNextId(String nextId) {
+    this.nextId = nextId;
+  }
 
-    public Integer getMaxItems() {
-        return maxItems;
-    }
+  public Integer getMaxItems() {
+    return maxItems;
+  }
 
-    public void setMaxItems(Integer maxItems) {
-        this.maxItems = maxItems;
-    }
+  public void setMaxItems(Integer maxItems) {
+    this.maxItems = maxItems;
+  }
 
-    public String getRecordNameFilter() {
-        return recordNameFilter;
-    }
+  public String getRecordNameFilter() {
+    return recordNameFilter;
+  }
 
-    public void setRecordNameFilter(String recordNameFilter) {
-        this.recordNameFilter = recordNameFilter;
-    }
+  public void setRecordNameFilter(String recordNameFilter) {
+    this.recordNameFilter = recordNameFilter;
+  }
 
-    public Collection<RecordType> getRecordTypeFilter() {
-        return recordTypeFilter;
-    }
+  public Collection<RecordType> getRecordTypeFilter() {
+    return recordTypeFilter;
+  }
 
-    public void setRecordTypeFilter(Collection<RecordType> recordTypeFilter) {
-        this.recordTypeFilter = recordTypeFilter;
-    }
+  public void setRecordTypeFilter(Collection<RecordType> recordTypeFilter) {
+    this.recordTypeFilter = recordTypeFilter;
+  }
 
-    public String getRecordOwnerGroupFilter() {
-        return recordOwnerGroupFilter;
-    }
+  public String getRecordOwnerGroupFilter() {
+    return recordOwnerGroupFilter;
+  }
 
-    public void setRecordOwnerGroupFilter(String recordOwnerGroupFilter) {
-        this.recordOwnerGroupFilter = recordOwnerGroupFilter;
-    }
+  public void setRecordOwnerGroupFilter(String recordOwnerGroupFilter) {
+    this.recordOwnerGroupFilter = recordOwnerGroupFilter;
+  }
 
-    public String getNameSort() {
-        return nameSort;
-    }
+  public String getNameSort() {
+    return nameSort;
+  }
 
-    public void setNameSort(String nameSort) {
-        this.nameSort = nameSort;
-    }
+  public void setNameSort(String nameSort) {
+    this.nameSort = nameSort;
+  }
 }

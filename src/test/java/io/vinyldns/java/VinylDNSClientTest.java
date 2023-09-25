@@ -1,14 +1,16 @@
-/**
+/*
  * Copyright 2018 Comcast Cable Communications Management, LLC
  *
- * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * <p>http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing permissions and
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package io.vinyldns.java;
@@ -21,7 +23,6 @@ import static org.testng.Assert.*;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.github.tomakehurst.wiremock.WireMockServer;
 import com.github.tomakehurst.wiremock.matching.EqualToJsonPattern;
-
 import io.vinyldns.java.model.Order;
 import io.vinyldns.java.model.acl.ACLRule;
 import io.vinyldns.java.model.acl.AccessLevel;
@@ -1090,12 +1091,12 @@ public class VinylDNSClientTest {
   public void listGroupActivitySuccessWithParams() {
     String response = client.gson.toJson(listGroupActivityResponse);
 
-    String startFrom = listGroupActivityResponse.getStartFrom();
+    int startFrom = listGroupActivityResponse.getStartFrom();
     int maxItems = listGroupActivityResponse.getMaxItems();
 
     wireMockServer.stubFor(
         get(urlMatching("/groups/" + groupId + "/activity?(.*)"))
-            .withQueryParam("startFrom", equalTo(startFrom))
+            .withQueryParam("startFrom", equalTo(String.valueOf(startFrom)))
             .withQueryParam("maxItems", equalTo(String.valueOf(maxItems)))
             .willReturn(
                 aResponse()
@@ -1123,7 +1124,7 @@ public class VinylDNSClientTest {
                     .withHeader("Content-Type", "application/json")
                     .withBody(response)));
 
-    VinylDNSResponse<Group> vinylDNSResponse = client.getGroupChange(getGroupChangeRequest);
+    VinylDNSResponse<GroupChange> vinylDNSResponse = client.getGroupChange(getGroupChangeRequest);
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 200);
@@ -1136,7 +1137,7 @@ public class VinylDNSClientTest {
         get(urlEqualTo("/groups/change/" + groupChangeId))
             .willReturn(aResponse().withStatus(500).withBody("server error")));
 
-    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupChangeRequest);
+    VinylDNSResponse<GroupChange> vinylDNSResponse = client.getGroupChange(getGroupChangeRequest);
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
     assertEquals(vinylDNSResponse.getStatusCode(), 500);
@@ -1150,7 +1151,7 @@ public class VinylDNSClientTest {
         get(urlEqualTo("/groups/change/" + groupChangeId))
             .willReturn(aResponse().withStatus(404).withBody("not found")));
 
-    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupChangeRequest);
+    VinylDNSResponse<GroupChange> vinylDNSResponse = client.getGroupChange(getGroupChangeRequest);
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
     assertEquals(vinylDNSResponse.getStatusCode(), 404);
@@ -1525,26 +1526,25 @@ public class VinylDNSClientTest {
     int maxItems = 55;
 
     wireMockServer.stubFor(
-            get(urlMatching("/recordsets?(.*)"))
-                    .withQueryParam("recordNameFilter", equalTo(recordNameFilter))
-                    .withQueryParam("startFrom", equalTo(startFrom))
-                    .withQueryParam("maxItems", equalTo(String.valueOf(maxItems)))
-                    .willReturn(
-                            aResponse()
-                                    .withStatus(200)
-                                    .withHeader("Content-Type", "application/json")
-                                    .withBody(response)));
+        get(urlMatching("/recordsets?(.*)"))
+            .withQueryParam("recordNameFilter", equalTo(recordNameFilter))
+            .withQueryParam("startFrom", equalTo(startFrom))
+            .withQueryParam("maxItems", equalTo(String.valueOf(maxItems)))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
 
     VinylDNSResponse<SearchRecordSetsResponse> vinylDNSResponse =
-            client.searchRecordSets(
-                    new SearchRecordSetsRequest(recordNameFilter, null,
-                                                Order.ASC , startFrom, maxItems));
+        client.searchRecordSets(
+            new SearchRecordSetsRequest(recordNameFilter, null, Order.ASC, startFrom, maxItems));
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 200);
-    assertEquals(vinylDNSResponse.getValue().getRecordNameFilter(),
-                 searchRecordSetsResponse.getRecordNameFilter());
-
+    assertEquals(
+        vinylDNSResponse.getValue().getRecordNameFilter(),
+        searchRecordSetsResponse.getRecordNameFilter());
   }
 
   @Test
@@ -1554,27 +1554,25 @@ public class VinylDNSClientTest {
     int maxItems = 55;
 
     wireMockServer.stubFor(
-            get(urlMatching("/recordsets?(.*)"))
-                    .withQueryParam("recordNameFilter", equalTo(recordNameFilter))
-                    .withQueryParam("startFrom", equalTo(startFrom))
-                    .withQueryParam("maxItems", equalTo(String.valueOf(maxItems)))
-                    .willReturn(
-                            aResponse()
-                                    .withStatus(500)
-                                    .withHeader("Content-Type", "application/json")
-                                    .withBody("server error")));
+        get(urlMatching("/recordsets?(.*)"))
+            .withQueryParam("recordNameFilter", equalTo(recordNameFilter))
+            .withQueryParam("startFrom", equalTo(startFrom))
+            .withQueryParam("maxItems", equalTo(String.valueOf(maxItems)))
+            .willReturn(
+                aResponse()
+                    .withStatus(500)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody("server error")));
 
     VinylDNSResponse<SearchRecordSetsResponse> vinylDNSResponse =
-            client.searchRecordSets(
-                    new SearchRecordSetsRequest(recordNameFilter, null,
-                                                Order.ASC , startFrom, maxItems));
+        client.searchRecordSets(
+            new SearchRecordSetsRequest(recordNameFilter, null, Order.ASC, startFrom, maxItems));
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
     assertEquals(vinylDNSResponse.getStatusCode(), 500);
     assertEquals(vinylDNSResponse.getMessageBody(), "server error");
     assertNull(vinylDNSResponse.getValue());
   }
-
 
   private String rsId = "recordSetId";
   private String zoneId = "zoneId";
@@ -1719,7 +1717,7 @@ public class VinylDNSClientTest {
   private GetRecordSetRequest getRecordSetRequest = new GetRecordSetRequest(zoneId, recordSetId);
 
   private String groupId = "groupId";
-  private String grouChangeId = "groupChangeId";
+  private String groupChangeId = "groupChangeId";
   private GetRecordSetChangeRequest getRecordSetChangeRequest =
       new GetRecordSetChangeRequest(zoneId, recordSetId, recordSetChangeId);
   private UpdateRecordSetRequest updateRecordSetRequest =
@@ -1755,7 +1753,8 @@ public class VinylDNSClientTest {
 
   private Set<GroupChange> groupChanges =
       Collections.singleton(new GroupChange("ID", newGroup, group, "", "", GroupChangeType.Update));
-  private GroupChange groupChange = new GroupChange("ID", newGroup, group, "", "", GroupChangeType.Update);
+  private GroupChange groupChange =
+      new GroupChange("ID", newGroup, group, "", "", GroupChangeType.Update);
 
   private CreateGroupRequest createGroupRequest =
       new CreateGroupRequest("createGroup", "create@group.com", adminMemberId, adminMemberId);
@@ -1770,7 +1769,7 @@ public class VinylDNSClientTest {
           new DateTime(),
           GroupStatus.Active);
   private GetGroupRequest getGroupRequest = new GetGroupRequest(groupId);
-  private GetGroupChangeRequest getGroupRequest = new GetGroupChangeRequest(groupChangeId);
+  private GetGroupChangeRequest getGroupChangeRequest = new GetGroupChangeRequest(groupChangeId);
   private DeleteGroupRequest deleteGroupRequest = new DeleteGroupRequest(groupId);
 
   private List<Group> groupList = Collections.singletonList(group);
@@ -1791,13 +1790,13 @@ public class VinylDNSClientTest {
       new ListRecordSetChangesResponse(zoneId, recordSetChangeList, 2, 1, 1);
 
   private SearchRecordSetsResponse searchRecordSetsResponse =
-          new SearchRecordSetsResponse(
-                  Collections.EMPTY_LIST,
-                  "startFrom",
-                  "nextId",
-                  55,
-                  "recordNameFilter",
-                  Collections.EMPTY_LIST,
-                  "recordOwnerGroupFilter",
-                  "nameSort");
+      new SearchRecordSetsResponse(
+          Collections.EMPTY_LIST,
+          "startFrom",
+          "nextId",
+          55,
+          "recordNameFilter",
+          Collections.EMPTY_LIST,
+          "recordOwnerGroupFilter",
+          "nameSort");
 }
