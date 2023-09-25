@@ -259,7 +259,7 @@ public interface VinylDNSClient {
    */
   VinylDNSResponse<ListGroupActivityResponse> listGroupActivity(ListGroupActivityRequest request);
 
-    /**
+  /**
    * Retrieves a group change for a groupChangeId.
    *
    * @param request See {@link GetGroupChangeRequest GetGroupChangeRequest}
