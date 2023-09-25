@@ -13,10 +13,10 @@
  */
 package io.vinyldns.java;
 
-public class GetGroupRequest {
+public class GetGroupChangeRequest {
   private final String id;
 
-  public GetGroupRequest(String id) {
+  public GetGroupChangeRequest(String id) {
     this.id = id;
   }
 
@@ -26,7 +26,7 @@ public class GetGroupRequest {
 
   @Override
   public String toString() {
-    return "ZoneRequest{id='" + id + "'}";
+    return "GroupChangeRequest{id='" + id + "'}";
   }
 
   @Override
@@ -34,7 +34,7 @@ public class GetGroupRequest {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    GetGroupRequest that = (GetGroupRequest) o;
+    GetGroupChangeRequest that = (GetGroupChangeRequest) o;
     return id.equals(that.id);
   }
 

@@ -258,6 +258,17 @@ public class VinylDNSClientImpl implements VinylDNSClient {
   }
 
   @Override
+  public VinylDNSResponse<GroupChange> getGroupChange(
+      GetGroupChangeRequest request) {
+    String path = "groups/change/" + request.getId();
+
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    return executeRequest(vinylDNSRequest, GroupChange.class);
+  }
+
+  @Override
   public VinylDNSResponse<RecordSetChange> createRecordSet(CreateRecordSetRequest request) {
     String path = "zones/" + request.getZoneId() + "/recordsets";
     return executeRequest(

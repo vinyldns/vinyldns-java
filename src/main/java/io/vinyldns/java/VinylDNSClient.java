@@ -259,6 +259,17 @@ public interface VinylDNSClient {
    */
   VinylDNSResponse<ListGroupActivityResponse> listGroupActivity(ListGroupActivityRequest request);
 
+    /**
+   * Retrieves a group change for a groupChangeId.
+   *
+   * @param request See {@link GetGroupChangeRequest GetGroupChangeRequest}
+   * @return {@link VinylDNSSuccessResponse
+   *     VinylDNSSuccessResponse&lt;GroupChange&gt;} in case of success and {@link
+   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;GroupChange&gt;} in case
+   *     of failure.
+   */
+  VinylDNSResponse<GroupChange> getGroupChange(GetGroupChangeRequest request);
+
   // Batch
   /**
    * Retrieves the most recent 100 batch changes created by the user. This call will return a subset

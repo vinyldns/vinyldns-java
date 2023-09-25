@@ -19,15 +19,15 @@ import java.util.Objects;
 public class ListRecordSetChangesResponse {
   private String zoneId;
   private List<RecordSetChange> recordSetChanges;
-  private String nextId; // optional
-  private String startFrom; // optional
+  private Integer nextId; // optional
+  private Integer startFrom; // optional
   private Integer maxItems;
 
   public ListRecordSetChangesResponse(
       String zoneId,
       List<RecordSetChange> recordSetChanges,
-      String nextId,
-      String startFrom,
+      Integer nextId,
+      Integer startFrom,
       Integer maxItems) {
     this.zoneId = zoneId;
     this.recordSetChanges = recordSetChanges;
@@ -52,19 +52,19 @@ public class ListRecordSetChangesResponse {
     this.recordSetChanges = recordSetChanges;
   }
 
-  public String getNextId() {
+  public Integer getNextId() {
     return nextId;
   }
 
-  public void setNextId(String nextId) {
+  public void setNextId(Integer nextId) {
     this.nextId = nextId;
   }
 
-  public String getStartFrom() {
+  public Integer getStartFrom() {
     return startFrom;
   }
 
-  public void setStartFrom(String startFrom) {
+  public void setStartFrom(Integer startFrom) {
     this.startFrom = startFrom;
   }
 

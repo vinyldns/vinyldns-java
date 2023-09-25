@@ -1112,6 +1112,53 @@ public class VinylDNSClientTest {
   }
 
   @Test
+  public void getGroupChangeSuccess() {
+    String response = client.gson.toJson(groupChange);
+
+    wireMockServer.stubFor(
+        get(urlEqualTo("/groups/change/" + groupChangeId))
+            .willReturn(
+                aResponse()
+                    .withStatus(200)
+                    .withHeader("Content-Type", "application/json")
+                    .withBody(response)));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.getGroupChange(getGroupChangeRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
+    assertEquals(vinylDNSResponse.getStatusCode(), 200);
+    assertEquals(vinylDNSResponse.getValue(), groupChange);
+  }
+
+  @Test
+  public void getGroupChangeFailure() {
+    wireMockServer.stubFor(
+        get(urlEqualTo("/groups/change/" + groupChangeId))
+            .willReturn(aResponse().withStatus(500).withBody("server error")));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupChangeRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 500);
+    assertEquals(vinylDNSResponse.getMessageBody(), "server error");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
+  public void getGroupChangeFailure404() {
+    wireMockServer.stubFor(
+        get(urlEqualTo("/groups/change/" + groupChangeId))
+            .willReturn(aResponse().withStatus(404).withBody("not found")));
+
+    VinylDNSResponse<Group> vinylDNSResponse = client.getGroup(getGroupChangeRequest);
+
+    assertTrue(vinylDNSResponse instanceof ResponseMarker.Failure);
+    assertEquals(vinylDNSResponse.getStatusCode(), 404);
+    assertEquals(vinylDNSResponse.getMessageBody(), "not found");
+    assertNull(vinylDNSResponse.getValue());
+  }
+
+  @Test
   public void createBatchChangeSuccess() {
 
     List<ChangeInput> changes = new ArrayList<>();
@@ -1672,6 +1719,7 @@ public class VinylDNSClientTest {
   private GetRecordSetRequest getRecordSetRequest = new GetRecordSetRequest(zoneId, recordSetId);
 
   private String groupId = "groupId";
+  private String grouChangeId = "groupChangeId";
   private GetRecordSetChangeRequest getRecordSetChangeRequest =
       new GetRecordSetChangeRequest(zoneId, recordSetId, recordSetChangeId);
   private UpdateRecordSetRequest updateRecordSetRequest =
@@ -1707,6 +1755,7 @@ public class VinylDNSClientTest {
 
   private Set<GroupChange> groupChanges =
       Collections.singleton(new GroupChange("ID", newGroup, group, "", "", GroupChangeType.Update));
+  private GroupChange groupChange = new GroupChange("ID", newGroup, group, "", "", GroupChangeType.Update);
 
   private CreateGroupRequest createGroupRequest =
       new CreateGroupRequest("createGroup", "create@group.com", adminMemberId, adminMemberId);
@@ -1721,6 +1770,7 @@ public class VinylDNSClientTest {
           new DateTime(),
           GroupStatus.Active);
   private GetGroupRequest getGroupRequest = new GetGroupRequest(groupId);
+  private GetGroupChangeRequest getGroupRequest = new GetGroupChangeRequest(groupChangeId);
   private DeleteGroupRequest deleteGroupRequest = new DeleteGroupRequest(groupId);
 
   private List<Group> groupList = Collections.singletonList(group);
@@ -1732,13 +1782,13 @@ public class VinylDNSClientTest {
       new ListMembersResponse(adminUserInfo, "startFrom", "nextId", 100);
 
   private ListGroupActivityResponse listGroupActivityResponse =
-      new ListGroupActivityResponse(groupChanges, "startFrom", "nextId", 100);
+      new ListGroupActivityResponse(groupChanges, 1, 2, 100);
 
   private List<RecordSetChange> recordSetChangeList =
       Collections.singletonList(recordSetChangeCreate);
 
   private ListRecordSetChangesResponse listRecordSetChangesResponse =
-      new ListRecordSetChangesResponse(zoneId, recordSetChangeList, "", "startFrom", 1);
+      new ListRecordSetChangesResponse(zoneId, recordSetChangeList, 2, 1, 1);
 
   private SearchRecordSetsResponse searchRecordSetsResponse =
           new SearchRecordSetsResponse(

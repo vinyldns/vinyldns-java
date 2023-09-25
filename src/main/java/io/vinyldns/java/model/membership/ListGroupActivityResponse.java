@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class ListGroupActivityResponse {
   private final Set<GroupChange> changes;
-  private String startFrom, nextId; // optional
+  private Integer startFrom, nextId; // optional
   private final Integer maxItems;
 
   public ListGroupActivityResponse(Set<GroupChange> changes, Integer maxItems) {
@@ -26,7 +26,7 @@ public class ListGroupActivityResponse {
   }
 
   public ListGroupActivityResponse(
-      Set<GroupChange> changes, String startFrom, String nextId, Integer maxItems) {
+      Set<GroupChange> changes, Integer startFrom, Integer nextId, Integer maxItems) {
     this.changes = changes;
     this.startFrom = startFrom;
     this.nextId = nextId;
@@ -37,11 +37,11 @@ public class ListGroupActivityResponse {
     return changes;
   }
 
-  public String getStartFrom() {
+  public Integer getStartFrom() {
     return startFrom;
   }
 
-  public void setStartFrom(String startFrom) {
+  public void setStartFrom(Integer startFrom) {
     this.startFrom = startFrom;
   }
 
@@ -53,11 +53,11 @@ public class ListGroupActivityResponse {
     return changes;
   }
 
-  public String getNextId() {
+  public Integer getNextId() {
     return nextId;
   }
 
-  public void setNextId(String nextId) {
+  public void setNextId(Integer nextId) {
     this.nextId = nextId;
   }
 
