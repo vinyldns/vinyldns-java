@@ -56,7 +56,7 @@ public class ListAbandonedZonesResponse {
     this.ignoreAccess = ignoreAccess;
   }
 
-  public List<AbandonedZoneChangeResponse> getAbondonedZones() {
+  public List<AbandonedZoneChangeResponse> getAbandonedZones() {
     return zonesDeletedInfo;
   }
 

@@ -28,10 +28,10 @@
  */
 package io.vinyldns.java.model.zone;
 
-public class ListAbondonedZonesRequest {
+public class ListAbandonedZonesRequest {
 
   /**
-   * One or more characters contained in the name of the zone to search for. For example www-. This
+   * One or more characters contained in the name of the abandoned dzone to search for. For example www-. This
    * is a contains search only, no wildcards or regular expressions are supported
    */
   private String nameFilter;
@@ -52,13 +52,13 @@ public class ListAbondonedZonesRequest {
 
   private Boolean ignoreAccess;
 
-  public ListAbondonedZonesRequest() {}
+  public ListAbandonedZonesRequest() {}
 
-  public ListAbondonedZonesRequest(String nameFilter) {
+  public ListAbandonedZonesRequest(String nameFilter) {
     this.nameFilter = nameFilter;
   }
 
-  public ListAbondonedZonesRequest(
+  public ListAbandonedZonesRequest(
       String nameFilter, String startFrom, Integer maxItems, Boolean ignoreAccess) {
     this.nameFilter = nameFilter;
     this.startFrom = startFrom;
@@ -100,7 +100,7 @@ public class ListAbondonedZonesRequest {
 
   @Override
   public String toString() {
-    return "ListAbondonedZonesRequest{"
+    return "ListAbandonedZonesRequest{"
         + "nameFilter='"
         + nameFilter
         + '\''
@@ -119,7 +119,7 @@ public class ListAbondonedZonesRequest {
     if (this == o) return true;
     if (o == null || getClass() != o.getClass()) return false;
 
-    ListAbondonedZonesRequest that = (ListAbondonedZonesRequest) o;
+    ListAbandonedZonesRequest that = (ListAbandonedZonesRequest) o;
 
     if (nameFilter != null ? !nameFilter.equals(that.nameFilter) : that.nameFilter != null)
       return false;

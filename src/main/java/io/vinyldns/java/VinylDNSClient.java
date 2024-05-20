@@ -376,11 +376,11 @@ public interface VinylDNSClient {
    * Retrieves up to 100 (default) abandoned zones sorted by most recent. This call will return a
    * subset of the full information in each change, as detailed in the attributes section.
    *
-   * @param request See {@link ListAbondonedZonesRequest ListAbondonedZonesRequest Model}
+   * @param request See {@link ListAbandonedZonesRequest ListAbandonedZonesRequest Model}
    * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ListAbandonedZonesResponse&gt;}
    *     in case of success and {@link VinylDNSFailureResponse
    *     VinylDNSFailureResponse&lt;ListAbandonedZonesResponse&gt;} in case of failure
    */
   VinylDNSResponse<ListAbandonedZonesResponse> listAbandonedZones(
-      ListAbondonedZonesRequest request);
+      ListAbandonedZonesRequest request);
 }

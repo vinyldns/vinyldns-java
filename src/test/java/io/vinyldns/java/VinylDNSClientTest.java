@@ -240,7 +240,7 @@ public class VinylDNSClientTest {
 
     VinylDNSResponse<ListAbandonedZonesResponse> vinylDNSResponse =
         client.listAbandonedZones(
-            new ListAbondonedZonesRequest(nameFilter, startFrom, maxItems, true));
+            new ListAbandonedZonesRequest(nameFilter, startFrom, maxItems, true));
 
     assertTrue(vinylDNSResponse instanceof ResponseMarker.Success);
     assertEquals(vinylDNSResponse.getStatusCode(), 200);

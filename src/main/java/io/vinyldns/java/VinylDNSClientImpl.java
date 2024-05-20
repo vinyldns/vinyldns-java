@@ -139,7 +139,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
 
   @Override
   public VinylDNSResponse<ListAbandonedZonesResponse> listAbandonedZones(
-      ListAbondonedZonesRequest request) {
+      ListAbandonedZonesRequest request) {
     String path = "zones/deleted/changes";
 
     VinylDNSRequest<Void> vinylDNSRequest =
