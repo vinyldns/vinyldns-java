@@ -63,7 +63,7 @@
         <slf4j.version>1.7.25</slf4j.version>
         <testng.version>6.11</testng.version>
         <maven.mojo.version>2.2.1</maven.mojo.version>
-        <joda-time.version>2.9.9</joda-time.version>
+        <joda-time.version>2.14.0</joda-time.version>
         <maven.annotations.version>3.5</maven.annotations.version>
         <mockito.version>1.10.19</mockito.version>
         <wiremock.version>2.35.0</wiremock.version>
