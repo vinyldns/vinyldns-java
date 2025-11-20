@@ -57,21 +57,22 @@
     </issueManagement>
 
     <properties>
-        <aws.sdk.version>1.11.160</aws.sdk.version>
-        <gson.version>2.3.1</gson.version>
-        <httpcomponents.version>4.5.2</httpcomponents.version>
+        <aws.sdk.version>1.12.792</aws.sdk.version>
+        <gson.version>2.13.2</gson.version>
+        <httpcomponents.version>4.5.13</httpcomponents.version>
         <slf4j.version>1.7.25</slf4j.version>
         <testng.version>6.11</testng.version>
         <maven.mojo.version>2.2.1</maven.mojo.version>
         <joda-time.version>2.9.9</joda-time.version>
         <maven.annotations.version>3.5</maven.annotations.version>
         <mockito.version>1.10.19</mockito.version>
-        <wiremock.version>2.8.0</wiremock.version>
+        <wiremock.version>2.35.0</wiremock.version>
+        <jackson.version>2.17.2</jackson.version>
 
         <compiler.version>3.7.0</compiler.version>
         <maven.deploy.version>2.8.2</maven.deploy.version>
         <maven.plugin.plugin.version>3.5</maven.plugin.plugin.version>
-        <maven.failsafe.surefire.plugin.version>2.20</maven.failsafe.surefire.plugin.version>
+        <maven.failsafe.surefire.plugin.version>3.5.3</maven.failsafe.surefire.plugin.version>
         <fmt-maven-plugin.version>2.5.1</fmt-maven-plugin.version>
     </properties>
 
@@ -86,31 +87,26 @@
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
         </dependency>
+        
         <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>${httpcomponents.version}</version>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-plugin-api</artifactId>
-            <version>${maven.mojo.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven</groupId>
-            <artifactId>maven-project</artifactId>
-            <version>${maven.mojo.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.maven.plugin-tools</groupId>
-            <artifactId>maven-plugin-annotations</artifactId>
-            <version>${maven.annotations.version}</version>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>joda-time</groupId>
@@ -137,9 +133,23 @@
         </dependency>
         <dependency>
             <groupId>com.github.tomakehurst</groupId>
-            <artifactId>wiremock</artifactId>
+            <artifactId>wiremock-jre8</artifactId>
             <version>${wiremock.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-core</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-annotations</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
     </dependencies>
 
