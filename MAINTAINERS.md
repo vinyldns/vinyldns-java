@@ -13,7 +13,7 @@
 
 For releases, we use a **Central Portal user token** and a shared GPG key.
 
-The Central Portal will show you a snippet when you generate a token; adapt it to something like:
+The Central Portal token should be added to your `~/.m2/settings.xml`. For example,:
 
 ```xml
 <settings>
@@ -32,7 +32,7 @@ The Central Portal will show you a snippet when you generate a token; adapt it t
       </activation>
       <properties>
         <gpg.executable>gpg</gpg.executable>
-        <gpg.keyname>RELEASE_KEY_ID</gpg.keyname>
+        <gpg.keyname>7B4A1BE6CDBE6FB3D3B405AFF44DCC5464427A0F</gpg.keyname>
         <gpg.passphrase><![CDATA[KEY_PASSPHRASE]]></gpg.passphrase>
       </properties>
     </profile>
@@ -40,7 +40,7 @@ The Central Portal will show you a snippet when you generate a token; adapt it t
 </settings>
 ```
 
-The GPG key material and passphrase are stored in a secrets manager; ask the project maintainers how to retrieve and import them locally before releasing.
+The GPG key material and KEY_PASSPHRASE are stored in a secrets manager; ask the project maintainers how to retrieve and import them locally before releasing.
 
 ### Prepare a release
 
