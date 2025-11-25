@@ -15,7 +15,7 @@ To pull the latest version from Sonatype, add a dependency to the `pom.xml` file
 <dependency>
   <groupId>io.vinyldns</groupId>
   <artifactId>vinyldns-java</artifactId>
-  <version>0.9.4</version> <!-- Replace with the latest release version -->
+  <version>0.9.5</version> <!-- Replace with the latest release version -->
 </dependency>
 ```
 
