@@ -21,9 +21,9 @@ cd "${DIR}/../"
 
 function usage {
     printf "usage: release.sh [OPTIONS]\n\n"
-    printf "release vinyldns-java artifact to OSS Sonatype\n\n"
+    printf "build and release vinyldns-java artifacts to Maven Central via Sonatype Central Portal\n\n"
     printf "options:\n"
-    printf "\t-f, --full performs a full release as opposed to a SNAPSHOT\n"
+    printf "\t-f, --full performs a full release (publish to Maven Central)\n"
 }
 
 SNAPSHOT=1
@@ -36,10 +36,9 @@ while [ "$1" != "" ]; do
 done
 
 if [[ "$SNAPSHOT" == 1 ]]; then
-    printf "\nperforming a SNAPSHOT release\n"
-    mvn clean deploy -P release,ossrh
+    printf "\nperforming a signed build only (no publish)\n"
+    mvn -P release clean verify
 else
     printf "\nperforming a full release\n"
-    mvn -e release:clean release:prepare -P release,ossrh
-    mvn -e release:perform -P release,ossrh
+    mvn -P release clean deploy
 fi
