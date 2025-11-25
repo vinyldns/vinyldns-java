@@ -42,6 +42,25 @@ The Central Portal token should be added to your `~/.m2/settings.xml`. For examp
 
 The GPG key material and KEY_PASSPHRASE are stored in a secrets manager; ask the project maintainers how to retrieve and import them locally before releasing.
 
+#### Import the GPG key locally
+
+Once you have downloaded the ASCII-armored private key (for example `vinyldns-java-private.asc`) and the passphrase from the secrets manager:
+
+1. Import the key into your local GPG keyring:
+
+   ```bash
+   gpg --import vinyldns-java-private.asc
+   ```
+
+2. Optionally mark the key as trusted so GPG will use it without warnings:
+
+   ```bash
+   gpg --edit-key 7B4A1BE6CDBE6FB3D3B405AFF44DCC5464427A0F trust
+   # choose 5 = ultimate, then 'quit'
+   ```
+
+3. Verify that `~/.m2/settings.xml` points at this key via `gpg.keyname` and `gpg.passphrase`, then you can run the release commands below.
+
 ### Prepare a release
 
 1. Make sure `master` contains all changes you want in the release.
