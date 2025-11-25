@@ -42,26 +42,40 @@ The Central Portal will show you a snippet when you generate a token; adapt it t
 
 The GPG key material and passphrase are stored in a secrets manager; ask the project maintainers how to retrieve and import them locally before releasing.
 
+### Prepare a release
+
+1. Make sure `master` contains all changes you want in the release.
+2. Update the version in `pom.xml` from `X.Y.Z-SNAPSHOT` to the new release version, for example:
+   - `0.9.4-SNAPSHOT` -> `0.9.5`
+3. Update the version shown in the dependency snippet in `README.md` to match the new release version.
+4. Commit the version bump on `master`, e.g. `git commit -am "Release 0.9.5"` and push.
+5. Create and push a git tag for the release:
+   - `git tag 0.9.5`
+   - `git push origin 0.9.5`
+
 ### Proxies
 
 Make sure you are not behind any corporate proxies as that may cause issues with the release
 
 ### Github SSH
 
-The release process makes commits and tags in the upstream repository. Make sure you have ssh setup for your account on github.com
+Releases require pushing commits and tags to the upstream repository. Make sure you can push to GitHub (typically via SSH) for your account on github.com.
 
 ### Run
 
-To run the release, execute `bin/release.sh --full`. This will:
+After preparing the release and pushing the tag:
 
-1. Build and sign the artifacts with the `release` Maven profile.
-2. Publish the signed artifacts to Maven Central via the Central Publishing Maven plugin.
+1. On a machine with the GPG key imported and Central credentials configured in `~/.m2/settings.xml`, check out the tagged commit (or `master` at that commit).
+2. For a dry run (no publish), execute `bin/release.sh`. This will perform a signed build only (`mvn -P release clean verify`).
+3. To perform an actual release, execute `bin/release.sh --full`. This will:
+   - Build and sign the artifacts with the `release` Maven profile.
+   - Publish the signed artifacts to Maven Central via the Central Publishing Maven plugin (via `mvn -P release clean deploy`).
 
-Without `--full`, the script only performs a signed build (`mvn -P release clean verify`) and does **not** publish anything.
+You can validate the release went through at `https://central.sonatype.com/artifact/io.vinyldns/vinyldns-java/versions`.
 
 You can validate the release went through at `https://central.sonatype.com/artifact/io.vinyldns/vinyldns-java/versions`.
 
 ### Post
 
-* Your fork's master should have a commit added to it, make a pr to github.com/vinyldns/vinyldns-java to sync up versions
-* Make a release on github.com/vinyldns/vinyldns-java
+* Create a GitHub Release for the new tag (for example `0.9.5`), including release notes that summarize the changes.
+* Optionally bump `pom.xml` on `master` to the next `-SNAPSHOT` version (for example `0.9.6-SNAPSHOT`) in a follow-up commit to resume development.
