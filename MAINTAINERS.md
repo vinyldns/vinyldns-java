@@ -35,7 +35,7 @@ To release to Sonatype, make a `settings.xml` in `~/.m2` https://maven.apache.or
             <properties>
 		<vinyldns-fork>GITHUB_USERNAME</vinyldns-fork>
                 <gpg.executable>gpg</gpg.executable>
-		<gpg.keyname>F6D171DC24C6EB30FCAC1E85AEF7D1D58E3C1B9A</gpg.keyname>
+		<gpg.keyname>7B4A1BE6CDBE6FB3D3B405AFF44DCC5464427A0F</gpg.keyname>
                 <gpg.passphrase><![CDATA[KEY_PASSPHRASE]]></gpg.passphrase>
             </properties>
        </profile>
@@ -48,7 +48,7 @@ The following information must be provided:
 * SONATYPE_USERNAME - oss.sonatype.org login for io.vinyldns
 * SONATYPE_USERNAME - oss.sonatype.org password for io.vinyldns
 * GITHUB_USERNAME - Github username that your fork is published to
-* KEY_PASSPHRASE - passphrase for key F6D171DC24C6EB30FCAC1E85AEF7D1D58E3C1B9A
+* KEY_PASSPHRASE - passphrase for key 7B4A1BE6CDBE6FB3D3B405AFF44DCC5464427A0F
 
 ### Proxies
 
@@ -64,7 +64,7 @@ To run the release, execute `bin/release.sh`
 
 For a full release, use the flag `--full`, otherwise, only a `SNAPSHOT` will be released to the Sonatype staging endpoint
 
-> Note, you will need the passphrase handy for the key F6D171DC24C6EB30FCAC1E85AEF7D1D58E3C1B9A
+> Note, you will need the passphrase handy for the key 7B4A1BE6CDBE6FB3D3B405AFF44DCC5464427A0F
 
 You can validate the release went through at https://oss.sonatype.org/#nexus-search;quick~io.vinyldns
 
