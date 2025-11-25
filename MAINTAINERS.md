@@ -6,49 +6,41 @@
 
 ## Release
 
-### Sonatype credentials
+### Central Portal and credentials
 
-Follow https://github.com/vinyldns/vinyldns/blob/master/MAINTAINERS.md#sonatype-credentials to get vinyldns-sonatype-key.asc imported to your local
+- Make sure you have `mvn` installed (on macOS, `brew install maven`).
+- Ensure you have access to the `io.vinyldns` namespace in the Sonatype Central Portal (`https://central.sonatype.com/`).
 
-### Maven settings
+For releases, we use a **Central Portal user token** and a shared GPG key.
 
-Make sure you have `mvn`, on mac, this is `brew install maven`
-
-To release to Sonatype, make a `settings.xml` in `~/.m2` https://maven.apache.org/settings.html, like so:
+The Central Portal will show you a snippet when you generate a token; adapt it to something like:
 
 ```xml
 <settings>
-    <servers>
-        <server>
-            <id>ossrh</id>
-            <username>SONATYPE_USERNAME</username>
-            <password>SONATYPE_PASSWORD</password>
-        </server>
-    </servers>
-    <profiles>
-        <profile>
-            <id>ossrh</id>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-
-            <properties>
-		<vinyldns-fork>GITHUB_USERNAME</vinyldns-fork>
-                <gpg.executable>gpg</gpg.executable>
-		<gpg.keyname>7B4A1BE6CDBE6FB3D3B405AFF44DCC5464427A0F</gpg.keyname>
-                <gpg.passphrase><![CDATA[KEY_PASSPHRASE]]></gpg.passphrase>
-            </properties>
-       </profile>
-    </profiles>
+  <servers>
+    <server>
+      <id>central</id>
+      <username>CENTRAL_TOKEN_USERNAME</username>
+      <password>CENTRAL_TOKEN_PASSWORD</password>
+    </server>
+  </servers>
+  <profiles>
+    <profile>
+      <id>vinyldns-release</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <gpg.executable>gpg</gpg.executable>
+        <gpg.keyname>RELEASE_KEY_ID</gpg.keyname>
+        <gpg.passphrase><![CDATA[KEY_PASSPHRASE]]></gpg.passphrase>
+      </properties>
+    </profile>
+  </profiles>
 </settings>
 ```
 
-The following information must be provided:
-
-* SONATYPE_USERNAME - oss.sonatype.org login for io.vinyldns
-* SONATYPE_USERNAME - oss.sonatype.org password for io.vinyldns
-* GITHUB_USERNAME - Github username that your fork is published to
-* KEY_PASSPHRASE - passphrase for key 7B4A1BE6CDBE6FB3D3B405AFF44DCC5464427A0F
+The GPG key material and passphrase are stored in a secrets manager; ask the project maintainers how to retrieve and import them locally before releasing.
 
 ### Proxies
 
@@ -56,17 +48,18 @@ Make sure you are not behind any corporate proxies as that may cause issues with
 
 ### Github SSH
 
-The release process makes a commit to your fork with the updated version and tag. Make sure you have ssh setup for your account on github.com
+The release process makes commits and tags in the upstream repository. Make sure you have ssh setup for your account on github.com
 
 ### Run
 
-To run the release, execute `bin/release.sh`
+To run the release, execute `bin/release.sh --full`. This will:
 
-For a full release, use the flag `--full`, otherwise, only a `SNAPSHOT` will be released to the Sonatype staging endpoint
+1. Build and sign the artifacts with the `release` Maven profile.
+2. Publish the signed artifacts to Maven Central via the Central Publishing Maven plugin.
 
-> Note, you will need the passphrase handy for the key 7B4A1BE6CDBE6FB3D3B405AFF44DCC5464427A0F
+Without `--full`, the script only performs a signed build (`mvn -P release clean verify`) and does **not** publish anything.
 
-You can validate the release went through at https://oss.sonatype.org/#nexus-search;quick~io.vinyldns
+You can validate the release went through at `https://central.sonatype.com/artifact/io.vinyldns/vinyldns-java/versions`.
 
 ### Post
 
