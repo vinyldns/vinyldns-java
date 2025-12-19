@@ -13,15 +13,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.vinyldns.java.model.batch;
+package io.vinyldns.java;
 
-public enum BatchChangeStatus {
-  Cancelled,
-  Complete,
-  Failed,
-  PartialFailure,
-  PendingProcessing,
-  PendingReview,
-  Rejected,
-  Scheduled
+public class GetGroupChangeRequest {
+  private final String id;
+
+  public GetGroupChangeRequest(String id) {
+    this.id = id;
+  }
+
+  public String getId() {
+    return id;
+  }
+
+  @Override
+  public String toString() {
+    return "GroupChangeRequest{id='" + id + "'}";
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) return true;
+    if (o == null || getClass() != o.getClass()) return false;
+
+    GetGroupChangeRequest that = (GetGroupChangeRequest) o;
+    return id.equals(that.id);
+  }
+
+  @Override
+  public int hashCode() {
+    return id.hashCode();
+  }
 }

@@ -1,14 +1,16 @@
-/**
+/*
  * Copyright 2018 Comcast Cable Communications Management, LLC
  *
- * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * <p>http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing permissions and
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package io.vinyldns.java.model.membership;
@@ -17,7 +19,7 @@ import java.util.Set;
 
 public class ListGroupActivityResponse {
   private final Set<GroupChange> changes;
-  private String startFrom, nextId; // optional
+  private Integer startFrom, nextId; // optional
   private final Integer maxItems;
 
   public ListGroupActivityResponse(Set<GroupChange> changes, Integer maxItems) {
@@ -26,7 +28,7 @@ public class ListGroupActivityResponse {
   }
 
   public ListGroupActivityResponse(
-      Set<GroupChange> changes, String startFrom, String nextId, Integer maxItems) {
+      Set<GroupChange> changes, Integer startFrom, Integer nextId, Integer maxItems) {
     this.changes = changes;
     this.startFrom = startFrom;
     this.nextId = nextId;
@@ -37,11 +39,11 @@ public class ListGroupActivityResponse {
     return changes;
   }
 
-  public String getStartFrom() {
+  public Integer getStartFrom() {
     return startFrom;
   }
 
-  public void setStartFrom(String startFrom) {
+  public void setStartFrom(Integer startFrom) {
     this.startFrom = startFrom;
   }
 
@@ -53,11 +55,11 @@ public class ListGroupActivityResponse {
     return changes;
   }
 
-  public String getNextId() {
+  public Integer getNextId() {
     return nextId;
   }
 
-  public void setNextId(String nextId) {
+  public void setNextId(Integer nextId) {
     this.nextId = nextId;
   }
 

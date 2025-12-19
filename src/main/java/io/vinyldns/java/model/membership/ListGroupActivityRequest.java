@@ -1,24 +1,26 @@
-/**
+/*
  * Copyright 2018 Comcast Cable Communications Management, LLC
  *
- * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * <p>http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing permissions and
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package io.vinyldns.java.model.membership;
 
 public class ListGroupActivityRequest {
   private String groupId;
-  private String startFrom;
+  private Integer startFrom;
   private Integer maxItems;
 
-  public ListGroupActivityRequest(String groupId, String startFrom, Integer maxItems) {
+  public ListGroupActivityRequest(String groupId, Integer startFrom, Integer maxItems) {
     this.groupId = groupId;
     this.startFrom = startFrom;
     this.maxItems = maxItems;
@@ -32,11 +34,11 @@ public class ListGroupActivityRequest {
     this.groupId = groupId;
   }
 
-  public String getStartFrom() {
+  public Integer getStartFrom() {
     return startFrom;
   }
 
-  public void setStartFrom(String startFrom) {
+  public void setStartFrom(Integer startFrom) {
     this.startFrom = startFrom;
   }
 
