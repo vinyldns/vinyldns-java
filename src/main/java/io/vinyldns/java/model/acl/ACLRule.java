@@ -1,51 +1,58 @@
-/**
+/*
  * Copyright 2018 Comcast Cable Communications Management, LLC
  *
- * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * <p>http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing permissions and
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package io.vinyldns.java.model.acl;
 
 import io.vinyldns.java.model.record.RecordType;
+import java.util.Objects;
 import java.util.Set;
 
 public class ACLRule {
-  private AccessLevel accessLevel;
-  private String description; // optional
+  private ZoneAccessLevel accessLevel;
+  private String description;
+  private String displayName;
   private String userId; // optional
   private String groupId; // optional
-  private String recordMask; // optional
+  private String recordMask;
   private Set<RecordType> recordTypes;
 
   public ACLRule() {}
 
   public ACLRule(
-      AccessLevel accessLevel,
+      ZoneAccessLevel accessLevel,
       String description,
+      String displayName,
       String userId,
       String groupId,
       String recordMask,
       Set<RecordType> recordTypes) {
     this.accessLevel = accessLevel;
     this.description = description;
+    this.displayName = displayName;
     this.userId = userId;
     this.groupId = groupId;
     this.recordMask = recordMask;
     this.recordTypes = recordTypes;
   }
 
-  public AccessLevel getAccessLevel() {
+  public ZoneAccessLevel getAccessLevel() {
     return accessLevel;
   }
 
-  public void setAccessLevel(AccessLevel accessLevel) {
+  public void setAccessLevel(ZoneAccessLevel accessLevel) {
     this.accessLevel = accessLevel;
   }
 
@@ -55,6 +62,14 @@ public class ACLRule {
 
   public void setDescription(String description) {
     this.description = description;
+  }
+
+  public String getDisplayName() {
+    return displayName;
+  }
+
+  public void setDisplayName(String displayName) {
+    this.displayName = displayName;
   }
 
   public String getUserId() {
@@ -97,6 +112,9 @@ public class ACLRule {
         + ", description='"
         + description
         + '\''
+        + ", displayName='"
+        + displayName
+        + '\''
         + ", userId='"
         + userId
         + '\''
@@ -114,29 +132,20 @@ public class ACLRule {
   @Override
   public boolean equals(Object o) {
     if (this == o) return true;
-    if (o == null || getClass() != o.getClass()) return false;
-
+    if (!(o instanceof ACLRule)) return false;
     ACLRule aclRule = (ACLRule) o;
-
-    if (accessLevel != aclRule.accessLevel) return false;
-    if (description != null
-        ? !description.equals(aclRule.description)
-        : aclRule.description != null) return false;
-    if (userId != null ? !userId.equals(aclRule.userId) : aclRule.userId != null) return false;
-    if (groupId != null ? !groupId.equals(aclRule.groupId) : aclRule.groupId != null) return false;
-    if (recordMask != null ? !recordMask.equals(aclRule.recordMask) : aclRule.recordMask != null)
-      return false;
-    return recordTypes.equals(aclRule.recordTypes);
+    return accessLevel == aclRule.accessLevel
+        && Objects.equals(description, aclRule.description)
+        && Objects.equals(displayName, aclRule.displayName)
+        && Objects.equals(userId, aclRule.userId)
+        && Objects.equals(groupId, aclRule.groupId)
+        && Objects.equals(recordMask, aclRule.recordMask)
+        && Objects.equals(recordTypes, aclRule.recordTypes);
   }
 
   @Override
   public int hashCode() {
-    int result = accessLevel.hashCode();
-    result = 31 * result + (description != null ? description.hashCode() : 0);
-    result = 31 * result + (userId != null ? userId.hashCode() : 0);
-    result = 31 * result + (groupId != null ? groupId.hashCode() : 0);
-    result = 31 * result + (recordMask != null ? recordMask.hashCode() : 0);
-    result = 31 * result + recordTypes.hashCode();
-    return result;
+    return Objects.hash(
+        accessLevel, description, displayName, userId, groupId, recordMask, recordTypes);
   }
 }
