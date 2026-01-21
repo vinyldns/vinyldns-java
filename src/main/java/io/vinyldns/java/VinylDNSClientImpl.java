@@ -1,14 +1,16 @@
-/**
+/*
  * Copyright 2018 Comcast Cable Communications Management, LLC
  *
- * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * <p>http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing permissions and
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package io.vinyldns.java;
@@ -21,11 +23,14 @@ import com.amazonaws.Response;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.SignerFactory;
 import com.amazonaws.http.AmazonHttpClient;
+import com.amazonaws.http.HttpMethodName;
 import com.google.gson.Gson;
 import io.vinyldns.java.handlers.ErrorResponseHandler;
 import io.vinyldns.java.handlers.StringResponseHandler;
 import io.vinyldns.java.model.Methods;
+import io.vinyldns.java.model.acl.*;
 import io.vinyldns.java.model.batch.*;
+import io.vinyldns.java.model.health.*;
 import io.vinyldns.java.model.membership.*;
 import io.vinyldns.java.model.record.set.*;
 import io.vinyldns.java.model.zone.*;
@@ -34,12 +39,44 @@ import io.vinyldns.java.responses.VinylDNSResponse;
 import io.vinyldns.java.responses.VinylDNSSuccessResponse;
 import io.vinyldns.java.serializers.SerializationFactory;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.lang.reflect.Type;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.util.*;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
+import org.apache.http.entity.ByteArrayEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 
 public class VinylDNSClientImpl implements VinylDNSClient {
   private VinylDNSClientConfig config;
 
   private AmazonHttpClient client;
+
+  private static final class HttpDeleteWithBody extends HttpEntityEnclosingRequestBase {
+    public static final String METHOD_NAME = "DELETE";
+
+    @Override
+    public String getMethod() {
+      return METHOD_NAME;
+    }
+
+    public HttpDeleteWithBody(final String uri) {
+      setURI(URI.create(uri));
+    }
+
+    public HttpDeleteWithBody(final URI uri) {
+      setURI(uri);
+    }
+
+    public HttpDeleteWithBody() {}
+  }
 
   Gson gson = SerializationFactory.createGson();
 
@@ -410,11 +447,11 @@ public class VinylDNSClientImpl implements VinylDNSClient {
 
   @Override
   public VinylDNSResponse<SearchRecordSetsResponse> searchRecordSets(
-          SearchRecordSetsRequest request) {
+      SearchRecordSetsRequest request) {
     String path = "recordsets";
 
     VinylDNSRequest<Void> vinylDNSRequest =
-            new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
 
     if (request.getStartFrom() != null) {
       vinylDNSRequest.addParameter("startFrom", request.getStartFrom());
@@ -429,18 +466,270 @@ public class VinylDNSClientImpl implements VinylDNSClient {
     }
 
     if (request.getNameSort() != null) {
-      vinylDNSRequest.addParameter( "nameSort", request.getNameSort().name());
+      vinylDNSRequest.addParameter("nameSort", request.getNameSort().name());
     }
 
     if (request.getRecordOwnerGroupFilter() != null) {
-      vinylDNSRequest.addParameter( "recordOwnerGroupFilter",
-                                    request.getRecordOwnerGroupFilter());
+      vinylDNSRequest.addParameter("recordOwnerGroupFilter", request.getRecordOwnerGroupFilter());
     }
 
     return executeRequest(vinylDNSRequest, SearchRecordSetsResponse.class);
   }
 
-  private <S, R> VinylDNSResponse<R> executeRequest(VinylDNSRequest<S> req, Class<R> responseType) {
+  @Override
+  public VinylDNSResponse<GetUserResponse> getUser(GetUserRequest request) {
+    String path = "users/" + request.getUserId();
+
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    return executeRequest(vinylDNSRequest, GetUserResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<LockUnlockUserResponse> lockUser(LockUserRequest request) {
+    String path = "users/" + request.getUserId() + "/lock";
+
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.PUT.name(), getBaseUrl(), path, null);
+
+    return executeRequest(vinylDNSRequest, LockUnlockUserResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<LockUnlockUserResponse> unlockUser(UnlockUserRequest request) {
+    String path = "users/" + request.getUserId() + "/unlock";
+
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.PUT.name(), getBaseUrl(), path, null);
+
+    return executeRequest(vinylDNSRequest, LockUnlockUserResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<GetGroupChangeResponse> getGroupChange(GetGroupChangeRequest request) {
+    String path = "groups/change/" + request.getGroupChangeId();
+
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    return executeRequest(vinylDNSRequest, GetGroupChangeResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<List<String>> listValidDomains() {
+    String path = "groups/valid/domains";
+
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    Type listType = new com.google.gson.reflect.TypeToken<List<String>>() {}.getType();
+    return executeRequest(vinylDNSRequest, listType);
+  }
+
+  @Override
+  public VinylDNSResponse<GetRecordSetCountResponse> getRecordSetCount(
+      GetRecordSetCountRequest request) {
+    String path = "zones/" + request.getZoneId() + "/recordsetcount";
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+    return executeRequest(vinylDNSRequest, GetRecordSetCountResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<GetRecordSetChangeHistoryResponse> getRecordSetChangeHistory(
+      GetRecordSetChangeHistoryRequest request) {
+    String path = "recordsetchange/history";
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    if (request.getZoneId() != null) {
+      vinylDNSRequest.addParameter("zoneId", request.getZoneId());
+    }
+    if (request.getFqdn() != null) {
+      vinylDNSRequest.addParameter("fqdn", request.getFqdn());
+    }
+    if (request.getRecordType() != null) {
+      vinylDNSRequest.addParameter("recordType", request.getRecordType());
+    }
+    if (request.getStartFrom() != null) {
+      vinylDNSRequest.addParameter("startFrom", request.getStartFrom());
+    }
+    if (request.getMaxItems() != null) {
+      vinylDNSRequest.addParameter("maxItems", request.getMaxItems().toString());
+    }
+
+    return executeRequest(vinylDNSRequest, GetRecordSetChangeHistoryResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<GetFailedRecordSetChangesResponse> getFailedRecordSetChanges(
+      GetFailedRecordSetChangesRequest request) {
+    String path = "metrics/health/zones/" + request.getZoneId() + "/recordsetchangesfailure";
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+    return executeRequest(vinylDNSRequest, GetFailedRecordSetChangesResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<GetZoneDetailsResponse> getZoneDetails(GetZoneDetailsRequest request) {
+    String path = "zones/" + request.getZoneId() + "/details";
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+    return executeRequest(vinylDNSRequest, GetZoneDetailsResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<List<String>> getZonesBackendIds() {
+    String path = "zones/backendids";
+
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    Type listType = new com.google.gson.reflect.TypeToken<List<String>>() {}.getType();
+    return executeRequest(vinylDNSRequest, listType);
+  }
+
+  @Override
+  public VinylDNSResponse<GetFailedZoneChangesResponse> getFailedZoneChanges(
+      GetFailedZoneChangesRequest request) {
+    String path = "metrics/health/zonechangesfailure";
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+    return executeRequest(vinylDNSRequest, GetFailedZoneChangesResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<AddZoneAclRuleResponse> addZoneAclRule(AddZoneAclRuleRequest request) {
+    String path = "zones/" + request.getZoneId() + "/acl/rules";
+
+    ACLRule rule = request.getRule();
+    VinylDNSRequest<ACLRule> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.PUT.name(), getBaseUrl(), path, rule);
+    return executeRequest(vinylDNSRequest, AddZoneAclRuleResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<DeleteZoneAclRuleResponse> deleteZoneAclRule(
+      DeleteZoneAclRuleRequest request) {
+    String path = "zones/" + request.getZoneId() + "/acl/rules";
+    ACLRule rule = request.getRule();
+    VinylDNSRequest<ACLRule> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.DELETE.name(), getBaseUrl(), path, rule);
+    return executeRequest(vinylDNSRequest, DeleteZoneAclRuleResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<String> getPing() {
+    String path = "ping";
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    return executeRequest(vinylDNSRequest, String.class);
+  }
+
+  @Override
+  public VinylDNSResponse<String> getHealth() {
+    String path = "health";
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    return executeRequest(vinylDNSRequest, String.class);
+  }
+
+  @Override
+  public VinylDNSResponse<String> getColor() {
+    String path = "color";
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    return executeRequest(vinylDNSRequest, String.class);
+  }
+
+  @Override
+  public VinylDNSResponse<String> getPrometheusMetrics() {
+    String path = "metrics/prometheus";
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+
+    return executeRequest(vinylDNSRequest, String.class);
+  }
+
+  @Override
+  public VinylDNSResponse<StatusResponse> getStatus(GetStatusRequest request) {
+    String path = "status";
+    VinylDNSRequest<Void> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.GET.name(), getBaseUrl(), path, null);
+    return executeRequest(vinylDNSRequest, StatusResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<StatusResponse> updateStatus(UpdateStatusRequest requestObj) {
+    VinylDNSRequest<UpdateStatusRequest> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.POST.name(), getBaseUrl(), "status", requestObj);
+    vinylDNSRequest.addParameter(
+        "processingDisabled", String.valueOf(!requestObj.isProcessingEnabled()));
+    return executeRequest(vinylDNSRequest, StatusResponse.class);
+  }
+
+  @Override
+  public VinylDNSResponse<RecordSetUpdateResponse> requestTransfer(
+      RecordSetOwnershipTransferRequest requestObj) {
+    RecordSetOwnershipTransferRequest payload =
+        requestObj.withStatus(OwnershipTransferStatus.Requested).withUpdateOwnerGroup(false);
+    return putRecordSet(payload);
+  }
+
+  @Override
+  public VinylDNSResponse<RecordSetUpdateResponse> approveTransfer(
+      RecordSetOwnershipTransferRequest requestObj) {
+    RecordSetOwnershipTransferRequest payload =
+        requestObj.withStatus(OwnershipTransferStatus.ManuallyApproved).withUpdateOwnerGroup(true);
+    return putRecordSet(payload);
+  }
+
+  @Override
+  public VinylDNSResponse<RecordSetUpdateResponse> rejectTransfer(
+      RecordSetOwnershipTransferRequest requestObj) {
+    RecordSetOwnershipTransferRequest payload =
+        requestObj.withStatus(OwnershipTransferStatus.ManuallyRejected).withUpdateOwnerGroup(false);
+    return putRecordSet(payload);
+  }
+
+  @Override
+  public VinylDNSResponse<RecordSetUpdateResponse> cancelTransfer(
+      RecordSetOwnershipTransferRequest requestObj) {
+    RecordSetOwnershipTransferRequest payload =
+        requestObj.withStatus(OwnershipTransferStatus.Cancelled).withUpdateOwnerGroup(false);
+    return putRecordSet(payload);
+  }
+
+  private VinylDNSResponse<RecordSetUpdateResponse> putRecordSet(
+      RecordSetOwnershipTransferRequest payload) {
+
+    VinylDNSResponse<GetRecordSetResponse> rsResponse =
+        getRecordSet(new GetRecordSetRequest(payload.getZoneId(), payload.getRecordSetId()));
+    if (!(rsResponse instanceof VinylDNSSuccessResponse)) {
+      throw new RuntimeException("Failed to fetch RecordSet before transfer");
+    }
+    RecordSet rs = rsResponse.getValue().getRecordSet();
+    RecordSetTransferPayload body =
+        new RecordSetTransferPayload(
+            rs,
+            payload.getRecordSetGroupChange(),
+            payload.isUpdateOwnerGroup(),
+            payload.getRequestedOwnerGroupId());
+
+    String path =
+        String.format("zones/%s/recordsets/%s", payload.getZoneId(), payload.getRecordSetId());
+
+    VinylDNSRequest<RecordSetTransferPayload> vinylDNSRequest =
+        new VinylDNSRequest<>(Methods.PUT.name(), getBaseUrl(), path, body);
+
+    return executeRequest(vinylDNSRequest, RecordSetUpdateResponse.class);
+  }
+
+  private <S, R> VinylDNSResponse<R> executeRequest(VinylDNSRequest<S> req, Type responseType) {
     Request<String> request = new DefaultRequest<>("VinylDNS");
     request.setEndpoint(req.getEndpoint());
     request.setResourcePath(req.getResourcePath());
@@ -452,12 +741,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
 
     if (req.getPayload() != null) {
       String content = gson.toJson(req.getPayload());
-
-      try {
-        request.setContent(new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
+      request.setContent(new ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
     }
 
     config.getSigner().sign(request, config.getCredentials());
@@ -475,7 +759,6 @@ public class VinylDNSClientImpl implements VinylDNSClient {
 
       if (statusCode / 100 * 100 == 200) {
         R responseObject = gson.fromJson(messageBody, responseType);
-
         return new VinylDNSSuccessResponse<>(responseObject, messageBody, statusCode);
       } else {
         return new VinylDNSFailureResponse<>(messageBody, statusCode);
@@ -484,6 +767,218 @@ public class VinylDNSClientImpl implements VinylDNSClient {
       return new VinylDNSFailureResponse<>(e.getRawResponseContent(), e.getStatusCode());
     }
   }
+
+  private <S, R> VinylDNSResponse<R> executeRequest(VinylDNSRequest<S> req, Class<R> responseType) {
+    Request<String> request = new DefaultRequest<>("VinylDNS");
+    request.setEndpoint(req.getEndpoint());
+    request.setResourcePath(req.getResourcePath());
+    request.setHttpMethod(req.getHttpMethod());
+    request.setHeaders(new HashMap<>(req.getHeaders()));
+    request.setParameters(req.getParameters());
+    request.addHeader("Content-Type", "application/json");
+
+    byte[] payloadBytes = null;
+    if (req.getPayload() != null) {
+      String json = gson.toJson(req.getPayload());
+      payloadBytes = json.getBytes(StandardCharsets.UTF_8);
+      request.setContent(new ByteArrayInputStream(payloadBytes));
+      request.addHeader("x-amz-content-sha256", sha256Hex(payloadBytes));
+      request.addHeader("Content-Type", "application/json");
+    } else {
+      request.addHeader(
+          "x-amz-content-sha256",
+          "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855");
+    }
+
+    int port = request.getEndpoint().getPort();
+    String hostHeader =
+        (port == -1 || port == 443 || port == 80)
+            ? request.getEndpoint().getHost()
+            : request.getEndpoint().getHost() + ":" + port;
+    request.addHeader("Host", hostHeader);
+
+    config.getSigner().sign(request, config.getCredentials());
+
+    boolean deleteWithBody =
+        request.getHttpMethod() == HttpMethodName.DELETE && payloadBytes != null;
+
+    if (deleteWithBody) {
+      String base = request.getEndpoint().toString().replaceAll("/$", "");
+      String path = request.getResourcePath();
+      if (path == null) path = "";
+      if (!path.startsWith("/")) path = "/" + path;
+
+      String url = base + path;
+      String qs = buildQueryString(request.getParameters());
+      if (!qs.isEmpty()) url += "?" + qs;
+
+      HttpDeleteWithBody http = new HttpDeleteWithBody(url);
+
+      for (Map.Entry<String, String> h : request.getHeaders().entrySet()) {
+        String name = h.getKey();
+        if ("Content-Length".equalsIgnoreCase(name) || "Transfer-Encoding".equalsIgnoreCase(name)) {
+          continue;
+        }
+        http.addHeader(name, h.getValue());
+      }
+
+      http.setEntity(new ByteArrayEntity(payloadBytes, ContentType.APPLICATION_JSON));
+
+      try (CloseableHttpClient httpClient =
+              HttpClients.custom().disableContentCompression().build();
+          CloseableHttpResponse resp = httpClient.execute(http)) {
+
+        int statusCode = resp.getStatusLine().getStatusCode();
+        String messageBody =
+            resp.getEntity() != null
+                ? EntityUtils.toString(resp.getEntity(), StandardCharsets.UTF_8)
+                : "";
+
+        if (statusCode >= 200 && statusCode < 300) {
+          if (responseType == String.class) {
+            @SuppressWarnings("unchecked")
+            R responseObject = (R) messageBody;
+            return new VinylDNSSuccessResponse<>(responseObject, messageBody, statusCode);
+          }
+          R responseObject = gson.fromJson(messageBody, responseType);
+          return new VinylDNSSuccessResponse<>(responseObject, messageBody, statusCode);
+        } else {
+          return new VinylDNSFailureResponse<>(messageBody, statusCode);
+        }
+      } catch (IOException e) {
+        StringBuilder sb = new StringBuilder();
+        Throwable cur = e;
+        int depth = 0;
+        while (cur != null && depth < 5) {
+          sb.append(cur.getClass().getName()).append(": ").append(cur.getMessage()).append("\n");
+          cur = cur.getCause();
+          depth++;
+        }
+        for (int i = 0; i < Math.min(6, e.getStackTrace().length); i++) {
+          sb.append("  at ").append(e.getStackTrace()[i].toString()).append("\n");
+        }
+        return new VinylDNSFailureResponse<>(sb.toString(), 599);
+      }
+    }
+
+    try {
+      Response<String> response =
+          client
+              .requestExecutionBuilder()
+              .errorResponseHandler(new ErrorResponseHandler())
+              .request(request)
+              .execute(new StringResponseHandler());
+
+      int statusCode = response.getHttpResponse().getStatusCode();
+      String messageBody = response.getAwsResponse();
+
+      if (statusCode >= 200 && statusCode < 300) {
+        if (responseType == String.class) {
+          @SuppressWarnings("unchecked")
+          R responseObject = (R) messageBody;
+          return new VinylDNSSuccessResponse<>(responseObject, messageBody, statusCode);
+        }
+        R responseObject = gson.fromJson(messageBody, responseType);
+        return new VinylDNSSuccessResponse<>(responseObject, messageBody, statusCode);
+      } else {
+        return new VinylDNSFailureResponse<>(messageBody, statusCode);
+      }
+    } catch (AmazonServiceException e) {
+      return new VinylDNSFailureResponse<>(e.getRawResponseContent(), e.getStatusCode());
+    }
+  }
+
+  private static String buildQueryString(Map<String, List<String>> params) {
+    if (params == null || params.isEmpty()) return "";
+    StringBuilder sb = new StringBuilder();
+    boolean first = true;
+    for (Map.Entry<String, List<String>> e : params.entrySet()) {
+      String k = urlEncode(e.getKey());
+      List<String> values = e.getValue();
+      if (values == null || values.isEmpty()) {
+        if (!first) sb.append('&');
+        sb.append(k).append('=');
+        first = false;
+        continue;
+      }
+      for (String v : values) {
+        if (!first) sb.append('&');
+        sb.append(k).append('=').append(urlEncode(v));
+        first = false;
+      }
+    }
+    return sb.toString();
+  }
+
+  private static String urlEncode(String s) {
+    try {
+      return URLEncoder.encode(s, StandardCharsets.UTF_8.name())
+          .replace("+", "%20")
+          .replace("*", "%2A")
+          .replace("%7E", "~");
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  private static String sha256Hex(byte[] bytes) {
+    try {
+      MessageDigest md = MessageDigest.getInstance("SHA-256");
+      byte[] digest = md.digest(bytes);
+      StringBuilder sb = new StringBuilder(digest.length * 2);
+      for (byte b : digest) sb.append(String.format("%02x", b));
+      return sb.toString();
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  //   private <S, R> VinylDNSResponse<R> executeRequest(VinylDNSRequest<S> req, Class<R>
+  //   responseType) {
+  //     Request<String> request = new DefaultRequest<>("VinylDNS");
+  //     request.setEndpoint(req.getEndpoint());
+  //     request.setResourcePath(req.getResourcePath());
+  //     request.setHttpMethod(req.getHttpMethod());
+  //     request.setHeaders(req.getHeaders());
+  //     request.setParameters(req.getParameters());
+  //     request.addHeader("Content-Type", "application/json");
+
+  //     if (req.getPayload() != null) {
+  //       // String content = gson.toJson(req.getPayload());
+  //       // request.setContent(new
+  // ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
+  //       byte[] payload = gson.toJson(request.getRule()).getBytes(StandardCharsets.UTF_8);
+  // request.setContent(new ByteArrayInputStream(payload));
+  // request.addHeader("Content-Length", String.valueOf(payload.length));
+  // request.addHeader("Content-Type", "application/json");
+
+  //     }
+
+  //     config.getSigner().sign(request, config.getCredentials());
+  //     try {
+  //       Response<String> response =
+  //           client
+  //               .requestExecutionBuilder()
+  //               .errorResponseHandler(new ErrorResponseHandler())
+  //               .request(request)
+  //               .execute(new StringResponseHandler());
+  //       int statusCode = response.getHttpResponse().getStatusCode();
+  //       String messageBody = response.getAwsResponse();
+  //       if (statusCode / 100 * 100 == 200) {
+  //         if (responseType == String.class) {
+  //           @SuppressWarnings("unchecked")
+  //           R responseObject = (R) messageBody;
+  //           return new VinylDNSSuccessResponse<>(responseObject, messageBody, statusCode);
+  //         }
+  //         R responseObject = gson.fromJson(messageBody, responseType);
+  //         return new VinylDNSSuccessResponse<>(responseObject, messageBody, statusCode);
+  //       } else {
+  //         return new VinylDNSFailureResponse<>(messageBody, statusCode);
+  //       }
+  //     } catch (AmazonServiceException e) {
+  //       return new VinylDNSFailureResponse<>(e.getRawResponseContent(), e.getStatusCode());
+  //     }
+  //   }
 
   private String getBaseUrl() {
     if (config.getBaseUrl().endsWith("/")) {

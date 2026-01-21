@@ -1,25 +1,30 @@
-/**
+/*
  * Copyright 2018 Comcast Cable Communications Management, LLC
  *
- * <p>Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file
- * except in compliance with the License. You may obtain a copy of the License at
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
  *
- * <p>http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>Unless required by applicable law or agreed to in writing, software distributed under the
- * License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing permissions and
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
  * limitations under the License.
  */
 package io.vinyldns.java;
 
+import io.vinyldns.java.model.acl.*;
 import io.vinyldns.java.model.batch.*;
+import io.vinyldns.java.model.health.*;
 import io.vinyldns.java.model.membership.*;
 import io.vinyldns.java.model.record.set.*;
 import io.vinyldns.java.model.zone.*;
 import io.vinyldns.java.responses.VinylDNSFailureResponse;
 import io.vinyldns.java.responses.VinylDNSResponse;
 import io.vinyldns.java.responses.VinylDNSSuccessResponse;
+import java.util.List;
 
 public interface VinylDNSClient {
   // Zone
@@ -364,11 +369,247 @@ public interface VinylDNSClient {
    * minimum of two alpha-numeric characters is required.
    *
    * @param request See {@link SearchRecordSetsRequest SearchRecordSetsRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;SearchRecordSetsResponse&gt;}
+   *     in case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;SearchRecordSetsResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<SearchRecordSetsResponse> searchRecordSets(SearchRecordSetsRequest request);
+
+  /**
+   * Retrieves a user by ID.
+   *
+   * @param request See {@link GetUserRequest GetUserRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetUserResponse&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;GetUserResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<GetUserResponse> getUser(GetUserRequest request);
+
+  /**
+   * Locks a user account (admin only).
+   *
+   * @param request See {@link LockUserRequest LockUserRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;LockUnlockUserResponse&gt;}
+   *     in case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;LockUnlockUserResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<LockUnlockUserResponse> lockUser(LockUserRequest request);
+
+  /**
+   * Unlocks a user account (admin only).
+   *
+   * @param request See {@link UnlockUserRequest UnlockUserRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;LockUnlockUserResponse&gt;}
+   *     in case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;LockUnlockUserResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<LockUnlockUserResponse> unlockUser(UnlockUserRequest request);
+
+  /**
+   * Retrieves details of a specific group change.
+   *
+   * @param request See {@link GetGroupChangeRequest GetGroupChangeRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetGroupChangeResponse&gt;}
+   *     in case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;GetGroupChangeResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<GetGroupChangeResponse> getGroupChange(GetGroupChangeRequest request);
+
+  /**
+   * Retrieves the list of valid email domains for groups.
+   *
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ListValidDomainsResponse&gt;}
+   *     in case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;ListValidDomainsResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<List<String>> listValidDomains();
+
+  /**
+   * Retrieves record set count for a zone.
+   *
+   * @param request See {@link GetRecordSetCountRequest GetRecordSetCountRequest Model}
    * @return {@link VinylDNSSuccessResponse
-   *     VinylDNSSuccessResponse&lt;SearchRecordSetsResponse&gt;} in case of success and {@link
-   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;SearchRecordSetsResponse&gt;} in case
+   *     VinylDNSSuccessResponse&lt;GetRecordSetCountResponse&gt;} in case of success and {@link
+   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;GetRecordSetCountResponse&gt;} in case
    *     of failure
    */
-  VinylDNSResponse<SearchRecordSetsResponse> searchRecordSets(
-          SearchRecordSetsRequest request);
+  VinylDNSResponse<GetRecordSetCountResponse> getRecordSetCount(GetRecordSetCountRequest request);
+
+  /**
+   * Retrieves record set change history for a given FQDN/type.
+   *
+   * @param request See {@link GetRecordSetChangeHistoryRequest}
+   * @return {@code VinylDNSSuccessResponse<GetRecordSetChangeHistoryResponse>} in case of success
+   *     and {@code VinylDNSFailureResponse<GetRecordSetChangeHistoryResponse>} in case of failure
+   */
+  VinylDNSResponse<GetRecordSetChangeHistoryResponse> getRecordSetChangeHistory(
+      GetRecordSetChangeHistoryRequest request);
+
+  /**
+   * Retrieves failed record set changes count for a zone.
+   *
+   * @param request See {@link GetFailedRecordSetChangesRequest GetFailedRecordSetChangesRequest
+   *     Model}
+   * @return {@link VinylDNSSuccessResponse
+   *     VinylDNSSuccessResponse&lt;GetFailedRecordSetChangesResponse&gt;} in case of success and
+   *     {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;GetFailedRecordSetChangesResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<GetFailedRecordSetChangesResponse> getFailedRecordSetChanges(
+      GetFailedRecordSetChangesRequest request);
+
+  /**
+   * Retrieves detailed zone info along with the effective access level for the current principal.
+   *
+   * @param request See {@link GetZoneDetailsRequest GetZoneDetailsRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetZoneDetailsResponse&gt;}
+   *     in case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;GetZoneDetailsResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<GetZoneDetailsResponse> getZoneDetails(GetZoneDetailsRequest request);
+
+  /**
+   * Lists available DNS backend IDs that can be used for zones.
+   *
+   * @return {@link VinylDNSSuccessResponse
+   *     VinylDNSSuccessResponse&lt;GetZonesBackendIdsResponse&gt;} in case of success and {@link
+   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;GetZonesBackendIdsResponse&gt;} in case
+   *     of failure
+   */
+  VinylDNSResponse<List<String>> getZonesBackendIds();
+
+  /**
+   * Retrieves the failed zone changes count (global health metric).
+   *
+   * @param request See {@link GetFailedZoneChangesRequest GetFailedZoneChangesRequest Model}
+   * @return {@link VinylDNSSuccessResponse
+   *     VinylDNSSuccessResponse&lt;GetFailedZoneChangesResponse&gt;} in case of success and {@link
+   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;GetFailedZoneChangesResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<GetFailedZoneChangesResponse> getFailedZoneChanges(
+      GetFailedZoneChangesRequest request);
+
+  /**
+   * Adds an ACL rule to a zone.
+   *
+   * @param request See {@link AddZoneAclRuleRequest AddZoneAclRuleRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;AddZoneAclRuleResponse&gt;}
+   *     in case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;AddZoneAclRuleResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<AddZoneAclRuleResponse> addZoneAclRule(AddZoneAclRuleRequest request);
+
+  /**
+   * Deletes an ACL rule from a zone.
+   *
+   * @param request See {@link DeleteZoneAclRuleRequest DeleteZoneAclRuleRequest Model}
+   * @return {@link VinylDNSSuccessResponse
+   *     VinylDNSSuccessResponse&lt;DeleteZoneAclRuleResponse&gt;} in case of success and {@link
+   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;DeleteZoneAclRuleResponse&gt;} in case
+   *     of failure
+   */
+  VinylDNSResponse<DeleteZoneAclRuleResponse> deleteZoneAclRule(DeleteZoneAclRuleRequest request);
+  // VinylDNSResponse<DeleteZoneAclRuleResponse> deleteZoneAclRule(String zoneId, ACLRule rule);
+
+  /**
+   * Simple health check.
+   *
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetPingResponse&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;GetPingResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<String> getPing();
+
+  /**
+   * Comprehensive health check including subsystem statuses.
+   *
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetHealthResponse&gt;} in
+   *     case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;GetHealthResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<String> getHealth();
+
+  /**
+   * Returns current deployment color (blue/green).
+   *
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetColorResponse&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;GetColorResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<String> getColor();
+
+  /**
+   * Prometheus metrics in text/plain exposition format.
+   *
+   * @return {@link VinylDNSSuccessResponse
+   *     VinylDNSSuccessResponse&lt;GetPrometheusMetricsResponse&gt;} in case of success and {@link
+   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;GetPrometheusMetricsResponse&gt;} in
+   *     case of failure
+   */
+  VinylDNSResponse<String> getPrometheusMetrics();
+
+  /**
+   * Retrieves system processing status (enabled/disabled).
+   *
+   * @param request See {@link GetStatusRequest GetStatusRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;StatusResponse&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;StatusResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<StatusResponse> getStatus(GetStatusRequest request);
+
+  /**
+   * Updates system processing status (admin: enable/disable).
+   *
+   * @param request See {@link UpdateStatusRequest UpdateStatusRequest Model}
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;StatusResponse&gt;} in case
+   *     of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;StatusResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<StatusResponse> updateStatus(UpdateStatusRequest request);
+
+  /**
+   * Requests ownership transfer for a record seFt.
+   *
+   * @param request See {@link RecordSetOwnershipTransferRequest RecordSetOwnershipTransferRequest}
+   * @return {@link VinylDNSResponse VinylDNSSuccessResponse&lt;RecordSetUpdateResponse&gt;} in case
+   *     of success and {@link VinylDNSResponse
+   *     VinylDNSFailureResponse&lt;RecordSetUpdateResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<RecordSetUpdateResponse> requestTransfer(
+      RecordSetOwnershipTransferRequest request);
+
+  /**
+   * Approves a pending ownership transfer request.
+   *
+   * @param request See {@link RecordSetOwnershipTransferRequest RecordSetOwnershipTransferRequest}
+   * @return {@link VinylDNSResponse VinylDNSSuccessResponse&lt;RecordSetUpdateResponse&gt;} in case
+   *     of success and {@link VinylDNSResponse
+   *     VinylDNSFailureResponse&lt;RecordSetUpdateResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<RecordSetUpdateResponse> approveTransfer(
+      RecordSetOwnershipTransferRequest request);
+
+  /**
+   * Rejects a pending ownership transfer request.
+   *
+   * @param request See {@link RecordSetOwnershipTransferRequest RecordSetOwnershipTransferRequest}
+   * @return {@link VinylDNSResponse VinylDNSSuccessResponse&lt;RecordSetUpdateResponse&gt;} in case
+   *     of success and {@link VinylDNSResponse
+   *     VinylDNSFailureResponse&lt;RecordSetUpdateResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<RecordSetUpdateResponse> rejectTransfer(
+      RecordSetOwnershipTransferRequest request);
+
+  /**
+   * Cancels a pending ownership transfer request.
+   *
+   * @param request See {@link RecordSetOwnershipTransferRequest RecordSetOwnershipTransferRequest}
+   * @return {@link VinylDNSResponse VinylDNSSuccessResponse&lt;RecordSetUpdateResponse&gt;} in case
+   *     of success and {@link VinylDNSResponse
+   *     VinylDNSFailureResponse&lt;RecordSetUpdateResponse&gt;} in case of failure
+   */
+  VinylDNSResponse<RecordSetUpdateResponse> cancelTransfer(
+      RecordSetOwnershipTransferRequest request);
 }
