@@ -418,9 +418,9 @@ public interface VinylDNSClient {
   /**
    * Retrieves the list of valid email domains for groups.
    *
-   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;ListValidDomainsResponse&gt;}
-   *     in case of success and {@link VinylDNSFailureResponse
-   *     VinylDNSFailureResponse&lt;ListValidDomainsResponse&gt;} in case of failure
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;List&lt;String&gt;&gt;} in
+   *     case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;List&lt;String&gt;&gt;} in case of failure
    */
   VinylDNSResponse<List<String>> listValidDomains();
 
@@ -471,10 +471,9 @@ public interface VinylDNSClient {
   /**
    * Lists available DNS backend IDs that can be used for zones.
    *
-   * @return {@link VinylDNSSuccessResponse
-   *     VinylDNSSuccessResponse&lt;GetZonesBackendIdsResponse&gt;} in case of success and {@link
-   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;GetZonesBackendIdsResponse&gt;} in case
-   *     of failure
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;List&lt;String&gt;&gt;} in
+   *     case of success and {@link VinylDNSFailureResponse
+   *     VinylDNSFailureResponse&lt;List&lt;String&gt;&gt;} in case of failure
    */
   VinylDNSResponse<List<String>> getZonesBackendIds();
 
@@ -515,37 +514,36 @@ public interface VinylDNSClient {
   /**
    * Simple health check.
    *
-   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetPingResponse&gt;} in case
-   *     of success and {@link VinylDNSFailureResponse
-   *     VinylDNSFailureResponse&lt;GetPingResponse&gt;} in case of failure
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;String&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;String&gt;} in case
+   *     of failure
    */
   VinylDNSResponse<String> getPing();
 
   /**
    * Comprehensive health check including subsystem statuses.
    *
-   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetHealthResponse&gt;} in
-   *     case of success and {@link VinylDNSFailureResponse
-   *     VinylDNSFailureResponse&lt;GetHealthResponse&gt;} in case of failure
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;String&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;String&gt;} in case
+   *     of failure
    */
   VinylDNSResponse<String> getHealth();
 
   /**
    * Returns current deployment color (blue/green).
    *
-   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;GetColorResponse&gt;} in case
-   *     of success and {@link VinylDNSFailureResponse
-   *     VinylDNSFailureResponse&lt;GetColorResponse&gt;} in case of failure
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;String&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;String&gt;} in case
+   *     of failure
    */
   VinylDNSResponse<String> getColor();
 
   /**
    * Prometheus metrics in text/plain exposition format.
    *
-   * @return {@link VinylDNSSuccessResponse
-   *     VinylDNSSuccessResponse&lt;GetPrometheusMetricsResponse&gt;} in case of success and {@link
-   *     VinylDNSFailureResponse VinylDNSFailureResponse&lt;GetPrometheusMetricsResponse&gt;} in
-   *     case of failure
+   * @return {@link VinylDNSSuccessResponse VinylDNSSuccessResponse&lt;String&gt;} in case of
+   *     success and {@link VinylDNSFailureResponse VinylDNSFailureResponse&lt;String&gt;} in case
+   *     of failure
    */
   VinylDNSResponse<String> getPrometheusMetrics();
 
@@ -570,7 +568,7 @@ public interface VinylDNSClient {
   VinylDNSResponse<StatusResponse> updateStatus(UpdateStatusRequest request);
 
   /**
-   * Requests ownership transfer for a record seFt.
+   * Requests ownership transfer for a record set.
    *
    * @param request See {@link RecordSetOwnershipTransferRequest RecordSetOwnershipTransferRequest}
    * @return {@link VinylDNSResponse VinylDNSSuccessResponse&lt;RecordSetUpdateResponse&gt;} in case

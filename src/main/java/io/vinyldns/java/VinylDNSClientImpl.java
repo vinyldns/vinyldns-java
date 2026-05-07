@@ -59,6 +59,8 @@ public class VinylDNSClientImpl implements VinylDNSClient {
 
   private AmazonHttpClient client;
 
+  private final CloseableHttpClient httpClient;
+
   private static final class HttpDeleteWithBody extends HttpEntityEnclosingRequestBase {
     public static final String METHOD_NAME = "DELETE";
 
@@ -82,8 +84,8 @@ public class VinylDNSClientImpl implements VinylDNSClient {
 
   public VinylDNSClientImpl(VinylDNSClientConfig config) {
     this.config = config;
-
     this.client = new AmazonHttpClient(new ClientConfiguration());
+    this.httpClient = HttpClients.custom().disableContentCompression().build();
   }
 
   public VinylDNSClientImpl() {
@@ -96,6 +98,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
             SignerFactory.getSigner("VinylDNS", "us/east"));
 
     this.client = new AmazonHttpClient(new ClientConfiguration());
+    this.httpClient = HttpClients.custom().disableContentCompression().build();
   }
 
   // Zone
@@ -710,7 +713,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
     VinylDNSResponse<GetRecordSetResponse> rsResponse =
         getRecordSet(new GetRecordSetRequest(payload.getZoneId(), payload.getRecordSetId()));
     if (!(rsResponse instanceof VinylDNSSuccessResponse)) {
-      throw new RuntimeException("Failed to fetch RecordSet before transfer");
+      return new VinylDNSFailureResponse<>(rsResponse.getMessageBody(), rsResponse.getStatusCode());
     }
     RecordSet rs = rsResponse.getValue().getRecordSet();
     RecordSetTransferPayload body =
@@ -824,9 +827,7 @@ public class VinylDNSClientImpl implements VinylDNSClient {
 
       http.setEntity(new ByteArrayEntity(payloadBytes, ContentType.APPLICATION_JSON));
 
-      try (CloseableHttpClient httpClient =
-              HttpClients.custom().disableContentCompression().build();
-          CloseableHttpResponse resp = httpClient.execute(http)) {
+      try (CloseableHttpResponse resp = httpClient.execute(http)) {
 
         int statusCode = resp.getStatusLine().getStatusCode();
         String messageBody =
