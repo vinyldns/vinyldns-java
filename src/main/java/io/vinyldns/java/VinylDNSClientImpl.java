@@ -934,53 +934,6 @@ public class VinylDNSClientImpl implements VinylDNSClient {
     }
   }
 
-  //   private <S, R> VinylDNSResponse<R> executeRequest(VinylDNSRequest<S> req, Class<R>
-  //   responseType) {
-  //     Request<String> request = new DefaultRequest<>("VinylDNS");
-  //     request.setEndpoint(req.getEndpoint());
-  //     request.setResourcePath(req.getResourcePath());
-  //     request.setHttpMethod(req.getHttpMethod());
-  //     request.setHeaders(req.getHeaders());
-  //     request.setParameters(req.getParameters());
-  //     request.addHeader("Content-Type", "application/json");
-
-  //     if (req.getPayload() != null) {
-  //       // String content = gson.toJson(req.getPayload());
-  //       // request.setContent(new
-  // ByteArrayInputStream(content.getBytes(StandardCharsets.UTF_8)));
-  //       byte[] payload = gson.toJson(request.getRule()).getBytes(StandardCharsets.UTF_8);
-  // request.setContent(new ByteArrayInputStream(payload));
-  // request.addHeader("Content-Length", String.valueOf(payload.length));
-  // request.addHeader("Content-Type", "application/json");
-
-  //     }
-
-  //     config.getSigner().sign(request, config.getCredentials());
-  //     try {
-  //       Response<String> response =
-  //           client
-  //               .requestExecutionBuilder()
-  //               .errorResponseHandler(new ErrorResponseHandler())
-  //               .request(request)
-  //               .execute(new StringResponseHandler());
-  //       int statusCode = response.getHttpResponse().getStatusCode();
-  //       String messageBody = response.getAwsResponse();
-  //       if (statusCode / 100 * 100 == 200) {
-  //         if (responseType == String.class) {
-  //           @SuppressWarnings("unchecked")
-  //           R responseObject = (R) messageBody;
-  //           return new VinylDNSSuccessResponse<>(responseObject, messageBody, statusCode);
-  //         }
-  //         R responseObject = gson.fromJson(messageBody, responseType);
-  //         return new VinylDNSSuccessResponse<>(responseObject, messageBody, statusCode);
-  //       } else {
-  //         return new VinylDNSFailureResponse<>(messageBody, statusCode);
-  //       }
-  //     } catch (AmazonServiceException e) {
-  //       return new VinylDNSFailureResponse<>(e.getRawResponseContent(), e.getStatusCode());
-  //     }
-  //   }
-
   private String getBaseUrl() {
     if (config.getBaseUrl().endsWith("/")) {
       return config.getBaseUrl();
