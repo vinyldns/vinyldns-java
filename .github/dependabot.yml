@@ -1,0 +1,11 @@
+version: 2
+updates:
+  # Keep maven dependencies up to date
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    labels:
+      - "area/dependencies"
+      - "kind/maintenance"
+      - "status/needs-triage"
