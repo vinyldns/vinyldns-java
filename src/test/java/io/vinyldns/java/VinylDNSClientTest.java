@@ -2471,47 +2471,55 @@ public class VinylDNSClientTest {
   }
 
   @Test
-  public void requestTransfer_recordSetNotFound_throws() {
+  public void requestTransfer_recordSetNotFound_returnsFailure() {
     stubGetRecordSetNotFound();
     RecordSetOwnershipTransferRequest requestObj = baseTransferRequest();
 
-    RuntimeException ex =
-        expectThrows(RuntimeException.class, () -> client.requestTransfer(requestObj));
+    VinylDNSResponse<RecordSetUpdateResponse> resp = client.requestTransfer(requestObj);
 
-    assertEquals(ex.getMessage(), "Failed to fetch RecordSet before transfer");
+    assertTrue(resp instanceof ResponseMarker.Failure);
+    assertEquals(404, resp.getStatusCode());
+    assertEquals("RecordSet not found", resp.getMessageBody());
+    assertNull(resp.getValue());
   }
 
   @Test
-  public void approveTransfer_recordSetNotFound_throws() {
+  public void approveTransfer_recordSetNotFound_returnsFailure() {
     stubGetRecordSetNotFound();
     RecordSetOwnershipTransferRequest requestObj = baseTransferRequest();
 
-    RuntimeException ex =
-        expectThrows(RuntimeException.class, () -> client.approveTransfer(requestObj));
+    VinylDNSResponse<RecordSetUpdateResponse> resp = client.approveTransfer(requestObj);
 
-    assertEquals(ex.getMessage(), "Failed to fetch RecordSet before transfer");
+    assertTrue(resp instanceof ResponseMarker.Failure);
+    assertEquals(404, resp.getStatusCode());
+    assertEquals("RecordSet not found", resp.getMessageBody());
+    assertNull(resp.getValue());
   }
 
   @Test
-  public void rejectTransfer_recordSetNotFound_throws() {
+  public void rejectTransfer_recordSetNotFound_returnsFailure() {
     stubGetRecordSetNotFound();
     RecordSetOwnershipTransferRequest requestObj = baseTransferRequest();
 
-    RuntimeException ex =
-        expectThrows(RuntimeException.class, () -> client.rejectTransfer(requestObj));
+    VinylDNSResponse<RecordSetUpdateResponse> resp = client.rejectTransfer(requestObj);
 
-    assertEquals(ex.getMessage(), "Failed to fetch RecordSet before transfer");
+    assertTrue(resp instanceof ResponseMarker.Failure);
+    assertEquals(404, resp.getStatusCode());
+    assertEquals("RecordSet not found", resp.getMessageBody());
+    assertNull(resp.getValue());
   }
 
   @Test
-  public void cancelTransfer_recordSetNotFound_throws() {
+  public void cancelTransfer_recordSetNotFound_returnsFailure() {
     stubGetRecordSetNotFound();
     RecordSetOwnershipTransferRequest requestObj = baseTransferRequest();
 
-    RuntimeException ex =
-        expectThrows(RuntimeException.class, () -> client.cancelTransfer(requestObj));
+    VinylDNSResponse<RecordSetUpdateResponse> resp = client.cancelTransfer(requestObj);
 
-    assertEquals(ex.getMessage(), "Failed to fetch RecordSet before transfer");
+    assertTrue(resp instanceof ResponseMarker.Failure);
+    assertEquals(404, resp.getStatusCode());
+    assertEquals("RecordSet not found", resp.getMessageBody());
+    assertNull(resp.getValue());
   }
 
   @Test
