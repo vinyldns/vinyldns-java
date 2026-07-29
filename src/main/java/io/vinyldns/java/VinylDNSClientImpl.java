@@ -46,12 +46,21 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.util.*;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpEntityEnclosingRequestBase;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
+import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.DefaultHttpRequestRetryHandler;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.util.EntityUtils;
 
 public class VinylDNSClientImpl implements VinylDNSClient {
@@ -84,8 +93,9 @@ public class VinylDNSClientImpl implements VinylDNSClient {
 
   public VinylDNSClientImpl(VinylDNSClientConfig config) {
     this.config = config;
-    this.client = new AmazonHttpClient(new ClientConfiguration());
-    this.httpClient = HttpClients.custom().disableContentCompression().build();
+    ClientConfiguration cc = config.getClientConfiguration();
+    this.client = new AmazonHttpClient(cc);
+    this.httpClient = buildHttpClient(cc);
   }
 
   public VinylDNSClientImpl() {
@@ -97,8 +107,71 @@ public class VinylDNSClientImpl implements VinylDNSClient {
                 System.getenv("VINYLDNS_SECRET_ACCESS_KEY")),
             SignerFactory.getSigner("VinylDNS", "us/east"));
 
-    this.client = new AmazonHttpClient(new ClientConfiguration());
-    this.httpClient = HttpClients.custom().disableContentCompression().build();
+    ClientConfiguration cc = config.getClientConfiguration();
+    this.client = new AmazonHttpClient(cc);
+    this.httpClient = buildHttpClient(cc);
+  }
+
+  /**
+   * Builds a {@link CloseableHttpClient} whose transport behaviour mirrors the given {@link
+   * ClientConfiguration} used by {@link AmazonHttpClient}: same connect/socket timeouts,
+   * connection-pool size, proxy credentials, retry count, connection TTL, and idle-eviction
+   * threshold. Content-compression is disabled to match the AWS SDK default path.
+   */
+  private static CloseableHttpClient buildHttpClient(ClientConfiguration cc) {
+    PoolingHttpClientConnectionManager cm =
+        new PoolingHttpClientConnectionManager(
+            cc.getConnectionTTL() > 0 ? cc.getConnectionTTL() : -1,
+            java.util.concurrent.TimeUnit.MILLISECONDS);
+    cm.setMaxTotal(cc.getMaxConnections());
+    cm.setDefaultMaxPerRoute(cc.getMaxConnections());
+
+    // --- timeouts ---
+    int connTimeout = cc.getConnectionTimeout();
+    int socketTimeout = cc.getSocketTimeout();
+    // getRequestTimeout() is the overall request timeout (0 = no limit)
+    int requestTimeout = cc.getRequestTimeout();
+    RequestConfig requestConfig =
+        RequestConfig.custom()
+            .setConnectTimeout(connTimeout)
+            .setSocketTimeout(socketTimeout)
+            .setConnectionRequestTimeout(requestTimeout > 0 ? requestTimeout : connTimeout)
+            .build();
+
+    HttpClientBuilder builder =
+        HttpClients.custom()
+            .setConnectionManager(cm)
+            .setDefaultRequestConfig(requestConfig)
+            .disableContentCompression()
+            .setRetryHandler(
+                new DefaultHttpRequestRetryHandler(
+                    cc.getMaxErrorRetry() > 0 ? cc.getMaxErrorRetry() : 0, false));
+
+    // --- proxy ---
+    String proxyHost = cc.getProxyHost();
+    int proxyPort = cc.getProxyPort();
+    if (proxyHost != null && !proxyHost.isEmpty() && proxyPort > 0) {
+      HttpHost proxy = new HttpHost(proxyHost, proxyPort);
+      builder.setProxy(proxy);
+
+      String proxyUser = cc.getProxyUsername();
+      String proxyPass = cc.getProxyPassword();
+      if (proxyUser != null && !proxyUser.isEmpty()) {
+        CredentialsProvider credProvider = new BasicCredentialsProvider();
+        credProvider.setCredentials(
+            new AuthScope(proxyHost, proxyPort),
+            new UsernamePasswordCredentials(proxyUser, proxyPass != null ? proxyPass : ""));
+        builder.setDefaultCredentialsProvider(credProvider);
+      }
+    }
+
+    // --- idle connection eviction ---
+    long maxIdle = cc.getConnectionMaxIdleMillis();
+    if (maxIdle > 0) {
+      builder.evictIdleConnections(maxIdle, java.util.concurrent.TimeUnit.MILLISECONDS);
+    }
+
+    return builder.build();
   }
 
   // Zone
